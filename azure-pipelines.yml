@@ -8,7 +8,10 @@ trigger:
 
 pool:
   name: 'ProjectAgents'
-  vmImage: 'ubuntu-latest'
+  demands: 
+  - 'backend_agent'
+  - 'Agent.Version -equals 2.214.1'
+
 
 variables:
   solution: '**/*.sln'
