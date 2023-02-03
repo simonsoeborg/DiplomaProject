@@ -25,4 +25,4 @@ jobs:
     - name: Publish
       run: dotnet publish -c Release -o ~/actions-runner/www/
     - name: Run
-      run: dotnet ~/actions-runner/www/GroenlundAPI.dll
+      run: nohup dotnet ~/actions-runner/www/GroenlundAPI.dll > /dev/null 2>&1 &
