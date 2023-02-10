@@ -20,8 +20,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Stop & Delete docker container
+      run: docker stop groenlundapicontainer && docker rm groenlundapicontainer
+    - name: Delete docker image
+      run: docker rmi groenlundapiimage
     - name: Build Docker Image
       run: docker build -t groenlundapiimage -f ~/actions-runner/_work/DiplomaProject/DiplomaProject/GroenlundAPI/Dockerfile .
     - name: Run Docker
