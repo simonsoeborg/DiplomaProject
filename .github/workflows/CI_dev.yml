@@ -24,7 +24,7 @@ jobs:
       run: dotnet restore
     - name: Publish
       run: dotnet publish -c Release -o ~/actions-runner/www/
-    - name: Kill process
-      run: kill $(lsof -t -i:5000)
-    - name: Run
-      run: nohup dotnet /home/server/actions-runner/www/GroenlundAPI.dll &
+    - name: Build Docker Image
+      run: docker build -t groenlundapiimage -f ~/actions-runner/www/Dockerfile
+    - name: Run Docker
+      run: docker run -d -p 5000:5000 --name groenlundapicontainer groenlundapiimage
