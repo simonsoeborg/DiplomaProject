@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using GroenlundAPI.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<GroenlundAPIContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GroenlundAPIContext") ?? throw new InvalidOperationException("Connection string 'GroenlundAPIContext' not found.")));
 
 // Add services to the container.
 
