@@ -24,5 +24,7 @@ jobs:
       run: dotnet restore
     - name: Publish
       run: dotnet publish -c Release -o ~/actions-runner/www/
+    - name: Kill process
+      run: kill $(lsof -t -i:5000)
     - name: Run
       run: nohup dotnet /home/server/actions-runner/www/GroenlundAPI.dll &
