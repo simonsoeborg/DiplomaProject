@@ -11,6 +11,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+			<EnableDefaultContentItems>false</EnableDefaultContentItems>
 		</Content>
 	</ItemGroup>
 	
