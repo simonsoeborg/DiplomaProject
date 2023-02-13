@@ -21,7 +21,7 @@ jobs:
     - name: Remove docker image
       run: docker rmi groenlundapiimage    
     - name: Delete docker image
-      run: docker system prune --all -y
+      run: docker image prune -a --force --filter "tag!=latest"
     - name: Build Docker Image
       run: docker build -t groenlundapiimage -f ~/actions-runner/_work/DiplomaProject/DiplomaProject/GroenlundAPI/Dockerfile .
     - name: Run Docker
