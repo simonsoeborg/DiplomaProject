@@ -6,13 +6,4 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Content Include="appsettings.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
-			<EnableDefaultContentItems>false</EnableDefaultContentItems>
-		</Content>
-	</ItemGroup>
-
 </Project>
