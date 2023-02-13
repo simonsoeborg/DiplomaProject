@@ -16,15 +16,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
     - name: Stop & Delete docker container
       run: docker stop groenlundapicontainer && docker rm groenlundapicontainer
+    - name: Remove docker image
+      run: docker rmi groenlundapiimage    
     - name: Delete docker image
-      run: docker rmi groenlundapiimage
+      run: docker image prune -a --force --filter "until=2h"
     - name: Build Docker Image
       run: docker build -t groenlundapiimage -f ~/actions-runner/_work/DiplomaProject/DiplomaProject/GroenlundAPI/Dockerfile .
     - name: Run Docker
-      run: docker run -d -p 5000:5000 --name groenlundapicontainer groenlundapiimage
+      run: docker run -d -p 5001:5000 --name groenlundapicontainer groenlundapiimage
