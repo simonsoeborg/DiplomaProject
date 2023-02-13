@@ -19,3 +19,26 @@
 
 ./vs/
 ./vs/*
+.vs/GroenlundAPI/config/
+
+.vs/GroenlundAPI/DesignTimeBuild/
+
+.vs/GroenlundAPI/v17/
+
+GroenlundAPI/bin/Debug/net6.0/
+
+GroenlundAPI/obj/Container/
+
+GroenlundAPI/obj/Debug/net6.0/
+
+GroenlundAPI/obj/
+
+GroenlundJWT/obj/Debug/net6.0/
+
+GroenlundJWT/obj/
+
+GroenlundWS/bin/Debug/net6.0/
+
+GroenlundWS/obj/Debug/net6.0/
+
+GroenlundWS/obj/
