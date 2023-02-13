@@ -1,0 +1,10 @@
+./GroenlundAPI/obj/
+./GroenlundAPI/config/
+./GroenlundAPI/DesignTimeBuild/
+./GroenlundAPI/bin/
+
+./GroenlundWS/obj/
+./GroenlundWS/bin/
+
+./GroenlundJWT/obj/
+./GroenlundJWT/bin/
