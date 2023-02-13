@@ -18,8 +18,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: Stop & Delete docker container
       run: docker stop groenlundapicontainer && docker rm groenlundapicontainer
+    - name: Remove docker image
+      run: docker rmi groenlundapiimage    
     - name: Delete docker image
-      run: docker rmi groenlundapiimage
+      run: docker system prune --all -y
     - name: Build Docker Image
       run: docker build -t groenlundapiimage -f ~/actions-runner/_work/DiplomaProject/DiplomaProject/GroenlundAPI/Dockerfile .
     - name: Run Docker
