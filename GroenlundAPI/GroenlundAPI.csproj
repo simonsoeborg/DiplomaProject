@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GroenlundDBContext\GroenlundDBContext.csproj" />
     <ProjectReference Include="..\GroenlundJWT\GroenlundJWT.csproj" />
   </ItemGroup>
 
