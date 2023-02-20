@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "GroenlundEntityFramework": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development",
+        "ConnectionString": "server=130.225.170.249;database=GroenlundDB;user=GroenlundDB;password=gl12345"
+      }
+    }
+  }
+}
