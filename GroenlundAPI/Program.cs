@@ -20,18 +20,8 @@ builder.Services.AddDbContext<GroenlundDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ########################################
-/* Delete this after dev */
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
-// ########################################
+builder.Services.AddCors();
+
 
 
 builder.WebHost.UseUrls("http://*:5000");
@@ -41,6 +31,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
 }
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
