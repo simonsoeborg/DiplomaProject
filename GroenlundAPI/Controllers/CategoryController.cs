@@ -34,9 +34,19 @@ namespace GroenlundAPI.Controllers
         // POST api/<CategoryController>
         [EnableCors]
         [HttpPost]
-        public void Post([FromBody] CategoryDTO value)
+        public void Post([FromBody] Category value)
         {
-            Console.WriteLine(value.ToString());
+            this._context.Categories.Add(value);
+            try
+            {
+                this._context.SaveChanges();
+                return;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
         }
 
         // PUT api/<CategoryController>/5

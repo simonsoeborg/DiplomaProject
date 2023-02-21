@@ -15,5 +15,8 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.26.1" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\GroenlundClassLibrary\GroenlundModels.csproj" />
+    </ItemGroup>
 
 </Project>
