@@ -1,4 +1,5 @@
 ﻿using GroenlundEntityFramework.Models;
+using GroenlundModels.DTOModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,10 +34,9 @@ namespace GroenlundAPI.Controllers
         // POST api/<CategoryController>
         [EnableCors]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] CategoryDTO value)
         {
-            var req = JsonConvert.DeserializeObject(value);
-            Console.WriteLine(req.ToString());
+            Console.WriteLine(value.ToString());
         }
 
         // PUT api/<CategoryController>/5
