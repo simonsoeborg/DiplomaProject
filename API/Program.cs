@@ -24,7 +24,7 @@ builder.Services.AddCors();
 
 
 
-//builder.WebHost.UseUrls("http://*:5000");
+builder.WebHost.UseUrls("http://*:5000");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
