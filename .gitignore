@@ -45,3 +45,12 @@ GroenlundWS/obj/
 /.vs
 /obj/Debug/.AssemblyReference.cache
 /obj/Debug
+/ClassLibrary/bin/Debug/net6.0
+/API/bin/Debug
+/API/obj/Debug
+/API/obj
+/ClassLibrary/obj
+/JWT/bin/Debug/net6.0
+/JWT/obj
+/WebScraper/bin/Debug/net6.0
+/WebScraper/obj

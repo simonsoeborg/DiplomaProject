@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>c81679f7-7cd8-4f65-81ef-3ffc91b09d83</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Models\**" />
+		<Content Remove="Models\**" />
+		<EmbeddedResource Remove="Models\**" />
+		<None Remove="Models\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.14">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+		<ProjectReference Include="..\JWT\JWT.csproj">
+		  <TreatAsUsed>true</TreatAsUsed>
+		</ProjectReference>
+	</ItemGroup>
+
+</Project>
