@@ -28,9 +28,15 @@ jobs:
       - name: Delete docker container
         run: docker rm groenlundapicontainer
       - name: Remove docker image
-        run: docker rmi groenlundapiimage    
+        run: |
+          if docker images groenlundapiimage -q; then
+            docker rmi groenlundapiimage
+          fi
       - name: Delete docker image
-        run: docker image prune -a --force --filter "until=2h"
+        run: |
+          if docker images -q --filter "dangling=true" | grep -q .; then
+            docker image prune -a --force --filter "until=2h"
+          fi
       - name: Change directory on server
         run: cd ~/actions-runner/_work/DiplomaProject/DiplomaProject/
       - name: Build Docker Image
