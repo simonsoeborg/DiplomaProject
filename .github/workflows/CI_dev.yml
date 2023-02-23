@@ -11,22 +11,29 @@ on:
 
 jobs:
   build:
-
     runs-on: self-hosted
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Stop docker container
-      run: docker stop groenlundapicontainer
-    - name: Delete docker container
-      run: docker rm groenlundapicontainer
-    - name: Remove docker image
-      run: docker rmi groenlundapiimage    
-    - name: Delete docker image
-      run: docker image prune -a --force --filter "until=2h"
-    - name: Change directory on server
-      run: cd ~/actions-runner/_work/DiplomaProject/DiplomaProject/
-    - name: Build Docker Image
-      run: docker build -t groenlundapiimage -f Dockerfile .
-    - name: Run Docker
-      run: docker run -d -p 5001:5000 --name groenlundapicontainer groenlundapiimage
+      - uses: actions/checkout@v3
+      - name: Check if container is running
+        id: check-container
+        run: |
+          if docker ps | grep groenlundapicontainer; then
+            echo "::set-output name=running::true"
+          else
+            echo "::set-output name=running::false"
+          fi
+      - name: Stop container
+        if: steps.check-container.outputs.running == 'true'
+        run: docker stop groenlundapicontainer
+      - name: Delete docker container
+        run: docker rm groenlundapicontainer
+      - name: Remove docker image
+        run: docker rmi groenlundapiimage    
+      - name: Delete docker image
+        run: docker image prune -a --force --filter "until=2h"
+      - name: Change directory on server
+        run: cd ~/actions-runner/_work/DiplomaProject/DiplomaProject/
+      - name: Build Docker Image
+        run: docker build -t groenlundapiimage -f Dockerfile .
+      - name: Run Docker
+        run: docker run -d -p 5001:5000 --name groenlundapicontainer groenlundapiimage
