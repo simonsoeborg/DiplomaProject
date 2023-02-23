@@ -19,12 +19,8 @@ builder.Services.AddDbContext<GroenlundDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddCors();
-
-
-
-builder.WebHost.UseUrls("http://*:5000");
+//builder.WebHost.UseUrls("http://*:5000");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
