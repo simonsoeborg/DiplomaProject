@@ -1,8 +1,11 @@
-﻿namespace ClassLibrary.EFModels;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Image
+namespace ClassLibrary.EFModels
 {
-    public int Id { get; set; }
-
-    public string Url { get; set; } = null!;
+    public partial class Image
+    {
+        public int Id { get; set; }
+        public string Url { get; set; } = null!;
+    }
 }

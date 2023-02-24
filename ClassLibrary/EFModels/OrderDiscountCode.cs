@@ -1,12 +1,14 @@
-﻿namespace ClassLibrary.EFModels;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class OrderDiscountCode
+namespace ClassLibrary.EFModels
 {
-    public int OrderId { get; set; }
+    public partial class OrderDiscountCode
+    {
+        public int OrderId { get; set; }
+        public int DiscountCodeId { get; set; }
 
-    public int DiscountCodeId { get; set; }
-
-    public virtual DiscountCode DiscountCode { get; set; } = null!;
-
-    public virtual Order Order { get; set; } = null!;
+        public virtual DiscountCode DiscountCode { get; set; } = null!;
+        public virtual Order Order { get; set; } = null!;
+    }
 }

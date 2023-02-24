@@ -1,12 +1,14 @@
-﻿namespace ClassLibrary.EFModels;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class ProductImage
+namespace ClassLibrary.EFModels
 {
-    public int ImageId { get; set; }
+    public partial class ProductImage
+    {
+        public int ImageId { get; set; }
+        public int ProductId { get; set; }
 
-    public int ProductId { get; set; }
-
-    public virtual Image Image { get; set; } = null!;
-
-    public virtual Product Product { get; set; } = null!;
+        public virtual Image Image { get; set; } = null!;
+        public virtual Product Product { get; set; } = null!;
+    }
 }

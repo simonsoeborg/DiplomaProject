@@ -1,16 +1,21 @@
-﻿namespace ClassLibrary.EFModels;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Customer
+namespace ClassLibrary.EFModels
 {
-    public int Id { get; set; }
+    public partial class Customer
+    {
+        public Customer()
+        {
+            Orders = new HashSet<Order>();
+        }
 
-    public string FirstName { get; set; } = null!;
+        public int Id { get; set; }
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
+        public int Phone { get; set; }
+        public string Email { get; set; } = null!;
 
-    public string LastName { get; set; } = null!;
-
-    public int Phone { get; set; }
-
-    public string Email { get; set; } = null!;
-
-    public virtual ICollection<Order> Orders { get; } = new List<Order>();
+        public virtual ICollection<Order> Orders { get; set; }
+    }
 }

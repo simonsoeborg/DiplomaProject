@@ -1,10 +1,12 @@
-﻿namespace ClassLibrary.EFModels;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class DiscountCode
+namespace ClassLibrary.EFModels
 {
-    public int Id { get; set; }
-
-    public string Code { get; set; } = null!;
-
-    public int DiscountPercentage { get; set; }
+    public partial class DiscountCode
+    {
+        public int Id { get; set; }
+        public string Code { get; set; } = null!;
+        public int DiscountPercentage { get; set; }
+    }
 }

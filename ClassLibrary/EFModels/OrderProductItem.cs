@@ -1,12 +1,14 @@
-﻿namespace ClassLibrary.EFModels;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class OrderProductItem
+namespace ClassLibrary.EFModels
 {
-    public int ProductItemId { get; set; }
+    public partial class OrderProductItem
+    {
+        public int ProductItemId { get; set; }
+        public int OrderId { get; set; }
 
-    public int OrderId { get; set; }
-
-    public virtual Order Order { get; set; } = null!;
-
-    public virtual ProductItem ProductItem { get; set; } = null!;
+        public virtual Order Order { get; set; } = null!;
+        public virtual ProductItem ProductItem { get; set; } = null!;
+    }
 }
