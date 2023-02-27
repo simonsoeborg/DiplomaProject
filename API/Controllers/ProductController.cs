@@ -17,9 +17,21 @@ namespace API.Controllers
         {
             _context = context;
         }
+        [HttpGet("{id}")]
+        public IActionResult GetProduct(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product == null)
+            {
+                return new NotFoundObjectResult("Product with id: " + id + " not found");
+            }
+
+            return new OkObjectResult(product);
+        }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             var products = _context.Products.ToList();
 
