@@ -263,15 +263,11 @@ namespace ClassLibrary.EFModels
             {
                 entity.ToTable("Product");
 
-                entity.HasIndex(e => e.Category, "category_idx");
+                entity.HasIndex(e => e.SubCatId, "productSubcat_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
-
-                entity.Property(e => e.Category)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("category");
 
                 entity.Property(e => e.Design)
                     .HasMaxLength(500)
@@ -293,11 +289,15 @@ namespace ClassLibrary.EFModels
                     .HasMaxLength(255)
                     .HasColumnName("name");
 
-                entity.HasOne(d => d.CategoryNavigation)
+                entity.Property(e => e.SubCatId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("subCatId");
+
+                entity.HasOne(d => d.SubCat)
                     .WithMany(p => p.Products)
-                    .HasForeignKey(d => d.Category)
+                    .HasForeignKey(d => d.SubCatId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("category");
+                    .HasConstraintName("productSubcat");
             });
 
             modelBuilder.Entity<ProductImage>(entity =>
@@ -462,15 +462,12 @@ namespace ClassLibrary.EFModels
                     .HasColumnName("lastName");
 
                 entity.Property(e => e.PasswordHash)
-                   .HasMaxLength(400)
-                   .HasColumnName("passwordHash")
-                   .HasConversion<string>();
-
+                    .HasMaxLength(255)
+                    .HasColumnName("passwordHash");
 
                 entity.Property(e => e.PasswordSalt)
-                    .HasMaxLength(400)
-                    .HasColumnName("passwordSalt")
-                    .HasConversion<string>();
+                    .HasMaxLength(1000)
+                    .HasColumnName("passwordSalt");
 
                 entity.Property(e => e.RoleId)
                     .HasColumnType("int(11)")

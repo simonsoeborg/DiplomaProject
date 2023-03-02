@@ -7,7 +7,6 @@ namespace ClassLibrary.EFModels
     {
         public Category()
         {
-            Products = new HashSet<Product>();
             SubCategories = new HashSet<SubCategory>();
         }
 
@@ -17,7 +16,6 @@ namespace ClassLibrary.EFModels
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<SubCategory> SubCategories { get; set; }
     }
 }

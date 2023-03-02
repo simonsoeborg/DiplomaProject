@@ -10,8 +10,8 @@ namespace ClassLibrary.EFModels
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public byte[] PasswordHash { get; set; } = null!;
-        public byte[] PasswordSalt { get; set; } = null!;
+        public string PasswordHash { get; set; } = null!;
+        public string PasswordSalt { get; set; } = null!;
         public string CreatedAt { get; set; } = null!;
         public int? Age { get; set; }
 
