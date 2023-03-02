@@ -54,7 +54,7 @@ namespace API.Controllers
                 Product reqProduct = new()
                 {
                     Name = req.Name,
-                    Category = req.Category,
+                    SubCatId = req.SubCatId,
                     ModelNumber = req.ModelNumber,
                     Material = req.Material,
                 };
@@ -96,7 +96,7 @@ namespace API.Controllers
             }
 
             product.Name = req.Name;
-            product.Category = req.Category;
+            product.SubCatId = req.SubCatId;
             product.ModelNumber = req.ModelNumber;
             product.Material = req.Material;
             if (req.Design != null) product.Design = req.Design;
@@ -145,7 +145,7 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(product.Name)
                 || product.ModelNumber > 0
                 || string.IsNullOrWhiteSpace(product.Material)
-                || product.Category! >= 0
+                || product.SubCatId! >= 0
             )
             {
                 return false;

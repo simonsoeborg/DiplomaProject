@@ -463,11 +463,13 @@ namespace ClassLibrary.EFModels
 
                 entity.Property(e => e.PasswordHash)
                     .HasMaxLength(255)
-                    .HasColumnName("passwordHash");
+                    .HasColumnName("passwordHash")
+                    .HasConversion<string>();
 
                 entity.Property(e => e.PasswordSalt)
                     .HasMaxLength(1000)
-                    .HasColumnName("passwordSalt");
+                    .HasColumnName("passwordSalt")
+                    .HasConversion<string>();
 
                 entity.Property(e => e.RoleId)
                     .HasColumnType("int(11)")
