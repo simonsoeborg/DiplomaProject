@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ClassLibrary.EFModels
+﻿
+namespace ClassLibrary
 {
-    public partial class Payment
+    public class Payment
     {
         public Payment()
         {
-            Orders = new HashSet<Order>();
         }
 
         public int Id { get; set; }
@@ -16,6 +13,5 @@ namespace ClassLibrary.EFModels
         public sbyte? Approved { get; set; }
         public string? Method { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

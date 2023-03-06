@@ -1,4 +1,4 @@
-﻿using ClassLibrary.EFModels;
+﻿using ClassLibrary;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -54,7 +54,7 @@ namespace API.Controllers
                 Product reqProduct = new()
                 {
                     Name = req.Name,
-                    SubCatId = req.SubCatId,
+                    SubcategoryId = req.SubcategoryId,
                     ModelNumber = req.ModelNumber,
                     Material = req.Material,
                 };
@@ -96,7 +96,7 @@ namespace API.Controllers
             }
 
             product.Name = req.Name;
-            product.SubCatId = req.SubCatId;
+            product.SubcategoryId = req.SubcategoryId;
             product.ModelNumber = req.ModelNumber;
             product.Material = req.Material;
             if (req.Design != null) product.Design = req.Design;
@@ -145,7 +145,7 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(product.Name)
                 || product.ModelNumber > 0
                 || string.IsNullOrWhiteSpace(product.Material)
-                || product.SubCatId! >= 0
+                || product.SubcategoryId! >= 0
             )
             {
                 return false;

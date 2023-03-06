@@ -5,8 +5,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-using ClassLibrary.EFModels;
 using ClassLibrary.DTOModels;
+using ClassLibrary;
 
 namespace API.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using ClassLibrary.EFModels;
+﻿using ClassLibrary;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -21,25 +21,25 @@ namespace API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var subCategories = _context.SubCategories.ToList();
+            var Subcategories = _context.Subcategories.ToList();
 
-            if (subCategories == null || subCategories.Count == 0)
+            if (Subcategories == null || Subcategories.Count == 0)
             {
                 return new NoContentResult();
             }
 
-            return new OkObjectResult(subCategories);
+            return new OkObjectResult(Subcategories);
         }
 
 
         [EnableCors]
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] SubCategory req)
+        public HttpResponseMessage Post([FromBody] Subcategory req)
         {
             if (PropertiesHasValues(req))
             {
                 // Removing ID property from request since database auto-increments.
-                SubCategory reqSubcategory = new()
+                Subcategory reqSubcategory = new()
                 {
                     Name = req.Name,
                     Order = req.Order,
@@ -48,7 +48,7 @@ namespace API.Controllers
                 if (req.ImageUrl != null) { reqSubcategory.ImageUrl = req.ImageUrl; }
                 if (req.Description != null) { reqSubcategory.Description = req.Description; }
 
-                _context.SubCategories.Add(reqSubcategory);
+                _context.Subcategories.Add(reqSubcategory);
             }
             else
             {
@@ -69,9 +69,9 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody] SubCategory req)
+        public HttpResponseMessage Put(int id, [FromBody] Subcategory req)
         {
-            var subCategory = _context.SubCategories.Find(id);
+            var subCategory = _context.Subcategories.Find(id);
 
             if (subCategory == null)
             {
@@ -106,14 +106,14 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            var subCategory = _context.SubCategories.Find(id);
+            var subCategory = _context.Subcategories.Find(id);
 
             if (subCategory == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
 
-            _context.SubCategories.Remove(subCategory);
+            _context.Subcategories.Remove(subCategory);
 
             try
             {
@@ -128,7 +128,7 @@ namespace API.Controllers
         }
 
 
-        private static bool PropertiesHasValues(SubCategory subCategory)
+        private static bool PropertiesHasValues(Subcategory subCategory)
         {
             if (string.IsNullOrEmpty(subCategory.Name)
                 //|| string.IsNullOrEmpty(subCategory.Description)

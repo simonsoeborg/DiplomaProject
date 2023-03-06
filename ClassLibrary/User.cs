@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ClassLibrary.EFModels
+﻿
+namespace ClassLibrary
 {
-    public partial class User
+    public class User
     {
         public int Id { get; set; }
         public int RoleId { get; set; }
@@ -14,7 +12,5 @@ namespace ClassLibrary.EFModels
         public byte[] PasswordSalt { get; set; } = null!;
         public string CreatedAt { get; set; } = null!;
         public int? Age { get; set; }
-
-        public virtual Role Role { get; set; } = null!;
     }
 }

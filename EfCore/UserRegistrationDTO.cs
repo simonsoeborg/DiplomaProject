@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 
-namespace ClassLibrary.DTOModels
+namespace EfCore
 {
     public class UserRegistrationDTO
     {

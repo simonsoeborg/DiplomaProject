@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary.EFModels
+namespace ClassLibrary
 {
-    public partial class DiscountCode
+    public class DiscountCode
     {
         public int Id { get; set; }
         public string Code { get; set; } = null!;

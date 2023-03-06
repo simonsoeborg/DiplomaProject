@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary.EFModels
+namespace ClassLibrary
 {
-    public partial class Category
+    public class Category
     {
         public Category()
         {
-            SubCategories = new HashSet<SubCategory>();
         }
 
         public int Id { get; set; }
@@ -16,6 +15,5 @@ namespace ClassLibrary.EFModels
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
 
-        public virtual ICollection<SubCategory> SubCategories { get; set; }
     }
 }

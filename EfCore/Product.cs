@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary.EFModels
+namespace ClassLibrary
 {
-    public partial class Product
+    public class Product
     {
         public Product()
         {
-            ProductItems = new HashSet<ProductItem>();
         }
 
         public int Id { get; set; }
@@ -18,7 +17,5 @@ namespace ClassLibrary.EFModels
         public string? Design { get; set; }
         public string? Dimension { get; set; }
 
-        public virtual SubCategory SubCat { get; set; } = null!;
-        public virtual ICollection<ProductItem> ProductItems { get; set; }
     }
 }
