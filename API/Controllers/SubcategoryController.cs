@@ -131,8 +131,8 @@ namespace API.Controllers
         private static bool PropertiesHasValues(SubCategory subCategory)
         {
             if (string.IsNullOrEmpty(subCategory.Name)
-                || string.IsNullOrEmpty(subCategory.Description)
-                || string.IsNullOrWhiteSpace(subCategory.ImageUrl)
+                //|| string.IsNullOrEmpty(subCategory.Description)
+                //|| string.IsNullOrWhiteSpace(subCategory.ImageUrl)
                 || subCategory.Order <= 0
                 || subCategory.CategoryId <= 0
             )
