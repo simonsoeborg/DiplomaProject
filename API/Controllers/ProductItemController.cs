@@ -42,7 +42,6 @@ namespace API.Controllers
                 ProductItem reqProductItem = new()
                 {
                     ProductId = req.ProductId,
-                    Sku = req.Sku,
                     Condition = req.Condition,
                     Quality = req.Quality,
                     Sold = req.Sold,
@@ -86,7 +85,6 @@ namespace API.Controllers
 
 
             productItem.ProductId = req.ProductId;
-            productItem.Sku = req.Sku;
             productItem.Condition = req.Condition;
             productItem.Quality = req.Quality;
             productItem.Sold = req.Sold;
@@ -136,7 +134,6 @@ namespace API.Controllers
         {
             if (
                 productItem.ProductId <= 0
-                || productItem.Sku <= 0
                 || string.IsNullOrWhiteSpace(productItem.Condition)
                 || string.IsNullOrEmpty(productItem.Quality)
                 || productItem.Quantity < 0
