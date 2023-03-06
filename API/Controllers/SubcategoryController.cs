@@ -94,7 +94,7 @@ namespace API.Controllers
             try
             {
                 _context.SaveChanges();
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception e)
             {
