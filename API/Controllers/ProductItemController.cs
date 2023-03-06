@@ -1,4 +1,4 @@
-﻿using ClassLibrary.EFModels;
+﻿using ClassLibrary;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

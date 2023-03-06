@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary.EFModels
+namespace ClassLibrary
 {
-    public partial class Customer
+    public class Customer
     {
         public Customer()
         {
-            Orders = new HashSet<Order>();
         }
 
         public int Id { get; set; }
@@ -16,6 +15,5 @@ namespace ClassLibrary.EFModels
         public int Phone { get; set; }
         public string Email { get; set; } = null!;
 
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

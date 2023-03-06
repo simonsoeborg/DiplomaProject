@@ -1,4 +1,4 @@
-﻿using ClassLibrary.EFModels;
+﻿using ClassLibrary;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -34,12 +34,12 @@ namespace API.Controllers
 
         [EnableCors]
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] SubCategory req)
+        public HttpResponseMessage Post([FromBody] Subcategory req)
         {
             if (PropertiesHasValues(req))
             {
                 // Removing ID property from request since database auto-increments.
-                SubCategory reqSubcategory = new()
+                Subcategory reqSubcategory = new()
                 {
                     Name = req.Name,
                     Order = req.Order,
@@ -69,7 +69,7 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody] SubCategory req)
+        public HttpResponseMessage Put(int id, [FromBody] Subcategory req)
         {
             var subCategory = _context.SubCategories.Find(id);
 
@@ -128,7 +128,7 @@ namespace API.Controllers
         }
 
 
-        private static bool PropertiesHasValues(SubCategory subCategory)
+        private static bool PropertiesHasValues(Subcategory subCategory)
         {
             if (string.IsNullOrEmpty(subCategory.Name)
                 || string.IsNullOrEmpty(subCategory.Description)

@@ -1,4 +1,4 @@
-using ClassLibrary.EFModels;
+using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

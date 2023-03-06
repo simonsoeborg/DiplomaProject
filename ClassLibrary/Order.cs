@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary.EFModels
+namespace ClassLibrary
 {
-    public partial class Order
+    public class Order
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
@@ -13,7 +13,5 @@ namespace ClassLibrary.EFModels
         public string? DiscountCode { get; set; }
         public sbyte Active { get; set; }
 
-        public virtual Customer Customer { get; set; } = null!;
-        public virtual Payment Payment { get; set; } = null!;
     }
 }
