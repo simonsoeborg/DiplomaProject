@@ -87,6 +87,7 @@ namespace API.Controllers
             subCategory.Description = req.Description;
             subCategory.ImageUrl = req.ImageUrl;
             subCategory.Order = req.Order;
+            subCategory.CategoryId = req.CategoryId;
             if (req.ImageUrl != null) { subCategory.ImageUrl = req.ImageUrl; }
             if (req.Description != null) { subCategory.Description = req.Description; }
 
@@ -133,6 +134,7 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(subCategory.Name)
                 //|| string.IsNullOrEmpty(subCategory.Description)
                 //|| string.IsNullOrWhiteSpace(subCategory.ImageUrl)
+                || subCategory.CategoryId <= 0
                 || subCategory.Order <= 0
                 || subCategory.CategoryId <= 0
             )
