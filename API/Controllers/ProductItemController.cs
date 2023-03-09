@@ -45,7 +45,6 @@ namespace API.Controllers
                     Condition = req.Condition,
                     Quality = req.Quality,
                     Sold = req.Sold,
-                    Quantity = req.Quantity,
                 };
                 if (req.Weight != null) reqProductItem.Weight = req.Weight;
                 _context.ProductItems.Add(reqProductItem);
@@ -88,8 +87,7 @@ namespace API.Controllers
             productItem.Condition = req.Condition;
             productItem.Quality = req.Quality;
             productItem.Sold = req.Sold;
-            productItem.Quantity = req.Quantity;
-                
+
             if (req.Weight != null) productItem.Weight = req.Weight;
 
             try
@@ -136,7 +134,6 @@ namespace API.Controllers
                 productItem.ProductId <= 0
                 || string.IsNullOrWhiteSpace(productItem.Condition)
                 || string.IsNullOrEmpty(productItem.Quality)
-                || productItem.Quantity < 0
             )
             {
                 return false;
