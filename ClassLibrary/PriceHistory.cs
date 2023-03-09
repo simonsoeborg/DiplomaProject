@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class PriceHistory
+    public class PriceHistory
     {
         public int Id { get; set; }
 

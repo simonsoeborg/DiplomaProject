@@ -3,6 +3,7 @@ using System;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(GroenlundDbContext))]
-    partial class GroenlundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230309153054_ProductItemPriceHistory")]
+    partial class ProductItemPriceHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,28 +158,6 @@ namespace ClassLibrary.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("ClassLibrary.PriceHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ChangeDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("ProductItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductItemId");
-
-                    b.ToTable("PriceHistories");
-                });
-
             modelBuilder.Entity("ClassLibrary.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -221,27 +201,18 @@ namespace ClassLibrary.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("PurchasePrice")
-                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Quality")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<sbyte>("Sold")
                         .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("SoldDate")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<decimal?>("Weight")
                         .HasColumnType("decimal(65,30)");
@@ -340,17 +311,6 @@ namespace ClassLibrary.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ClassLibrary.PriceHistory", b =>
-                {
-                    b.HasOne("ClassLibrary.ProductItem", "ProductItem")
-                        .WithMany("PriceHistories")
-                        .HasForeignKey("ProductItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductItem");
-                });
-
             modelBuilder.Entity("ClassLibrary.Product", b =>
                 {
                     b.HasOne("ClassLibrary.Subcategory", "Subcategory")
@@ -382,11 +342,6 @@ namespace ClassLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ClassLibrary.ProductItem", b =>
-                {
-                    b.Navigation("PriceHistories");
                 });
 #pragma warning restore 612, 618
         }
