@@ -132,8 +132,8 @@ namespace API.Controllers
         {
             if (
                 productItem.ProductId <= 0
-                || string.IsNullOrWhiteSpace(productItem.Condition)
-                || string.IsNullOrEmpty(productItem.Quality)
+                || productItem.Condition > 0
+                || productItem.Quality > 0
             )
             {
                 return false;

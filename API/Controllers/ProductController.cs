@@ -144,7 +144,7 @@ namespace API.Controllers
         {
             if (string.IsNullOrEmpty(product.Name)
                 || product.ModelNumber > 0
-                || string.IsNullOrWhiteSpace(product.Material)
+                || product.Material > 0
                 || product.SubcategoryId! >= 0
             )
             {
