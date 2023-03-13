@@ -3,10 +3,6 @@ namespace ClassLibrary
 {
     public class Payment
     {
-        public Payment()
-        {
-        }
-
         public int Id { get; set; }
         public DateOnly? DatePaid { get; set; }
         public double? Amount { get; set; }
