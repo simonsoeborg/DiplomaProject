@@ -14,6 +14,7 @@ namespace ClassLibrary
         public decimal CurrentPrice { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime SoldDate { get; set; }
+        public string CustomText { get; set; }
         public Product Product { get; set; }
         public ICollection<PriceHistory> PriceHistories { get; set; }
 
