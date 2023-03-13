@@ -20,7 +20,6 @@ namespace ClassLibrary
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }
-
         public DbSet<PriceHistory> PriceHistories { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }
