@@ -20,6 +20,8 @@ namespace ClassLibrary
 
         public Product Product { get; set; }
         public ICollection<PriceHistory> PriceHistories { get; set; }
+        public ICollection<Image> Images { get; set; }
+
 
     }
 }
