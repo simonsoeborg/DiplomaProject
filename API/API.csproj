@@ -41,6 +41,7 @@
 		<ProjectReference Include="..\JWT\JWT.csproj">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</ProjectReference>
+		<ProjectReference Include="..\WebScraper\WebScraper.csproj" />
 	</ItemGroup>
 
 </Project>
