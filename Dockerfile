@@ -17,7 +17,6 @@ RUN dotnet restore "API/API.csproj"
 COPY . .
 WORKDIR "/src/API"
 RUN dotnet add package Selenium.WebDriver
-
 RUN dotnet build "API.csproj" -c Release -o /app/build
 
 FROM build AS publish
