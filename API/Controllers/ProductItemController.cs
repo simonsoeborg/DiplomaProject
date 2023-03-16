@@ -1,6 +1,8 @@
 ﻿using ClassLibrary;
+using ClassLibrary.DTOModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace API.Controllers
@@ -18,17 +20,42 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("GetProductItems")]
+        public async Task<ActionResult<IEnumerable<ProductItem>>> GetProductItems()
         {
-            var productItems = _context.ProductItems.ToList();
+            var productItems = await _context.ProductItems
+                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategory).ThenInclude(pi => pi.Category)
+                .Include(pi => pi.Images)
+                .Include(pi => pi.PriceHistories)
+                .ToListAsync();
 
             if (productItems == null || productItems.Count == 0)
             {
                 return new NoContentResult();
             }
+            return productItems;
+        }
 
-            return new OkObjectResult(productItems);
+        [HttpGet("GetProductItemDTOs")]
+        public async Task<ActionResult<IEnumerable<ProductItemDTO>>> GetProductItemDTOs()
+        {
+            var productItems = await _context.ProductItems
+                .Include(pi => pi.Images)
+                .Include(pi => pi.PriceHistories)
+                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategory).ThenInclude(pi => pi.Category)
+                .ToListAsync();
+
+
+            if (productItems == null || productItems.Count == 0)
+            {
+                return new NoContentResult();
+            }
+            List<ProductItemDTO> productItemDTOs = new();
+            foreach (var productItem in productItems)
+            {
+                productItemDTOs.Add(MapProductItemToDTO(productItem));
+            }
+            return productItemDTOs;
         }
 
 
@@ -68,18 +95,18 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody] ProductItem req)
+        public async Task<IActionResult> UpdateProductItem(int id, [FromBody] ProductItem req)
         {
             var productItem = _context.ProductItems.Find(id);
 
             if (productItem == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                return NotFound();
             }
 
             if (!PropertiesHasValues(req))
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
 
 
@@ -93,12 +120,12 @@ namespace API.Controllers
             try
             {
                 _context.SaveChanges();
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return NoContent();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return NoContent();
             }
         }
 
@@ -140,6 +167,29 @@ namespace API.Controllers
             }
 
             return true;
+        }
+        private static ProductItemDTO MapProductItemToDTO(ProductItem pi)
+        {
+            var piDTO = new ProductItemDTO
+            {
+                Id = pi.Id,
+                Price = pi.CurrentPrice,
+                CreatedDate = pi.CreatedDate,
+                Condition = pi.Condition,
+                Quality = pi.Quality,
+                Sold = pi.Sold,
+                Weight = pi.Weight,
+                CustomText = pi.CustomText,
+                Product = pi.Product
+            };
+            List<string> imageUrls = new();
+            foreach (var image in pi.Images)
+            {
+                imageUrls.Add(image.Url);
+            }
+            piDTO.Images = imageUrls.ToArray();
+
+            return piDTO;
         }
     }
 }

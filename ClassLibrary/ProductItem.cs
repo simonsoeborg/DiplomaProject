@@ -6,8 +6,10 @@ namespace ClassLibrary
         public int Id { get; set; }
 
         public int ProductId { get; set; }
+        public Product Product { get; set; }
+
         public ConditionType Condition { get; set; }
-        public QualityType Quality { get; set; } 
+        public QualityType Quality { get; set; }
         public sbyte Sold { get; set; }
         public decimal? Weight { get; set; }
         public decimal PurchasePrice { get; set; }
@@ -15,10 +17,8 @@ namespace ClassLibrary
         public DateTime CreatedDate { get; set; }
         public DateTime SoldDate { get; set; }
         public string CustomText { get; set; }
-        public Product Product { get; set; }
         public ICollection<PriceHistory> PriceHistories { get; set; }
         public ICollection<Image> Images { get; set; }
-
 
     }
 
