@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.Text.RegularExpressions;
 
 namespace WebScraper.Controllers
 {
