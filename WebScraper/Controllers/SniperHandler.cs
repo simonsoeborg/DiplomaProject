@@ -1,7 +1,6 @@
 ﻿using ClassLibrary.WebScraping;
 using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace WebScraper.Controllers
 {
@@ -12,10 +11,10 @@ namespace WebScraper.Controllers
 
         public SniperHandler()
         {
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArgument("--headless");
-            chromeOptions.AddArgument("--disable-gpu");
-            _driver = new ChromeDriver(chromeOptions);
+            //var chromeOptions = new PhantomJSOptions();
+            //chromeOptions.AddArgument("--headless");
+            //chromeOptions.AddArgument("--disable-gpu");
+            //_driver = new ChromeDriver(chromeOptions);
             _lauritzController = new LauritzController();
         }
 
