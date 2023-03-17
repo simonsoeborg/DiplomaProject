@@ -19,6 +19,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Fixing permission issue
+USER root
 RUN mkdir -p /var/lib/apt/lists/partial && chmod 755 /var/lib/apt/lists/partial
 
 # Install .NET 6.0
