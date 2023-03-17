@@ -10,7 +10,7 @@ namespace WebScraper.Controllers
     {
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(2));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(4));
             var results = new List<Lauritz>();
 
             var searchFieldLauritz = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("SearchTextBox")));
@@ -19,11 +19,7 @@ namespace WebScraper.Controllers
             {
                 searchFieldLauritz.SendKeys(arg);
                 wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("FilterControl_SearchButton"))).Click();
-                // _driver.FindElement(By.Id("FilterControl_SearchButton")).Click();
-
                 var tableEntries = _driver.FindElements(By.CssSelector("div[class='lotList item']"));
-
-                // Regex regex = new Regex(@"List_LotListRepeater_ctl(\d{2})_(ItemTitle|Price|Valuation|ItemDescription|LotIdLabel)");
 
                 int i = 1;
 
