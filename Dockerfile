@@ -1,9 +1,8 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 FROM selenium/standalone-chrome:latest AS base
 WORKDIR /app
 EXPOSE 5000
 
- # Add your dotnet core project build stuff here
+# Add your dotnet core project build stuff here
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["API/API.csproj", "API/"]
@@ -20,10 +19,10 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Install .NET 6.0
-RUN wget --no-check-certificate -nv https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
-    chmod 644 packages-microsoft-prod.deb
-RUN dpkg -i packages-microsoft-prod.deb
-RUN apt-get update
-RUN apt-get install -y dotnet-runtime-6.0
+RUN apt-get update && apt-get install -y curl gnupg2 && \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null && \
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-bullseye-prod bullseye main" > /etc/apt/sources.list.d/dotnet-sdk.list && \
+    apt-get update && \
+    apt-get install -y dotnet-sdk-6.0
 
 ENTRYPOINT ["dotnet", "API.dll"]
