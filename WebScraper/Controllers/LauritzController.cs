@@ -10,7 +10,7 @@ namespace WebScraper.Controllers
     {
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(4));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             var results = new List<Lauritz>();
 
             var searchFieldLauritz = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("SearchTextBox")));
