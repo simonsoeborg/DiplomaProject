@@ -1,0 +1,37 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - Development
+
+jobs:
+  build:
+    runs-on: [self-hosted, Windows]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+
+    - name: Publish
+      run: dotnet publish --configuration Release --output ./publish --no-restore
+
+    - name: Deploy to IIS
+      env:
+        TARGET_PATH: 'C:\inetpub\wwwroot\GroenlundAPI'
+      run: |
+        Copy-Item -Path .\publish -Destination $env:TARGET_PATH -Recurse -Force
