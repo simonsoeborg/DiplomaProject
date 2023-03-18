@@ -28,3 +28,8 @@ jobs:
         $env:TARGET_PATH = "C:\inetpub\wwwroot\GroenlundAPI"
         Remove-Item -Path $env:TARGET_PATH -Recurse -Force -ErrorAction Ignore
         Copy-Item -Path .\publish -Destination $env:TARGET_PATH -Recurse -Force
+
+    - name: Copy web.config file
+      run: |
+        copy C:\github_runner\actions-runner\_work\DiplomaProject\DiplomaProject\API\web.config C:\inetpub\wwwroot\GroenlundAPI\publish\web.config
+
