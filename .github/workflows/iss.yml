@@ -32,6 +32,6 @@ jobs:
     - name: Copy web.config file
       run: |
         mkdir -p C:\inetpub\wwwroot\GroenlundAPI\publish\
-        cp C:\github_runner\actions-runner\_work\DiplomaProject\DiplomaProject\API\web.config C:\inetpub\wwwroot\GroenlundAPI\publish\web.config
+        cp C:\github_runner\actions-runner\_work\DiplomaProject\DiplomaProject\API\web.config C:\inetpub\wwwroot\GroenlundAPI\web.config
 
 
