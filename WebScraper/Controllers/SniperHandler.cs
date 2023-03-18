@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.WebScraping;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 
 namespace WebScraper.Controllers
@@ -8,15 +9,16 @@ namespace WebScraper.Controllers
     {
         private readonly IWebDriver _driver;
         private LauritzController _lauritzController;
+        private IServiceProvider _serviceProvider;
 
         public SniperHandler()
         {
-            //var chromeOptions = new PhantomJSOptions();
-            //chromeOptions.AddArgument("--headless");
-            //chromeOptions.AddArgument("--disable-gpu");
-            //_driver = new ChromeDriver(chromeOptions);
-            _lauritzController = new LauritzController();
+            if(_driver == null)
+            {
+                _driver = _serviceProvider.GetService<IWebDriver>();
+            }
         }
+        public SniperHandler(IServiceProvider serviceProvider) => _driver = serviceProvider.GetService<IWebDriver>();
 
         public List<Lauritz> GetLauritz(string? arg)
         {

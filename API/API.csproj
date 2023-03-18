@@ -33,14 +33,13 @@
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
+		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="111.0.5563.6400" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
-		<ProjectReference Include="..\JWT\JWT.csproj">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</ProjectReference>
+		<ProjectReference Include="..\JWT\JWT.csproj" />
 		<ProjectReference Include="..\WebScraper\WebScraper.csproj" />
 	</ItemGroup>
 
