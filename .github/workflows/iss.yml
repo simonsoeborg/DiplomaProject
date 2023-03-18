@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - ISS_Dev
+      - Development
 
 jobs:
   deploy:
