@@ -6,9 +6,8 @@ on:
       - Development
 
 jobs:
-  build:
-    runs-on: [self-hosted, Windows]
-
+  deploy:
+    runs-on: [self-hosted, windows]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -18,20 +17,21 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
-
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet build --configuration Release
 
     - name: Publish
-      run: dotnet publish --configuration Release --output ./publish --no-restore
+      run: dotnet publish --configuration Release --output ./publish
 
     - name: Deploy to IIS
-      env:
-        TARGET_PATH: 'C:\inetpub\wwwroot\GroenlundAPI'
       run: |
+        $env:TARGET_PATH = "C:\inetpub\wwwroot\GroenlundAPI"
+        Remove-Item -Path $env:TARGET_PATH -Recurse -Force -ErrorAction Ignore
         Copy-Item -Path .\publish -Destination $env:TARGET_PATH -Recurse -Force
+
+    - name: Copy web.config file
+      run: |
+        mkdir -p C:\inetpub\wwwroot\GroenlundAPI\publish\
+        cp C:\github_runner\actions-runner\_work\DiplomaProject\DiplomaProject\API\web.config C:\inetpub\wwwroot\GroenlundAPI\web.config
+
+

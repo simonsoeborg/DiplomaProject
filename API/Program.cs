@@ -1,5 +1,7 @@
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +18,19 @@ builder.Services.AddDbContext<GroenlundDbContext>(options =>
         ServerVersion.AutoDetect(connectionString));
 });
 
+builder.Services.AddSingleton<IWebDriver>(provider =>
+{
+    var chromeOptions = new ChromeOptions();
+    chromeOptions.AddArgument("--headless");
+    chromeOptions.AddArgument("--no-sandbox");
+    chromeOptions.AddArgument("--disable-dev-shm-usage");
+    var driver = new ChromeDriver(chromeOptions);
+    return driver;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.WebHost.UseUrls("http://*:5000");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
