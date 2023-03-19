@@ -12,6 +12,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{C19AEC72-11EF-4F9C-B34A-B6F64B6A131C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvConverter", "CsvConverter\CsvConverter.csproj", "{DEFF66C3-746C-4B67-8217-95CBF3E6EA45}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31D06FE6-69B1-42B5-B9AB-F3C0BC0B5EE8} = {31D06FE6-69B1-42B5-B9AB-F3C0BC0B5EE8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

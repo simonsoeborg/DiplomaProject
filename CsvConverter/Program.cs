@@ -1,5 +1,5 @@
-﻿
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using ClassLibrary;
 
 class Program
 {
@@ -8,7 +8,6 @@ class Program
     {
         List<string[]> data = new();
 
-        // Open the CSV file and read the data
         using (StreamReader reader = new("./products.csv"))
         {
             while (!reader.EndOfStream)
@@ -18,122 +17,141 @@ class Program
                 data.Add(values);
             }
         }
+
         List<Product> Products = new();
-        List<string> modelNumbers = new();
+        List<string> names = new();
 
         for (int i = 1; i < data.Count; i++)
         {
             var dataItem = data[i];
-            Product product = new Product();
-
-
-            product.Name = TryParseName(dataItem[2]);
+            Product product = new()
+            {
+                Name = TryParseName(dataItem[2])
+            };
             if (product.Name == null)
             {
                 break;
             }
-            modelNumbers.Add(product.Name);
+            names.Add(product.Name);
             product.ModelNumber = TryParseModelNumber(product.Name);
 
 
 
             Products.Add(product);
         }
-        RecognizeModelnumberPattern(modelNumbers.ToArray());
-
-        Console.WriteLine("Amount of items before cleansing: {0}", data.Count);
-        Console.WriteLine("Amount of items after cleansing: {0}", Products.Count);
+        TestRegexFilter(names.ToArray(), RegexMap());
     }
-
-    class Product
+    class Something
     {
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string ModelNumber { get; set; }
+    }
+    public static void RecognizeModelnumberPattern(string[] names)
+    {
+
+        List<Something> Somethings = new();
+
+        Dictionary<int, Regex> regexMap = RegexMap();
+        TestRegexFilter(names, regexMap);
 
     }
 
-    public static void RecognizeModelnumberPattern(string[] modelNumbers)
+    public static void TestRegexFilter(string[] inputs, Dictionary<int, Regex> regexMap)
     {
-        /* Expected types of modelnumber formatting before splitting:
-             * Model.name (no modelnumber in name)
-             * Nr: 12
-             * Nr: 123 - Model.name
-             * Nr: 1234 - Model.name
-             * Nr: 12345 - Model.name
-             * Nr: 1/1234 - Model.name
-             * 12 Model.name
-             * 123 Model.name
-             * 1234 Model.name
-        */
-
-        /* RegEx for each type of format */
-        Regex type8 = new("\\d+ [\\w.]+"); // "12 Model.name":
-        Regex type7 = new("\\d+ [\\w.]+"); // "123 Model.name"
-        Regex type6 = new("\\d+ [\\w.]+"); // "1234 Model.name"
-        Regex type5 = new("Nr: \\d{2}"); // "Nr: 12"
-        Regex type4 = new("Nr: \\d{3} - [\\w.]+"); // "Nr: 123 - Model.name"
-        Regex type3 = new("Nr: \\d{4} - [\\w.]+"); // "Nr: 1234 - Model.name"
-        Regex type2 = new("Nr: \\d{5} - [\\w.]+"); // "Nr: 12345 - Model.name"
-        Regex type1 = new("Nr: \\d+\\/\\d{4} - [\\w.]+"); // "Nr: 1/1234 - Model.name"
-
-        Dictionary<int, Regex> regexMap = new()
-        {
-            { 1, type1 },{ 2, type2 },{ 3, type3 },{ 4, type4 },
-            { 5, type5 },{ 6, type6 },{ 7, type7 },{ 8, type8 }
-        };
+        int matchedInputcount = 0;
+        List<string> failedMatches = new();
+        Dictionary<int, List<string>> matches = new();
 
         Dictionary<int, int> typeCount = new();
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= regexMap.Count; i++)
         {
             typeCount.Add(i, 0);
+            matches.Add(i, new List<string>());
+
         }
 
-        foreach (string modelNumber in modelNumbers)
+        foreach (string input in inputs)
         {
-            foreach (var regex in regexMap)
+            bool match = false;
+            for (int i = 1; i <= regexMap.Count; i++)
             {
-                if (regex.Value.IsMatch(modelNumber))
+
+                if (regexMap[i].IsMatch(input))
                 {
-                    Console.WriteLine("modelNumber: {0}", modelNumber);
-                    Console.WriteLine("Match on type {0}\n", regex.Key);
-                    typeCount[regex.Key]++;
+                    matches[i].Add(input);
+                    typeCount[i]++;
+                    matchedInputcount++;
+                    match = true;
                     break;
                 }
             }
+            if (!match) failedMatches.Add(input);
         }
 
-        int totalCount = typeCount.GetValueOrDefault(1) +
-            typeCount.GetValueOrDefault(2) +
-            typeCount.GetValueOrDefault(3) +
-            typeCount.GetValueOrDefault(4) +
-            typeCount.GetValueOrDefault(5) +
-            typeCount.GetValueOrDefault(6) +
-            typeCount.GetValueOrDefault(7) +
-            typeCount.GetValueOrDefault(8);
+        foreach (var match in matches)
+        {
+            Console.WriteLine("Type {0}:", match.Key);
+            foreach (var input in match.Value)
+            {
+                Console.WriteLine(input);
+            }
+            Console.WriteLine("\n\n\n");
+        }
 
-        Console.WriteLine(
-            "Type1 amount: {0}\n" +
-            "Type2 amount: {1}\n" +
-            "Type3 amount: {2}\n" +
-            "Type4 amount: {3}\n" +
-            "Type5 amount: {4}\n" +
-            "Type6 amount: {5}\n" +
-            "Type7 amount: {6}\n" +
-            "Type8 amount: {7}\n" +
-            "Total matches: {8}\n",
-            typeCount.GetValueOrDefault(1),
-            typeCount.GetValueOrDefault(2),
-            typeCount.GetValueOrDefault(3),
-            typeCount.GetValueOrDefault(4),
-            typeCount.GetValueOrDefault(5),
-            typeCount.GetValueOrDefault(6),
-            typeCount.GetValueOrDefault(7),
-            typeCount.GetValueOrDefault(8),
-            totalCount
-            );
+        Console.WriteLine("Failed matches: ");
+        foreach (string input in failedMatches)
+        {
+            Console.WriteLine(input);
+        }
+
+        Console.WriteLine("\nMatched {0}/{1} strings", matchedInputcount, inputs.Length);
+        Console.WriteLine("Failed to match {0}\n", failedMatches.Count);
+
+        for (int i = 1; i <= regexMap.Count; i++)
+        {
+            int countForTypeI = typeCount.GetValueOrDefault(i); ;
+            Console.WriteLine("Type{0} amount: {1}", i, countForTypeI);
+        }
+
     }
 
-    public static string? TryParseName(string name)
+    public static Dictionary<int, Regex> RegexMap()
+    {
+        /* RegEx for each type of format */
+        Regex type1 = new("Nr:\\s*\\d{1,10}\\s*/\\s*\\d{1,10}\\s*-?"); // Nr: 1234567890/1234567890 - Modelname
+        Regex type2 = new("Nr:\\s*\\d{1,10}\\s*-"); // "Nr: 12345567890 - Modelname
+        Regex type3 = new("Nr:\\s*\\d{1,10}"); // Nr: 1234567890 Modelnames
+        Regex type4 = new("Nr:\\s*\\d{1,10}\\w+"); // Nr: 1234567890a Modelname
+        Regex type5 = new("\\A\\d{1,10}[^-][^stk]\\s*[\\w]+"); // 1234567890 Modelname UDEN 'stk'
+        Regex type6 = new("Årgang"); // Årgang
+        Regex type7 = new("År\\s*[:]?\\s*\\d{1,10}"); // År 1958 eller År: 1958
+
+
+        return new() {
+            { 1, type1 }, { 2, type2 }, { 3, type3 }, { 4, type4 },
+            { 5, type5 }, {6, type6}, { 7, type7 }
+        };
+    }
+
+
+    public static string StringFormatter(string input, int type)
+    {
+        return type switch
+        {
+            1 => "", // "Nr: 1/1234 - Modelname"
+            2 => "", // "Nr: 12345 - Modelname"
+            3 => "", // "Nr: 1234 - Modelname"
+            4 => "", // "Nr: 123 - Modelname"
+            5 => "", // "Nr: 12"
+            6 => "", // "1234 Modelname"
+            7 => "", // "123 Modelname"
+            8 => "", // "12 Modelname":
+            9 => "", // "1 Modelname":
+            _ => "",
+        };
+    }
+
+    public static string TryParseName(string name)
     {
         if (name != null && name.Length! > 0 && name.Length! < 155)
         {
@@ -141,7 +159,7 @@ class Program
         }
         else
         {
-            return null;
+            return "";
         }
     }
 
@@ -150,18 +168,8 @@ class Program
         string modelNumber = "";
         try
         {
-
-
-
             modelNumber = name.Split('-')[0];
-            if (modelNumber.Contains('/'))
-            {
-                // modelnumber is probably of this format "Nr: 1234 / 1234"
-            }
-            if (modelNumber.Contains(':'))
-            {
 
-            }
             return modelNumber;
         }
         catch (Exception e)
