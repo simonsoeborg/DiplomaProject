@@ -13,6 +13,7 @@ namespace WebScraper.Controllers
         public SniperHandler(IWebDriverService webDriverService)
         {
             _driver = webDriverService.driverService();
+            _lauritzController = new LauritzController();
         }
 
         public List<Lauritz> GetLauritz(string? arg)
