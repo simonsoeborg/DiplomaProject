@@ -10,7 +10,7 @@ namespace WebScraper.Controllers
     {
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(2));
             var results = new List<Lauritz>();
 
             var searchFieldLauritz = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("SearchTextBox")));
@@ -29,26 +29,21 @@ namespace WebScraper.Controllers
                     string getPrice = "";
                     string getValuation = "";
                     string getItemDesc = "";
-                    string getItemLotIdLabel = "";
+                    IWebElement getItemLotIdLabel;
                     string getImageURL = "";
+                    int lotId = 0;
 
-                    if(i < 9)
+                    if (i < 9)
                     {
                         var zero = 0;
                         getItemTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_ItemTitle"))).Text;
                         getPrice = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_PriceLabel"))).Text;
                         getValuation = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_ValuationLabel"))).Text;
                         getItemDesc = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_ItemDescription"))).Text;
-                        getItemLotIdLabel = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_LotIdLabel"))).Text;
+                        getItemLotIdLabel = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_LotIdLabel")));
+                        var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
+                        lotId = int.Parse(strongElement.Text);
                         getImageURL = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_itemImage"))).GetAttribute("src");
-                    } else
-                    {
-                        getItemTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{i}_ItemTitle"))).Text;
-                        getPrice = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{i}_Price"))).Text;
-                        getValuation = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{i}_ValuationLabel"))).Text;
-                        getItemDesc = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{i}_ItemDescription"))).Text;
-                        getImageURL = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{i}_itemImage"))).GetAttribute("src");
-                        getItemLotIdLabel = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{i}_LotIdLabel"))).Text;
                     }
 
 
@@ -56,13 +51,12 @@ namespace WebScraper.Controllers
                     string itemTitle = getItemTitle;
                     string valuation = getValuation;
                     string description = getItemDesc;
-                    string lotId = getItemLotIdLabel.Split(":")[1];
 
                     var imageUrls = new List<string>();
                     imageUrls.Add(getImageURL);
                     var data = new Lauritz();
                     data.ItemTitle = itemTitle;
-                    data.Varenummer = int.Parse(lotId);
+                    data.Varenummer = lotId;
                     data.Description = description;
                     data.NextBid = price;
                     data.PriceEstimate = valuation;

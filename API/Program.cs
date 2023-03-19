@@ -20,9 +20,9 @@ builder.Services.AddDbContext<GroenlundDbContext>(options =>
 builder.Services.AddSingleton<IWebDriver>(provider =>
 {
     var chromeOptions = new ChromeOptions();
-    //chromeOptions.AddArgument("--headless");
-    //chromeOptions.AddArgument("--no-sandbox");
-    //chromeOptions.AddArgument("--disable-dev-shm-usage");
+    chromeOptions.AddArgument("--headless");
+    chromeOptions.AddArgument("--no-sandbox");
+    chromeOptions.AddArgument("--disable-dev-shm-usage");
     var driver = new ChromeDriver(chromeOptions);
     return driver;
 });
@@ -35,10 +35,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-}
 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseSwagger();
 app.UseSwaggerUI();
