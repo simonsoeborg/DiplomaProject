@@ -17,6 +17,18 @@ builder.Services.AddDbContext<GroenlundDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
+builder.Services.AddSingleton<IWebDriver>(provider =>
+{
+    var chromeOptions = new ChromeOptions();
+    //chromeOptions.AddArgument("--headless");
+    //chromeOptions.AddArgument("--no-sandbox");
+    //chromeOptions.AddArgument("--disable-dev-shm-usage");
+    var driver = new ChromeDriver(chromeOptions);
+    return driver;
+});
+
+builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
+
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
