@@ -54,3 +54,7 @@ GroenlundWS/obj/
 /JWT/obj
 /WebScraper/bin/Debug/net6.0
 /WebScraper/obj
+/CsvConverter/obj
+/CsvConverter/CsvConverter.sln
+/CsvConverter/bin/Debug/net6.0
+/CsvConverter/.vs

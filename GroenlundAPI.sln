@@ -6,13 +6,12 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{31D06FE6-69B1-42B5-B9AB-F3C0BC0B5EE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScraper", "WebScraper\WebScraper.csproj", "{C85C9F0E-7788-44DD-87B9-12ECCE7376B7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{31D06FE6-69B1-42B5-B9AB-F3C0BC0B5EE8} = {31D06FE6-69B1-42B5-B9AB-F3C0BC0B5EE8}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWT", "JWT\JWT.csproj", "{FCDD3E0B-EAE1-4A79-80A9-AF5DA24F8AD3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{C19AEC72-11EF-4F9C-B34A-B6F64B6A131C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvConverter", "CsvConverter\CsvConverter.csproj", "{DEFF66C3-746C-4B67-8217-95CBF3E6EA45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +35,10 @@ Global
 		{C19AEC72-11EF-4F9C-B34A-B6F64B6A131C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C19AEC72-11EF-4F9C-B34A-B6F64B6A131C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C19AEC72-11EF-4F9C-B34A-B6F64B6A131C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEFF66C3-746C-4B67-8217-95CBF3E6EA45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEFF66C3-746C-4B67-8217-95CBF3E6EA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEFF66C3-746C-4B67-8217-95CBF3E6EA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEFF66C3-746C-4B67-8217-95CBF3E6EA45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
