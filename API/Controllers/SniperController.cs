@@ -12,9 +12,9 @@ namespace API.Controllers
     {
         private readonly SniperHandler _sniperHandler;
 
-        public SniperController()
+        public SniperController(SniperHandler sniperHandler)
         {
-            _sniperHandler = new SniperHandler();
+            _sniperHandler = sniperHandler;
         }
 
         [HttpGet]

@@ -143,7 +143,7 @@ namespace API.Controllers
         private static bool PropertiesHasValues(Product product)
         {
             if (string.IsNullOrEmpty(product.Name)
-                || product.ModelNumber <= 0
+                || int.Parse(product.ModelNumber) <= 0
                 || product.Material <= 0
                 || product.SubcategoryId! <= 0
             )

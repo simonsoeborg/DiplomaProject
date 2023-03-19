@@ -10,13 +10,9 @@ namespace WebScraper.Controllers
         private readonly IWebDriver _driver;
         private LauritzController _lauritzController;
 
-        public SniperHandler(IWebDriver webDriver)
+        public SniperHandler(IWebDriverService webDriverService)
         {
-            if(_driver == null)
-            {
-                _driver = webDriver;
-                _lauritzController = new LauritzController();
-            }
+            _driver = webDriverService.driverService();
         }
 
         public List<Lauritz> GetLauritz(string? arg)
