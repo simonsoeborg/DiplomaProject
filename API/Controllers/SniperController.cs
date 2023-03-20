@@ -21,10 +21,6 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<Lauritz>>> RunLauritzSniper(string? arg)
         {
             List<Lauritz> test = _sniperHandler.GetLauritz(arg);
-            foreach (Lauritz item in test)
-            {
-                Console.WriteLine(item);
-            }
             return Ok(test);
         }
     }
