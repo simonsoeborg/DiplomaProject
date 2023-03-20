@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Collections.Concurrent;
 
 namespace WebScraper.Controllers
 {
@@ -10,8 +11,8 @@ namespace WebScraper.Controllers
     {
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(0.25));
-            var results = new List<Lauritz>();
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(0.100));
+            var results = new ConcurrentBag<Lauritz>();
 
             string itemStringItemLabel = "ItemTitle";
             string itemStringItemDescription = "ItemDescription";
@@ -30,76 +31,96 @@ namespace WebScraper.Controllers
                 wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("FilterControl_SearchButton"))).Click();
                 var tableEntries = _driver.FindElements(By.CssSelector("div[class='lotList item']"));
 
-                int i = 1;
+                int chunkSize = 10;
+                var chunks = tableEntries.Select((value, index) => new { Index = index, Value = value })
+                                          .GroupBy(x => x.Index / chunkSize)
+                                          .Select(x => x.Select(v => v.Value).ToList())
+                                          .ToList();
 
-                foreach (IWebElement tableEntry in tableEntries)
+                List<Thread> threads = new List<Thread>();
+                foreach (var chunk in chunks)
                 {
-                    string getItemTitle = "";
-                    string getPrice = "";
-                    string getValuation = "";
-                    string getItemDesc = "";
-                    IWebElement getItemLotIdLabel;
-                    string getImageURL = "";
-                    string getItemURL = "";
-                    string getBuyNowPriceLabel = "";
-                    int lotId = 0;
-
-                    if (!(i >= tableEntries.Count))
+                    var thread = new Thread(() =>
                     {
-                        if (HandleItemSearch(i, itemStringPriceLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringPriceLabel, wait).Text))
+                        foreach (IWebElement tableEntry in chunk)
                         {
-                            getPrice = HandleItemSearch(i, itemStringPriceLabel, wait).Text;
-                        }
-                        else
-                        {
-                            getPrice = "";
-                        }
+                            string getItemTitle = "";
+                            string getPrice = "";
+                            string getValuation = "";
+                            string getItemDesc = "";
+                            IWebElement getItemLotIdLabel;
+                            string getImageURL = "";
+                            string getItemURL = "";
+                            string getBuyNowPriceLabel = "";
+                            int lotId = 0;
 
-                        if (HandleItemSearch(i, itemStringValuation, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringValuation, wait).Text))
-                        {
-                            getValuation = HandleItemSearch(i, itemStringValuation, wait).Text;
-                        }
-                        else
-                        {
-                            getValuation = "";
-                        }
+                            int i = tableEntries.IndexOf(tableEntry) + 1;
 
-                        if (HandleItemSearch(i, itemStringBuyNowLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringBuyNowLabel, wait).Text))
-                        {
-                            getBuyNowPriceLabel = HandleItemSearch(i, itemStringBuyNowLabel, wait).Text;
-                        }
-                        else
-                        {
-                            getBuyNowPriceLabel = "";
-                        }
+                            if (!(i >= tableEntries.Count))
+                            {
+                                if (HandleItemSearch(i, itemStringPriceLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringPriceLabel, wait).Text))
+                                {
+                                    getPrice = HandleItemSearch(i, itemStringPriceLabel, wait).Text;
+                                }
+                                else
+                                {
+                                    getPrice = "";
+                                }
 
-                        getItemTitle = HandleItemSearch(i, itemStringItemLabel, wait).Text;
-                        getItemDesc = HandleItemSearch(i, itemStringItemDescription, wait).Text;
-                        getItemLotIdLabel = HandleItemSearch(i, itemStringLotIdLabel, wait);
-                        getImageURL = HandleImageSearch(i, itemStringImageUrl, wait);
-                        getItemURL = HandleHrefExtractor(i, itemStringItemUrl, wait);
-                        var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
-                        lotId = int.Parse(strongElement.Text);
+                                if (HandleItemSearch(i, itemStringValuation, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringValuation, wait).Text))
+                                {
+                                    getValuation = HandleItemSearch(i, itemStringValuation, wait).Text;
+                                }
+                                else
+                                {
+                                    getValuation = "";
+                                }
 
-                        var imageUrls = new List<string>();
-                        imageUrls.Add(getImageURL);
-                        var data = new Lauritz
-                        {
-                            ItemTitle = getItemTitle,
-                            Varenummer = lotId,
-                            Description = getItemDesc,
-                            NextBid = getPrice,
-                            PriceEstimate = getValuation,
-                            ImageUrls = imageUrls,
-                            ItemUrl = getItemURL,
-                            BuyNowPrice = getBuyNowPriceLabel
-                        };
-                        results.Add(data);
-                    }
-                    i++;
+                                if (HandleItemSearch(i, itemStringBuyNowLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringBuyNowLabel, wait).Text))
+                                {
+                                    getBuyNowPriceLabel = HandleItemSearch(i, itemStringBuyNowLabel, wait).Text;
+                                }
+                                else
+                                {
+                                    getBuyNowPriceLabel = "";
+                                }
+
+                                getItemTitle = HandleItemSearch(i, itemStringItemLabel, wait).Text;
+                                getItemDesc = HandleItemSearch(i, itemStringItemDescription, wait).Text;
+                                getItemLotIdLabel = HandleItemSearch(i, itemStringLotIdLabel, wait);
+                                getImageURL = HandleImageSearch(i, itemStringImageUrl, wait);
+                                getItemURL = HandleHrefExtractor(i, itemStringItemUrl, wait);
+                                var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
+                                lotId = int.Parse(strongElement.Text);
+
+                                var imageUrls = new List<string>();
+                                imageUrls.Add(getImageURL);
+                                var data = new Lauritz
+                                {
+                                    ItemTitle = getItemTitle,
+                                    Varenummer = lotId,
+                                    Description = getItemDesc,
+                                    NextBid = getPrice,
+                                    PriceEstimate = getValuation,
+                                    ImageUrls = imageUrls,
+                                    ItemUrl = getItemURL,
+                                    BuyNowPrice = getBuyNowPriceLabel
+                                };
+                                results.Add(data);
+                            }
+                        }
+                    });
+                    threads.Add(thread);
+                    thread.Start();
+                }
+
+                foreach (Thread thread in threads)
+                {
+                    thread.Join();
                 }
             }
-            return results;
+
+            return results.ToList();
         }
 
         public IWebElement HandleItemSearch(int index, string itemString, WebDriverWait wait)

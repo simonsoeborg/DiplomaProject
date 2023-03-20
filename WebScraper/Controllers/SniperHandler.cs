@@ -9,6 +9,7 @@ namespace WebScraper.Controllers
     {
         private readonly IWebDriver _driver;
         private LauritzController _lauritzController;
+        private bool hasRunnedOnce = false;
 
         public SniperHandler(IWebDriverService webDriverService)
         {
@@ -25,11 +26,19 @@ namespace WebScraper.Controllers
 
             Thread.Sleep(1000);
             // Handle cookies
-            _driver.FindElement(By.Id("CybotCookiebotDialogBodyButtonDecline")).Click();
+            if(!hasRunnedOnce)
+                try
+                {
+                    _driver.FindElement(By.Id("CybotCookiebotDialogBodyButtonDecline")).Click();
+                } catch (NoSuchElementException e)
+                {
+                    Console.WriteLine("CybotCookiebotDialogBodyButtonDecline not found!");
+                }
 
             if (arg != null)
             {
                 results = _lauritzController.SearchLauritz(arg, _driver);
+                hasRunnedOnce = true;
             }
 
             return results;
