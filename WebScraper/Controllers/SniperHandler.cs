@@ -11,10 +11,10 @@ namespace WebScraper.Controllers
         private LauritzController _lauritzController;
         private bool hasRunnedOnce = false;
 
-        public SniperHandler(IWebDriverService webDriverService)
+        public SniperHandler(IWebDriverService webDriverService, ILogger<LauritzController> logger)
         {
             _driver = webDriverService.driverService();
-            _lauritzController = new LauritzController();
+            _lauritzController = new LauritzController(logger);
         }
 
         public List<Lauritz> GetLauritz(string? arg)
