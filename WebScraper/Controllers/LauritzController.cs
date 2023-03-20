@@ -9,6 +9,13 @@ namespace WebScraper.Controllers
 {
     public class LauritzController : Controller, ISniperController
     {
+        private readonly ILogger<LauritzController> _logger;
+
+        public LauritzController(ILogger<LauritzController> logger)
+        {
+            _logger = logger;
+        }
+
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(0.100));
@@ -134,6 +141,7 @@ namespace WebScraper.Controllers
             } catch (WebDriverTimeoutException e)
             {
                 Console.WriteLine($"Error: {index}; {itemString} not found!");
+                _logger.LogInformation($"Error: {index}; {itemString} not found!");
             }
             return null;
         }

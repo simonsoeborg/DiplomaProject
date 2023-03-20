@@ -2,6 +2,7 @@ using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Serilog;
 using WebScraper.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,14 @@ builder.Services.AddSingleton<IWebDriver>(provider =>
     var driver = new ChromeDriver(chromeOptions);
     return driver;
 });
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("C:\\Logs\\GroenlundAPI.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Logging.AddSerilog(Log.Logger);
 
 builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
 
