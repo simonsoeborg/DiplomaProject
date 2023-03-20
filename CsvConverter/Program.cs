@@ -118,6 +118,7 @@ class Program
 
        return subcategoryMatches;
     }
+
     public static string ExtractManufacturer(string input)
     {
         string result = "";
