@@ -6,7 +6,6 @@ using System.Net;
 namespace API.Controllers
 
 {
-    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -29,7 +28,7 @@ namespace API.Controllers
 
             return new OkObjectResult(product);
         }
-
+        [EnableCors]
         [HttpGet]
         public IActionResult GetAll()
         {
