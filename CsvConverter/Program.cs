@@ -89,31 +89,34 @@ class Program
 
         // TODO: Dimension
 
-        product.SubcategoryId = FindSubcategoryId(subcategories, dataItem[3], product.Name);
+        product.SubCategoryIds = FindSubcategoryId(subcategories, dataItem[3], product.Name);
         // TODO: Subcategory
         return product;
     }
-    public static int FindSubcategoryId(List<Subcategory> subcategories, string input, string name)
+
+
+    // Todo Skal retunere int[].
+    public static int[] FindSubcategoryId(List<Subcategory> subcategories, string input, string name)
     {
         int result = 0;
-        List<string> subcategoryMatches = new();
+        List<int> subcategoryMatches = new();
         Console.WriteLine("Finding subcategories for {0}\n", name);
 
         foreach (Subcategory subcategory in subcategories)
         {
             if (input.Contains(subcategory.Name))
             {
-                subcategoryMatches.Add(subcategory.Name);
+                subcategoryMatches.Add(subcategory.Id);
                 //Console.WriteLine("Subcategory {0} matched  with input {1}\n", subcategory.Name, input);
             }
         }
-        foreach (string subcat in subcategoryMatches)
+        foreach (int subcat in subcategoryMatches)
         {
             Console.WriteLine(subcat);
         }
         Console.WriteLine("\n\n\n");
 
-        return result;
+       return subcategoryMatches;
     }
     public static string ExtractManufacturer(string input)
     {

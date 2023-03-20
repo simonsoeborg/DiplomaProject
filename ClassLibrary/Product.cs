@@ -14,7 +14,12 @@ namespace ClassLibrary
         public string Manufacturer { get; set; }
         public string? Design { get; set; }
         public string? Dimension { get; set; }
-        public int SubcategoryId { get; set; }
+
+       // public int SubcategoryId { get; set; }
+        public int[] SubCategoryIds { get; set; }
+
+        // Todo : Virker denne nedenstående referance stadig når vi laver relationship'et til mange-til-mange. 
+
         public Subcategory Subcategory { get; set; }
 
         public override string ToString()
@@ -26,8 +31,7 @@ namespace ClassLibrary
                 " Material: " + Material +
                 " Design: " + Design +
                 " Dimension: " + Dimension +
-                " SubcategoryId: " + SubcategoryId;
-
+                " SubcategoryIds: [" + string.Join(", ", SubCategoryIds) + "]";
         }
     }
 
