@@ -10,7 +10,7 @@ namespace WebScraper.Controllers
     {
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(2));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(0.25));
             var results = new List<Lauritz>();
 
             string itemStringItemLabel = "ItemTitle";
@@ -20,6 +20,7 @@ namespace WebScraper.Controllers
             string itemStringLotIdLabel = "LotIdLabel";
             string itemStringImageUrl = "itemImage";
             string itemStringItemUrl = "ItemTitle";
+            string itemStringBuyNowLabel = "BuyNowPriceLabel";
 
             var searchFieldLauritz = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("SearchTextBox")));
 
@@ -40,54 +41,80 @@ namespace WebScraper.Controllers
                     IWebElement getItemLotIdLabel;
                     string getImageURL = "";
                     string getItemURL = "";
+                    string getBuyNowPriceLabel = "";
                     int lotId = 0;
 
                     if (!(i >= tableEntries.Count))
                     {
+                        if (HandleItemSearch(i, itemStringPriceLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringPriceLabel, wait).Text))
+                        {
+                            getPrice = HandleItemSearch(i, itemStringPriceLabel, wait).Text;
+                        }
+                        else
+                        {
+                            getPrice = "";
+                        }
+
+                        if (HandleItemSearch(i, itemStringValuation, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringValuation, wait).Text))
+                        {
+                            getValuation = HandleItemSearch(i, itemStringValuation, wait).Text;
+                        }
+                        else
+                        {
+                            getValuation = "";
+                        }
+
+                        if (HandleItemSearch(i, itemStringBuyNowLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringBuyNowLabel, wait).Text))
+                        {
+                            getBuyNowPriceLabel = HandleItemSearch(i, itemStringBuyNowLabel, wait).Text;
+                        }
+                        else
+                        {
+                            getBuyNowPriceLabel = "";
+                        }
+
                         getItemTitle = HandleItemSearch(i, itemStringItemLabel, wait).Text;
-                        getPrice = HandleItemSearch(i, itemStringPriceLabel, wait).Text;
-                        getValuation = HandleItemSearch(i, itemStringValuation, wait).Text;
                         getItemDesc = HandleItemSearch(i, itemStringItemDescription, wait).Text;
                         getItemLotIdLabel = HandleItemSearch(i, itemStringLotIdLabel, wait);
-                        var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
-                        lotId = int.Parse(strongElement.Text);
                         getImageURL = HandleImageSearch(i, itemStringImageUrl, wait);
                         getItemURL = HandleHrefExtractor(i, itemStringItemUrl, wait);
-
-                        string price = getPrice;
-                        string itemTitle = getItemTitle;
-                        string valuation = getValuation;
-                        string description = getItemDesc;
+                        var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
+                        lotId = int.Parse(strongElement.Text);
 
                         var imageUrls = new List<string>();
                         imageUrls.Add(getImageURL);
                         var data = new Lauritz
                         {
-                            ItemTitle = itemTitle,
+                            ItemTitle = getItemTitle,
                             Varenummer = lotId,
-                            Description = description,
-                            NextBid = price,
-                            PriceEstimate = valuation,
+                            Description = getItemDesc,
+                            NextBid = getPrice,
+                            PriceEstimate = getValuation,
                             ImageUrls = imageUrls,
-                            ItemUrl = getItemURL
+                            ItemUrl = getItemURL,
+                            BuyNowPrice = getBuyNowPriceLabel
                         };
-
                         results.Add(data);
                     }
-
                     i++;
                 }
             }
-
             return results;
         }
 
         public IWebElement HandleItemSearch(int index, string itemString, WebDriverWait wait)
         {
-            if (index < 10)
-                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}")));
-            else
-                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}")));
+            try
+            {
+                if (index < 10)
+                    return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}")));
+                else
+                    return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}")));
+            } catch (WebDriverTimeoutException e)
+            {
+                Console.WriteLine($"Error: {index}; {itemString} not found!");
+            }
+            return null;
         }
 
         public string HandleImageSearch(int index, string itemString, WebDriverWait wait)

@@ -32,7 +32,6 @@ namespace WebScraper.Controllers
                 results = _lauritzController.SearchLauritz(arg, _driver);
             }
 
-
             return results;
         }
     }
