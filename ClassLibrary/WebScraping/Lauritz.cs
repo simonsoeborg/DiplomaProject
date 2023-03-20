@@ -14,6 +14,8 @@ namespace ClassLibrary.WebScraping
         public string PriceEstimate { get; set; }
         public string Description { get; set; }
         public List<string> ImageUrls { get; set; }
+        public string ItemUrl { get; set; }
+
 
     }
 }
