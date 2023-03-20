@@ -11,6 +11,7 @@ namespace ClassLibrary
         public string Name { get; set; } = null!;
         public string ModelNumber { get; set; }
         public MaterialType Material { get; set; }
+        public string Manufacturer { get; set; }
         public string? Design { get; set; }
         public string? Dimension { get; set; }
         public int SubcategoryId { get; set; }
