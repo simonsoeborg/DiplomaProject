@@ -4,9 +4,9 @@ namespace ClassLibrary
 {
     public class GroenlundDbContext : DbContext
     {
-        public GroenlundDbContext() {}
+        public GroenlundDbContext() { }
 
-        public GroenlundDbContext(DbContextOptions<GroenlundDbContext> options) : base(options) {}
+        public GroenlundDbContext(DbContextOptions<GroenlundDbContext> options) : base(options) { }
 
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
@@ -21,5 +21,15 @@ namespace ClassLibrary
         public DbSet<Subcategory> Subcategories { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                string connString = "Server=db.uglyrage.com,1433;Database=GroenlundDB;User=gluser;Password=gl1234;TrustServerCertificate=True";
+                optionsBuilder.UseSqlServer(connString);
+            }
+        }
     }
 }
