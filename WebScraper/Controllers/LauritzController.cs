@@ -6,12 +6,20 @@ using SeleniumExtras.WaitHelpers;
 
 namespace WebScraper.Controllers
 {
-    public class LauritzController : Controller
+    public class LauritzController : Controller, ISniperController
     {
         public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
         {
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(2));
             var results = new List<Lauritz>();
+
+            string itemStringItemLabel = "ItemTitle";
+            string itemStringItemDescription = "ItemDescription";
+            string itemStringPriceLabel = "PriceLabel";
+            string itemStringValuation = "ValuationLabel";
+            string itemStringLotIdLabel = "LotIdLabel";
+            string itemStringImageUrl = "itemImage";
+            string itemStringItemUrl = "ItemTitle";
 
             var searchFieldLauritz = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("SearchTextBox")));
 
@@ -31,43 +39,71 @@ namespace WebScraper.Controllers
                     string getItemDesc = "";
                     IWebElement getItemLotIdLabel;
                     string getImageURL = "";
+                    string getItemURL = "";
                     int lotId = 0;
 
-                    if (i < 9)
+                    if (!(i >= tableEntries.Count))
                     {
-                        var zero = 0;
-                        getItemTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_ItemTitle"))).Text;
-                        getPrice = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_PriceLabel"))).Text;
-                        getValuation = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_ValuationLabel"))).Text;
-                        getItemDesc = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_ItemDescription"))).Text;
-                        getItemLotIdLabel = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_LotIdLabel")));
+                        getItemTitle = HandleItemSearch(i, itemStringItemLabel, wait).Text;
+                        getPrice = HandleItemSearch(i, itemStringPriceLabel, wait).Text;
+                        getValuation = HandleItemSearch(i, itemStringValuation, wait).Text;
+                        getItemDesc = HandleItemSearch(i, itemStringItemDescription, wait).Text;
+                        getItemLotIdLabel = HandleItemSearch(i, itemStringLotIdLabel, wait);
                         var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
                         lotId = int.Parse(strongElement.Text);
-                        getImageURL = wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{zero}{i}_itemImage"))).GetAttribute("src");
+                        getImageURL = HandleImageSearch(i, itemStringImageUrl, wait);
+                        getItemURL = HandleHrefExtractor(i, itemStringItemUrl, wait);
+
+                        string price = getPrice;
+                        string itemTitle = getItemTitle;
+                        string valuation = getValuation;
+                        string description = getItemDesc;
+
+                        var imageUrls = new List<string>();
+                        imageUrls.Add(getImageURL);
+                        var data = new Lauritz
+                        {
+                            ItemTitle = itemTitle,
+                            Varenummer = lotId,
+                            Description = description,
+                            NextBid = price,
+                            PriceEstimate = valuation,
+                            ImageUrls = imageUrls,
+                            ItemUrl = getItemURL
+                        };
+
+                        results.Add(data);
                     }
-
-
-                    string price = getPrice;
-                    string itemTitle = getItemTitle;
-                    string valuation = getValuation;
-                    string description = getItemDesc;
-
-                    var imageUrls = new List<string>();
-                    imageUrls.Add(getImageURL);
-                    var data = new Lauritz();
-                    data.ItemTitle = itemTitle;
-                    data.Varenummer = lotId;
-                    data.Description = description;
-                    data.NextBid = price;
-                    data.PriceEstimate = valuation;
-                    data.ImageUrls = imageUrls;
-                    results.Add(data);
 
                     i++;
                 }
             }
 
             return results;
+        }
+
+        public IWebElement HandleItemSearch(int index, string itemString, WebDriverWait wait)
+        {
+            if (index < 10)
+                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}")));
+            else
+                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}")));
+        }
+
+        public string HandleImageSearch(int index, string itemString, WebDriverWait wait)
+        {
+            if(index < 10)
+                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}"))).GetAttribute("src");
+            else
+                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}"))).GetAttribute("src");
+        }
+
+        public string HandleHrefExtractor(int index, string itemString, WebDriverWait wait)
+        {
+            if (index < 10)
+                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}"))).GetAttribute("href");
+            else
+                return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}"))).GetAttribute("href");
         }
     }
 }
