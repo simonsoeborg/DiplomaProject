@@ -3,6 +3,11 @@ namespace ClassLibrary
 {
     public class ProductItem
     {
+        public ProductItem()
+        {
+            PriceHistories = new HashSet<PriceHistory>();
+            Images = new HashSet<Image>();
+        }
         public int Id { get; set; }
 
         public int ProductId { get; set; }
@@ -15,8 +20,8 @@ namespace ClassLibrary
         public decimal PurchasePrice { get; set; }
         public decimal CurrentPrice { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime SoldDate { get; set; }
-        public string CustomText { get; set; }
+        public DateTime? SoldDate { get; set; }
+        public string? CustomText { get; set; }
         public ICollection<PriceHistory> PriceHistories { get; set; }
         public ICollection<Image> Images { get; set; }
 
@@ -24,6 +29,7 @@ namespace ClassLibrary
 
     public enum QualityType
     {
+        Undefined = 0,
         FirstQuality = 1,
         SecondQuality = 2,
         ThirdQuality = 3,
@@ -31,6 +37,7 @@ namespace ClassLibrary
 
     public enum ConditionType
     {
+        Undefined = 0,
         NoShards = 1,
         FewShards = 2,
         ManyShards = 3,

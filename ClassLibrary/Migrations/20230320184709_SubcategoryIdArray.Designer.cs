@@ -3,6 +3,7 @@ using System;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(GroenlundDbContext))]
-    partial class GroenlundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320184709_SubcategoryIdArray")]
+    partial class SubcategoryIdArray
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,6 +234,7 @@ namespace ClassLibrary.Migrations
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("CustomText")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("ProductId")
@@ -245,7 +249,7 @@ namespace ClassLibrary.Migrations
                     b.Property<sbyte>("Sold")
                         .HasColumnType("tinyint");
 
-                    b.Property<DateTime?>("SoldDate")
+                    b.Property<DateTime>("SoldDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal?>("Weight")

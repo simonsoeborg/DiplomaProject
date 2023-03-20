@@ -3,6 +3,7 @@ using System;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,13 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(GroenlundDbContext))]
-    partial class GroenlundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230313090522_EnumTypesAdded")]
+    partial class EnumTypesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("ClassLibrary.Category", b =>
@@ -93,16 +95,11 @@ namespace ClassLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductItemId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductItemId");
 
                     b.ToTable("Images");
                 });
@@ -150,8 +147,8 @@ namespace ClassLibrary.Migrations
                     b.Property<sbyte?>("Approved")
                         .HasColumnType("tinyint");
 
-                    b.Property<DateTime>("DatePaid")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateOnly?>("DatePaid")
+                        .HasColumnType("date");
 
                     b.Property<string>("Method")
                         .HasColumnType("longtext");
@@ -195,22 +192,22 @@ namespace ClassLibrary.Migrations
                     b.Property<string>("Dimension")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Manufacturer")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<int>("Material")
                         .HasColumnType("int");
 
-                    b.Property<string>("ModelNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("ModelNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
                 });
@@ -230,9 +227,6 @@ namespace ClassLibrary.Migrations
                     b.Property<decimal>("CurrentPrice")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<string>("CustomText")
-                        .HasColumnType("longtext");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -245,7 +239,7 @@ namespace ClassLibrary.Migrations
                     b.Property<sbyte>("Sold")
                         .HasColumnType("tinyint");
 
-                    b.Property<DateTime?>("SoldDate")
+                    b.Property<DateTime>("SoldDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal?>("Weight")
@@ -345,30 +339,6 @@ namespace ClassLibrary.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ProductSubcategory", b =>
-                {
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubcategoriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductsId", "SubcategoriesId");
-
-                    b.HasIndex("SubcategoriesId");
-
-                    b.ToTable("ProductSubcategory");
-                });
-
-            modelBuilder.Entity("ClassLibrary.Image", b =>
-                {
-                    b.HasOne("ClassLibrary.ProductItem", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ClassLibrary.PriceHistory", b =>
                 {
                     b.HasOne("ClassLibrary.ProductItem", "ProductItem")
@@ -378,6 +348,17 @@ namespace ClassLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductItem");
+                });
+
+            modelBuilder.Entity("ClassLibrary.Product", b =>
+                {
+                    b.HasOne("ClassLibrary.Subcategory", "Subcategory")
+                        .WithMany()
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("ClassLibrary.ProductItem", b =>
@@ -402,25 +383,8 @@ namespace ClassLibrary.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ProductSubcategory", b =>
-                {
-                    b.HasOne("ClassLibrary.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClassLibrary.Subcategory", null)
-                        .WithMany()
-                        .HasForeignKey("SubcategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ClassLibrary.ProductItem", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("PriceHistories");
                 });
 #pragma warning restore 612, 618

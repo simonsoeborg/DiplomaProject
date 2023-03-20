@@ -27,8 +27,8 @@ namespace ClassLibrary
 
             if (!optionsBuilder.IsConfigured)
             {
-                string connString = "Server=db.uglyrage.com,1433;Database=GroenlundDB;User=gluser;Password=gl1234;TrustServerCertificate=True";
-                optionsBuilder.UseSqlServer(connString);
+                string connString = "server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;";
+                optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString));
             }
         }
     }

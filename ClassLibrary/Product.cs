@@ -5,6 +5,7 @@ namespace ClassLibrary
     {
         public Product()
         {
+            Subcategories = new HashSet<Subcategory>();
         }
 
         public int Id { get; set; }
@@ -15,12 +16,7 @@ namespace ClassLibrary
         public string? Design { get; set; }
         public string? Dimension { get; set; }
 
-       // public int SubcategoryId { get; set; }
-        public int[] SubCategoryIds { get; set; }
-
-        // Todo : Virker denne nedenstående referance stadig når vi laver relationship'et til mange-til-mange. 
-
-        public Subcategory Subcategory { get; set; }
+        public virtual ICollection<Subcategory> Subcategories { get; set; }
 
         public override string ToString()
         {
@@ -31,7 +27,7 @@ namespace ClassLibrary
                 " Material: " + Material +
                 " Design: " + Design +
                 " Dimension: " + Dimension +
-                " SubcategoryIds: [" + string.Join(", ", SubCategoryIds) + "]";
+                " SubcategoryIds: [" + string.Join(", ", Subcategories.Select(sub => sub.Id).ToArray()) + "]";
         }
     }
 

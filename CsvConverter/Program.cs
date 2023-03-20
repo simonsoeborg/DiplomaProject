@@ -1,10 +1,6 @@
 ﻿using ClassLibrary;
 using CsvConverter;
-using System.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Data.Entity;
-using System.Reflection.Metadata;
 
 class Program
 {
@@ -22,7 +18,7 @@ class Program
         List<string[]> data = ReadCsv("./products.csv");
 
         List<Product> Products = new();
-        //List<ProductItem> ProductItems = new();
+        List<ProductItem> ProductItems = new();
         List<string> names = new();
         List<Subcategory> subcategories = context.Subcategories.ToList();
 
@@ -30,39 +26,87 @@ class Program
         {
             var dataItem = data[i];
             names.Add(dataItem[2]);
-            Products.Add(ExtractProduct(dataItem, subcategories));
-            // TODO: Create ExtractProductItem(dataItem) method
+            Product product = ExtractProduct(dataItem, subcategories);
+            if (ProductIsValid(product))
+            {
+                Products.Add(product);
+                List<ProductItem> generatedProductItems = GenerateProductItems(product);
+                ProductItems.AddRange(generatedProductItems);
+            }
 
-            // TODO: Insert all products and productItems into the database
+
         }
+
+        foreach (Product prod in Products)
+        {
+            context.Products.Add(prod);
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed creating product" + ex.Message);
+            }
+        }
+
+        foreach (ProductItem productItem in ProductItems)
+        {
+            context.ProductItems.Add(productItem);
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed creating product" + ex.Message);
+            }
+        }
+
         //RegexHelper.TestRegexFilter(names.ToArray(), RegexHelper.RegexMap());
-        int productCounter = 0;
-        int materialCounter = 0;
-        int modelNumbercounter = 0;
-        int designCounter = 0;
+        int productCount = 0;
+        int materialCount = 0;
+        int modelNumberCount = 0;
+        int designCount = 0;
         int manufacturerCount = 0;
+        int subcategoryCount = 0;
 
         foreach (var product in Products)
         {
             if (product.Material != MaterialType.undefined)
             {
-                materialCounter++;
+                materialCount++;
             }
             if (product.ModelNumber != "")
             {
-                modelNumbercounter++;
+                modelNumberCount++;
             }
             if (product.Design != "")
             {
-                designCounter++;
+                designCount++;
             }
             if (product.Manufacturer != "")
             {
                 manufacturerCount++;
             }
-            if (product.ModelNumber != "" && product.Material != MaterialType.undefined && product.Design != null && product.Manufacturer != "")
+            if (product.Subcategories.Count > 0)
             {
-                productCounter++;
+                subcategoryCount++;
+                //Console.WriteLine("Subcategories for " + product.Name);
+                //foreach (var subcategory in product.Subcategories)
+                //{
+                //    Console.WriteLine(subcategory.Name);
+                //}
+                //Console.WriteLine("\n\n\n");
+            }
+            if (product.ModelNumber != "" &&
+                product.Material != MaterialType.undefined &&
+                product.Design != null &&
+                product.Manufacturer != "" &&
+                product.Subcategories.Count > 0
+                )
+            {
+                productCount++;
                 //Console.WriteLine(product.ToString());
             }
         }
@@ -70,11 +114,67 @@ class Program
         Console.WriteLine("Materials mapped: {0}/{1}\n" +
             "Modelnumbers mapped: {2}/{1}\n" +
             "Designs mapped: {3}/{1}\n" +
-            "Manufacturers mapped: {4}/{1}",
-            materialCounter, data.Count, modelNumbercounter, designCounter, manufacturerCount);
+            "Manufacturers mapped: {4}/{1}\n" +
+            "Subcategories mapped: {5}/{1}\n",
+            materialCount, data.Count, modelNumberCount, designCount, manufacturerCount, subcategoryCount);
 
 
-        Console.WriteLine("Added data to {0}/{1} products generated from {2} dataItems", productCounter, Products.Count, data.Count);
+        Console.WriteLine("Added data to {0}/{1} products generated from {2} dataItems", productCount, Products.Count, data.Count);
+    }
+
+    public static bool ProductIsValid(Product product)
+    {
+        bool result = true;
+        if (
+            product.ModelNumber == "" ||
+            product.Material == MaterialType.undefined ||
+            product.Design == null ||
+            product.Manufacturer == "" ||
+            product.Subcategories.Count == 0
+        )
+        {
+            result = false;
+        }
+
+        return result;
+    }
+    public static List<ProductItem> GenerateProductItems(Product product)
+    {
+        List<ProductItem> productItems = new();
+        int amount = new Random().Next(5);
+        for (int i = 0; i <= amount; i++)
+        {
+
+            int conditionType = new Random().Next(3);
+            int qualityType = new Random().Next(3);
+            int purchasePrice = new Random().Next(10500);
+            int currentPrice = purchasePrice * 2;
+            ProductItem productItem = new()
+            {
+                Product = product,
+                ProductId = product.Id,
+                Condition = (ConditionType)conditionType,
+                Quality = (QualityType)qualityType,
+                Sold = 0,
+                Weight = 0,
+                PurchasePrice = purchasePrice,
+                CurrentPrice = currentPrice,
+                CreatedDate = RandomDay(),
+                CustomText = "",
+
+            };
+            productItems.Add(productItem);
+        }
+
+        return productItems;
+
+    }
+
+    public static DateTime RandomDay()
+    {
+        DateTime start = new DateTime(2019, 1, 1);
+        int range = (DateTime.Today - start).Days;
+        return start.AddDays(new Random().Next(range));
     }
 
     public static Product ExtractProduct(string[] dataItem, List<Subcategory> subcategories)
@@ -86,37 +186,48 @@ class Program
         product.Material = ExtractMaterialType(dataItem[3]);
         product.Manufacturer = ExtractManufacturer(dataItem[3]);
         product.Design = ExtractDesign(dataItem[3]);
+        product.Subcategories = ExtractSubcategories(subcategories, dataItem[3]);
+        product.Dimension = ExtractDimension(dataItem[3]);
 
-        // TODO: Dimension
-
-        product.SubCategoryIds = FindSubcategoryId(subcategories, dataItem[3], product.Name);
-        // TODO: Subcategory
         return product;
     }
 
-
-    // Todo Skal retunere int[].
-    public static int[] FindSubcategoryId(List<Subcategory> subcategories, string input, string name)
+    // TODO - This should be finished if time allows for it.
+    public static string ExtractDimension(string input)
     {
-        int result = 0;
-        List<int> subcategoryMatches = new();
-        Console.WriteLine("Finding subcategories for {0}\n", name);
+        string result = "";
+        int startIndex = 0;
+        // Dimension can be Height / Højde - 
+        if (input.ToLowerInvariant().Contains("height"))
+        {
+            startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
+
+        }
+        else if (input.ToLowerInvariant().Contains("højde"))
+        {
+            startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
+        }
+        if (startIndex != 0)
+        {
+            string substring = input.ToLowerInvariant().Substring(startIndex);
+            result = substring;
+        }
+
+        return result;
+    }
+    public static List<Subcategory> ExtractSubcategories(List<Subcategory> subcategories, string input)
+    {
+        List<Subcategory> subcategoriesResult = new();
 
         foreach (Subcategory subcategory in subcategories)
         {
             if (input.Contains(subcategory.Name))
             {
-                subcategoryMatches.Add(subcategory.Id);
-                //Console.WriteLine("Subcategory {0} matched  with input {1}\n", subcategory.Name, input);
+                subcategoriesResult.Add(subcategory);
             }
         }
-        foreach (int subcat in subcategoryMatches)
-        {
-            Console.WriteLine(subcat);
-        }
-        Console.WriteLine("\n\n\n");
 
-       return subcategoryMatches;
+        return subcategoriesResult;
     }
 
     public static string ExtractManufacturer(string input)
