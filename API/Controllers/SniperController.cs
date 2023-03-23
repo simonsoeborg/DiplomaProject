@@ -11,18 +11,18 @@ namespace API.Controllers
     public class SniperController : Controller
     {
         private readonly SniperHandler _sniperHandler;
-        private readonly ILogger _logger;
+        //private readonly ILogger _logger;
 
-        public SniperController(SniperHandler sniperHandler, ILogger logger)
+        public SniperController(SniperHandler sniperHandler)
         {
             _sniperHandler = sniperHandler;
-            _logger = logger;
+            //_logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lauritz>>> RunLauritzSniper(string? arg)
         {
-            _logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
+            //_logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
             return Ok(_sniperHandler.GetLauritz(arg));
         }
     }
