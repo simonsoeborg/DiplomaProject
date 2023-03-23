@@ -41,10 +41,19 @@ builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors();
+
+var policyName = "AllowLocalAndFrontend";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: policyName, policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "https://boostmyeconomy.dk/");
+    });
+});
 var app = builder.Build();
 
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+// app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(policyName);
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
