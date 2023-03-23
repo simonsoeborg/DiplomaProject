@@ -19,10 +19,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lauritz>>> RunLauritzSniper(string? arg)
+        public JsonResult RunLauritzSniper(string? arg)
         {
             //_logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
-            return Ok(_sniperHandler.GetLauritz(arg));
+            var data = _sniperHandler.GetLauritz(arg);
+            return Json(data);
         }
     }
 }
