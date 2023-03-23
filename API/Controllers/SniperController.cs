@@ -23,6 +23,7 @@ namespace API.Controllers
         {
             //_logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
             var data = _sniperHandler.GetLauritz(arg);
+            Console.WriteLine(Json(data));
             return Json(data);
         }
     }
