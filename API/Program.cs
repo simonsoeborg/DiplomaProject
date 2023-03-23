@@ -41,18 +41,10 @@ builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-    });
-});
+builder.Services.AddCors();
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
