@@ -7,9 +7,9 @@ class Program
     public RegexHelper RegexHelper = new();
     public static GroenlundDbContext context = new(
         options: new DbContextOptionsBuilder<GroenlundDbContext>()
-        .UseMySql("server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;",
-        ServerVersion.AutoDetect("server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;")).Options
-
+    //.UseMySql("server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;",
+    //ServerVersion.AutoDetect("server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;")).Options
+    .UseSqlServer("Server=db.uglyrage.com,1433;Database=GroenlundDB;User=gluser;Password=gl1234;Trust Server Certificate=true").Options
         );
 
     static void Main(string[] args)
@@ -47,6 +47,7 @@ class Program
             catch (Exception ex)
             {
                 Console.WriteLine("Failed creating product" + ex.Message);
+                Console.WriteLine(prod.Name + "added");
             }
         }
 
@@ -56,6 +57,7 @@ class Program
             try
             {
                 context.SaveChanges();
+                Console.WriteLine("ProductItem for :" + productItem.Product.Name + "added");
             }
             catch (Exception ex)
             {
@@ -141,7 +143,7 @@ class Program
     public static List<ProductItem> GenerateProductItems(Product product)
     {
         List<ProductItem> productItems = new();
-        int amount = new Random().Next(5);
+        int amount = new Random().Next(2);
         for (int i = 0; i <= amount; i++)
         {
 
