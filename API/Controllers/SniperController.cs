@@ -10,12 +10,12 @@ namespace API.Controllers
     public class SniperController : Controller
     {
         private readonly SniperHandler _sniperHandler;
-        //private readonly ILogger _logger;
+        private readonly ILogger _logger;
 
-        public SniperController(SniperHandler sniperHandler)
+        public SniperController(SniperHandler sniperHandler, ILogger<SniperHandler> logger)
         {
             _sniperHandler = sniperHandler;
-            //_logger = logger;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -23,7 +23,7 @@ namespace API.Controllers
         {
             //_logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
             var data = _sniperHandler.GetLauritz(arg);
-            Console.WriteLine(Json(data));
+            _logger.LogInformation(data.ToString());
             return Json(data);
         }
     }
