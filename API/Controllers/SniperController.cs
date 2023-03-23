@@ -5,7 +5,6 @@ using WebScraper.Controllers;
 
 namespace API.Controllers
 {
-    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class SniperController : Controller
