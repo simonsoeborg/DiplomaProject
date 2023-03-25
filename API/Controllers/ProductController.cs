@@ -1,12 +1,11 @@
 ﻿using ClassLibrary.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace API.Controllers
 
 {
-    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -17,34 +16,24 @@ namespace API.Controllers
         {
             _context = context;
         }
-        [HttpGet("{id}")]
-        public IActionResult GetProduct(int id)
+
+        [HttpGet("GetProducts")]
+        public ActionResult<List<Product>> GetProducts()
         {
-            var product = _context.Products.Find(id);
+            var products = _context.Products
+                .Include(p => p.Subcategories)
+                .ThenInclude(s => s.Category)
+                .ToList();
 
-            if (product == null)
-            {
-                return new NotFoundObjectResult("Product with id: " + id + " not found");
-            }
-
-            return new OkObjectResult(product);
-        }
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var products = _context.Products.ToList();
-
-            if (products == null || products.Count == 0)
+            if (products == null)
             {
                 return new NoContentResult();
             }
 
-            return new OkObjectResult(products);
+            return products;
         }
 
 
-        [EnableCors]
         [HttpPost]
         public HttpResponseMessage Post([FromBody] Product req)
         {
@@ -54,7 +43,6 @@ namespace API.Controllers
                 Product reqProduct = new()
                 {
                     Name = req.Name,
-                    Subcategories = req.Subcategories,
                     ModelNumber = req.ModelNumber,
                     Material = req.Material,
                 };
@@ -96,7 +84,6 @@ namespace API.Controllers
             }
 
             product.Name = req.Name;
-            product.Subcategories = req.Subcategories;
             product.ModelNumber = req.ModelNumber;
             product.Material = req.Material;
             if (req.Design != null) product.Design = req.Design;
@@ -145,7 +132,6 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(product.Name)
                 || int.Parse(product.ModelNumber) <= 0
                 || product.Material <= 0
-                || product.Subcategories.Count >= 0
             )
             {
                 return false;
@@ -154,4 +140,5 @@ namespace API.Controllers
             return true;
         }
     }
+
 }

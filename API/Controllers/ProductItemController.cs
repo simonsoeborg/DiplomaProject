@@ -24,7 +24,7 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<ProductItem>>> GetProductItems()
         {
             var productItems = await _context.ProductItems
-                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategories).ThenInclude(pi => pi.Category)
+                .Include(pi => pi.Product).ThenInclude(p => p.Subcategories).ThenInclude(p => p.Category)
                 .Include(pi => pi.Images)
                 .Include(pi => pi.PriceHistories)
                 .ToListAsync();

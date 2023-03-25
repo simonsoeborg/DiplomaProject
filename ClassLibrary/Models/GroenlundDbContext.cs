@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ClassLibrary.Models
 {
@@ -21,8 +22,12 @@ namespace ClassLibrary.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            optionsBuilder.UseMySql("Server=130.225.170.249;Database=TestDB;User=GroenlundDB;Password=gl12345;",
-                ServerVersion.AutoDetect("Server=130.225.170.249;Database=TestDB;User=GroenlundDB;Password=gl12345;"));
+            IConfigurationRoot root = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
+            string connString = root["GroenlundDB"]!;
+            optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString));
+
+            // string connString = root["MSSQL"]!;
+            //optionsBuilder.UseSqlServer("Server=db.uglyrage.com,1433;Database=GroenlundDB;User Id=gluser;Password=gl1234;");
         }
     }
 }

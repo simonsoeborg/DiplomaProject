@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ClassLibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class DbSetup : Migration
+    public partial class FreshInstall : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -120,6 +120,33 @@ namespace ClassLibrary.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Subcategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    ImageUrl = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subcategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subcategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ProductItems",
                 columns: table => new
                 {
@@ -129,9 +156,9 @@ namespace ClassLibrary.Migrations
                     Condition = table.Column<int>(type: "int", nullable: false),
                     Quality = table.Column<int>(type: "int", nullable: false),
                     Sold = table.Column<sbyte>(type: "tinyint", nullable: false),
-                    Weight = table.Column<decimal>(type: "decimal(6,2)", nullable: true),
-                    PurchasePrice = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    CurrentPrice = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    Weight = table.Column<decimal>(type: "decimal(12,2)", nullable: true),
+                    PurchasePrice = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    CurrentPrice = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     SoldDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CustomText = table.Column<string>(type: "longtext", nullable: true)
@@ -150,35 +177,27 @@ namespace ClassLibrary.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Subcategories",
+                name: "ProductSubcategory",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Order = table.Column<int>(type: "int", nullable: false),
-                    ImageUrl = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
+                    ProductsId = table.Column<int>(type: "int", nullable: false),
+                    SubcategoriesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subcategories", x => x.Id);
+                    table.PrimaryKey("PK_ProductSubcategory", x => new { x.ProductsId, x.SubcategoriesId });
                     table.ForeignKey(
-                        name: "FK_Subcategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        name: "FK_ProductSubcategory_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Subcategories_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
+                        name: "FK_ProductSubcategory_Subcategories_SubcategoriesId",
+                        column: x => x.SubcategoriesId,
+                        principalTable: "Subcategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -242,14 +261,14 @@ namespace ClassLibrary.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductSubcategory_SubcategoriesId",
+                table: "ProductSubcategory",
+                column: "SubcategoriesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Subcategories_CategoryId",
                 table: "Subcategories",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subcategories_ProductId",
-                table: "Subcategories",
-                column: "ProductId");
         }
 
         /// <inheritdoc />
@@ -265,10 +284,10 @@ namespace ClassLibrary.Migrations
                 name: "PriceHistories");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "ProductSubcategory");
 
             migrationBuilder.DropTable(
-                name: "Subcategories");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -277,10 +296,13 @@ namespace ClassLibrary.Migrations
                 name: "ProductItems");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Subcategories");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

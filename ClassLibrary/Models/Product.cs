@@ -14,13 +14,28 @@ namespace ClassLibrary.Models
 
         public override string ToString()
         {
-            return "Id: " + Id +
-                " Name: " + Name +
-                " ModelNumber: " + ModelNumber +
-                " Material: " + Material +
-                " Design: " + Design +
-                " Dimension: " + Dimension;
-            //" SubcategoryId: " + SubcategoryId;
+            string subcatString;
+            if (Subcategories.Count > 0)
+            {
+                subcatString = "";
+                foreach (Subcategory subcat in Subcategories)
+                {
+                    subcatString += subcat.Name + ", ";
+                }
+            }
+            else
+            {
+                subcatString = "No subcategories";
+            }
+
+            return
+                "Id: " + Id +
+                "\nName: " + Name +
+                "\nModelNumber: " + ModelNumber +
+                "\nMaterial: " + Material +
+                "\nDesign: " + Design +
+                "\nDimension: " + Dimension +
+                "\nSubcategories: " + subcatString;
         }
     }
 }

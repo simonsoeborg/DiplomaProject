@@ -1,5 +1,4 @@
 using ClassLibrary.Models;
-using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Serilog;
@@ -10,13 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 /* Add services to the container */
 builder.Services.AddControllers();
 
-/* Setup DBContext and add configuration options */
-builder.Services.AddDbContext<GroenlundDbContext>(options =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-    options.UseSqlServer(connectionString);
-});
+builder.Services.AddDbContext<GroenlundDbContext>();
 
 builder.Services.AddSingleton<IWebDriver>(provider =>
 {
@@ -51,14 +44,10 @@ builder.Services.AddCors(options =>
     });
 });
 var app = builder.Build();
-
 app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

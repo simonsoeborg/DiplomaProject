@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(GroenlundDbContext))]
-    [Migration("20230325134200_ManyToMany")]
-    partial class ManyToMany
+    [Migration("20230325160946_FreshInstall")]
+    partial class FreshInstall
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,7 @@ namespace ClassLibrary.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("decimal(6,2)");
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<string>("CustomText")
                         .HasColumnType("longtext");
@@ -165,7 +165,7 @@ namespace ClassLibrary.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PurchasePrice")
-                        .HasColumnType("decimal(6,2)");
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("Quality")
                         .HasColumnType("int");
@@ -177,7 +177,7 @@ namespace ClassLibrary.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal?>("Weight")
-                        .HasColumnType("decimal(6,2)");
+                        .HasColumnType("decimal(12,2)");
 
                     b.HasKey("Id");
 
