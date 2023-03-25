@@ -46,7 +46,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
-		<ProjectReference Include="..\JWT\JWT.csproj" />
 		<ProjectReference Include="..\WebScraper\WebScraper.csproj" />
 	</ItemGroup>
 

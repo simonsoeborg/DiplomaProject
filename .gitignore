@@ -59,3 +59,9 @@ GroenlundWS/obj/
 /CsvConverter/bin/Debug/net6.0
 /CsvConverter/.vs
 /CsvConverter/bin/Release/net6.0
+/API/bin/Release/net6.0
+/ClassLibrary/bin/Release/net6.0
+/DataMigration/bin/Release/net6.0
+/DataMigration/.vs
+/DataMigration/obj
+/WebScraper/bin/Release/net6.0

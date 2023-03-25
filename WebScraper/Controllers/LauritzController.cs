@@ -65,39 +65,59 @@ namespace WebScraper.Controllers
 
                             if (!(i >= tableEntries.Count))
                             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 if (HandleItemSearch(i, itemStringPriceLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringPriceLabel, wait).Text))
                                 {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                     getPrice = HandleItemSearch(i, itemStringPriceLabel, wait).Text;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                                 }
                                 else
                                 {
                                     getPrice = "";
                                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 if (HandleItemSearch(i, itemStringValuation, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringValuation, wait).Text))
                                 {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                     getValuation = HandleItemSearch(i, itemStringValuation, wait).Text;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                                 }
                                 else
                                 {
                                     getValuation = "";
                                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 if (HandleItemSearch(i, itemStringBuyNowLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringBuyNowLabel, wait).Text))
                                 {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                     getBuyNowPriceLabel = HandleItemSearch(i, itemStringBuyNowLabel, wait).Text;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                                 }
                                 else
                                 {
                                     getBuyNowPriceLabel = "";
                                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 getItemTitle = HandleItemSearch(i, itemStringItemLabel, wait).Text;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 getItemDesc = HandleItemSearch(i, itemStringItemDescription, wait).Text;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                                 getItemLotIdLabel = HandleItemSearch(i, itemStringLotIdLabel, wait);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                                 getImageURL = HandleImageSearch(i, itemStringImageUrl, wait);
                                 getItemURL = HandleHrefExtractor(i, itemStringItemUrl, wait);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                                 var strongElement = getItemLotIdLabel.FindElement(By.TagName("strong"));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                                 lotId = int.Parse(strongElement.Text);
 
                                 var imageUrls = new List<string>();
@@ -130,7 +150,9 @@ namespace WebScraper.Controllers
             return results.ToList();
         }
 
-        public IWebElement HandleItemSearch(int index, string itemString, WebDriverWait wait)
+#pragma warning disable CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
+        public IWebElement? HandleItemSearch(int index, string itemString, WebDriverWait wait)
+#pragma warning restore CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             try
             {
@@ -140,7 +162,7 @@ namespace WebScraper.Controllers
                     return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}")));
             } catch (WebDriverTimeoutException e)
             {
-                Console.WriteLine($"Error: {index}; {itemString} not found!");
+                Console.WriteLine($"Error: {index}; {itemString} not found!"+e);
                 _logger.LogInformation($"Error: {index}; {itemString} not found!");
             }
             return null;

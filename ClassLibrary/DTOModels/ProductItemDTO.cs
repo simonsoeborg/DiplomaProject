@@ -1,4 +1,6 @@
 ﻿
+using ClassLibrary.Models;
+
 namespace ClassLibrary.DTOModels
 {
     public class ProductItemDTO
@@ -11,9 +13,9 @@ namespace ClassLibrary.DTOModels
         public QualityType Quality { get; set; }
         public sbyte Sold { get; set; }
         public decimal? Weight { get; set; }
-        public string CustomText { get; set; }
-        public Product Product { get; set; }
-        public string[] Images { get; set; }
+        public string CustomText { get; set; } = string.Empty;
+        public Product Product { get; set; } = null!;
+        public string[] Images { get; set; } = null!;
 
     }
 }

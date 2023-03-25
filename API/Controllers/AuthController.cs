@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using ClassLibrary.DTOModels;
-using ClassLibrary;
+using ClassLibrary.Models;
 
 namespace API.Controllers
 {
@@ -26,7 +26,7 @@ namespace API.Controllers
         [HttpPost("UserExists")]
         public async Task<ActionResult<bool>> UserExists(string email)
         {
-            User response = await _context.Users.SingleOrDefaultAsync(e => e.Email == email);
+            User? response = await _context.Users.SingleOrDefaultAsync(e => e.Email == email);
             //Console.WriteLine(response?.Email);
             if (response == null)
             {
@@ -39,7 +39,7 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(UserLoginDTO request)
         {
-            User dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            User? dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
             // Lookup user in DB so we can compare hash and salt
             if (dbUser == null)
             {
@@ -115,7 +115,7 @@ namespace API.Controllers
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
+                _configuration.GetSection("AppSettings:Token").Value!));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

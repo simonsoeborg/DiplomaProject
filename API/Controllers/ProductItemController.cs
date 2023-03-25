@@ -1,5 +1,5 @@
-﻿using ClassLibrary;
-using ClassLibrary.DTOModels;
+﻿using ClassLibrary.DTOModels;
+using ClassLibrary.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<ProductItem>>> GetProductItems()
         {
             var productItems = await _context.ProductItems
-                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategory).ThenInclude(pi => pi.Category)
+                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategories).ThenInclude(pi => pi.Category)
                 .Include(pi => pi.Images)
                 .Include(pi => pi.PriceHistories)
                 .ToListAsync();
@@ -42,7 +42,7 @@ namespace API.Controllers
             var productItems = await _context.ProductItems
                 .Include(pi => pi.Images)
                 .Include(pi => pi.PriceHistories)
-                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategory).ThenInclude(pi => pi.Category)
+                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategories).ThenInclude(pi => pi.Category)
                 .ToListAsync();
 
 
@@ -95,7 +95,7 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProductItem(int id, [FromBody] ProductItem req)
+        public IActionResult UpdateProductItem(int id, [FromBody] ProductItem req)
         {
             var productItem = _context.ProductItems.Find(id);
 
@@ -179,7 +179,7 @@ namespace API.Controllers
                 Quality = pi.Quality,
                 Sold = pi.Sold,
                 Weight = pi.Weight,
-                CustomText = pi.CustomText,
+                CustomText = pi.CustomText != null || pi.CustomText != string.Empty ? pi.CustomText! : "",
                 Product = pi.Product
             };
             List<string> imageUrls = new();

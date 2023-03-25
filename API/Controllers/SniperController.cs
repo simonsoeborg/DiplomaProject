@@ -20,10 +20,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lauritz>>> RunLauritzSniper(string? arg)
+        public ActionResult<IEnumerable<Lauritz>> RunLauritzSniper(string? arg)
         {
             _logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return Ok(_sniperHandler.GetLauritz(arg));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
     }
 }

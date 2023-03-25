@@ -1,4 +1,4 @@
-using ClassLibrary;
+using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;

@@ -32,7 +32,7 @@ namespace WebScraper.Controllers
                     _driver.FindElement(By.Id("CybotCookiebotDialogBodyButtonDecline")).Click();
                 } catch (NoSuchElementException e)
                 {
-                    Console.WriteLine("CybotCookiebotDialogBodyButtonDecline not found!");
+                    Console.WriteLine("CybotCookiebotDialogBodyButtonDecline not found!"+e);
                 }
 
             if (arg != null)
