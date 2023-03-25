@@ -1,12 +1,18 @@
 ﻿using ClassLibrary;
 using CsvConverter;
-using System.Data.SqlTypes;
+using Microsoft.EntityFrameworkCore;
 
 class Program
 {
+    public static GroenlundDbContext context = new(
+       options: new DbContextOptionsBuilder<GroenlundDbContext>()
+            .UseMySql("server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;",
+            ServerVersion.AutoDetect("server=130.225.170.249;Database=GroenlundDb;User=GroenlundDB;Password=gl12345;port=3306;")).Options
+       //.UseSqlServer("Server=db.uglyrage.com,1433;Database=GroenlundDB;User=gluser;Password=gl1234;Trust Server Certificate=true").Options
+       );
     public RegexHelper RegexHelper = new();
 
-    static void Main(string[] args)
+    static void Main()
     {
         List<string[]> data = ReadCsv("./products.csv");
 
