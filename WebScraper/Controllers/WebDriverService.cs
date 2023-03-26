@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace WebScraper.Controllers
 {

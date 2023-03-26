@@ -1,0 +1,7 @@
+{
+  "ConnectionStrings": {
+    "GroenlundDB": "Server=130.225.170.249;Database=GroenlundDB;User=GroenlundDB;Password=gl12345;",
+    "MsSql": "Server=db.uglyrage.com,1433;Database=GroenlundDB;User=gluser;Password=gl1234;Trust Server Certificate=true",
+    "TestDB": "Server=130.225.170.249;Database=TestDB;User=GroenlundDB;Password=gl12345;"
+  }
+}

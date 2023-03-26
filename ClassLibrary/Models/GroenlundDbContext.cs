@@ -5,6 +5,8 @@ namespace ClassLibrary.Models
 {
     public class GroenlundDbContext : DbContext
     {
+        readonly IConfigurationRoot configRoot = new ConfigurationBuilder().AddJsonFile("db_appsettings.json", false, true).Build();
+
         public GroenlundDbContext() { }
 
         public GroenlundDbContext(DbContextOptions<GroenlundDbContext> options) : base(options) { }
@@ -21,13 +23,20 @@ namespace ClassLibrary.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            IConfigurationRoot root = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-            string connString = root["GroenlundDB"]!;
-            optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString));
+            string connectionString;
 
-            // string connString = root["MSSQL"]!;
-            //optionsBuilder.UseSqlServer("Server=db.uglyrage.com,1433;Database=GroenlundDB;User Id=gluser;Password=gl1234;");
+            /* MySql GroenlundDB */
+            connectionString = configRoot.GetConnectionString("GroenlundDB")!;
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+
+            /* MySql TestDB */
+            //connectionString = configRoot.GetConnectionString("TestDB")!;
+            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+
+            /* MsSql GroenlundDB */
+            //connectionString = configRoot.GetConnectionString("MsSql")!;
+            //optionsBuilder.UseSqlServer(connectionString);
+
         }
     }
 }

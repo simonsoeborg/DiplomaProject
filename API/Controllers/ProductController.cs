@@ -1,4 +1,6 @@
 ﻿using ClassLibrary.Models;
+using ClassLibrary.Models.DTO;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -6,6 +8,7 @@ using System.Net;
 namespace API.Controllers
 
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -17,20 +20,32 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("GetProducts")]
-        public ActionResult<List<Product>> GetProducts()
+
+        [HttpGet("GetAll")]
+        public IActionResult GetProducts()
         {
-            var products = _context.Products
-                .Include(p => p.Subcategories)
-                .ThenInclude(s => s.Category)
-                .ToList();
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
+            var products = _context.Products.Include(p => p.Subcategories).ToList();
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //Console.WriteLine("took {0} seconds to read from database", (elapsedMs / 1000));
+
+            //var watch2 = System.Diagnostics.Stopwatch.StartNew();
+            var productDTOs = new List<ProductDTO>();
+            foreach (var product in products)
+            {
+                productDTOs.Add(DTOMapper.MapProductToDTO(product));    
+            }
 
             if (products == null)
             {
                 return new NoContentResult();
             }
 
-            return products;
+            //var elapsedMs2 = watch2.ElapsedMilliseconds;
+            //Console.WriteLine("took {0} seconds to convert to DTO", (elapsedMs2 / 1000));
+
+            return Ok(productDTOs);
         }
 
 

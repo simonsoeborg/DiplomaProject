@@ -1,4 +1,6 @@
-﻿namespace ClassLibrary.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ClassLibrary.Models
 {
     public class Subcategory
     {
@@ -9,6 +11,7 @@
         public string? Description { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
+        [JsonIgnore]
         public virtual ICollection<Product> Products { get; set; } = null!;
     }
 }

@@ -160,9 +160,10 @@ namespace WebScraper.Controllers
                     return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}")));
                 else
                     return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}")));
-            } catch (WebDriverTimeoutException e)
+            }
+            catch (WebDriverTimeoutException e)
             {
-                Console.WriteLine($"Error: {index}; {itemString} not found!"+e);
+                Console.WriteLine($"Error: {index}; {itemString} not found!" + e);
                 _logger.LogInformation($"Error: {index}; {itemString} not found!");
             }
             return null;
@@ -170,7 +171,7 @@ namespace WebScraper.Controllers
 
         public string HandleImageSearch(int index, string itemString, WebDriverWait wait)
         {
-            if(index < 10)
+            if (index < 10)
                 return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl0{index}_{itemString}"))).GetAttribute("src");
             else
                 return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}"))).GetAttribute("src");

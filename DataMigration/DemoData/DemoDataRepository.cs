@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using ClassLibrary.Models;
+﻿using ClassLibrary.Models;
+using Newtonsoft.Json;
 
 namespace DataMigration
 {

@@ -1,13 +1,18 @@
 using ClassLibrary.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Serilog;
 using WebScraper.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 /* Add services to the container */
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
+
+//builder.Services.AddDbContext<GroenlundDbContext>(
+//options =>
+//{
+//    //System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+//});
 
 builder.Services.AddDbContext<GroenlundDbContext>();
 
@@ -21,32 +26,23 @@ builder.Services.AddSingleton<IWebDriver>(provider =>
     return driver;
 });
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .WriteTo.Console()
-    .WriteTo.File("C:\\Logs\\GroenlundAPI.log", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-
-builder.Logging.AddSerilog(Log.Logger);
-
 builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
 
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-    });
-});
+builder.Services.AddCors();
+
 var app = builder.Build();
-app.UseCors("AllowAll");
-app.UseSwagger();
-app.UseSwaggerUI();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

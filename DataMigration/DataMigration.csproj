@@ -7,7 +7,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
-		<PackageReference Include="CsvHelper" Version="30.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<None Update="DemoData\categories.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>

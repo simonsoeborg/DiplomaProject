@@ -1,6 +1,5 @@
 ﻿using ClassLibrary.WebScraping;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 
 namespace WebScraper.Controllers
@@ -26,13 +25,14 @@ namespace WebScraper.Controllers
 
             Thread.Sleep(1000);
             // Handle cookies
-            if(!hasRunnedOnce)
+            if (!hasRunnedOnce)
                 try
                 {
                     _driver.FindElement(By.Id("CybotCookiebotDialogBodyButtonDecline")).Click();
-                } catch (NoSuchElementException e)
+                }
+                catch (NoSuchElementException e)
                 {
-                    Console.WriteLine("CybotCookiebotDialogBodyButtonDecline not found!"+e);
+                    Console.WriteLine("CybotCookiebotDialogBodyButtonDecline not found!" + e);
                 }
 
             if (arg != null)

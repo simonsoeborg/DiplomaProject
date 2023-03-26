@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.DTOModels;
 using ClassLibrary.Models;
+using ClassLibrary.Models.DTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,46 +21,36 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("GetProductItems")]
-        public async Task<ActionResult<IEnumerable<ProductItem>>> GetProductItems()
+        [HttpGet("GetAll")]
+        public ActionResult<IEnumerable<ProductItemDTO>> GetProductItems()
         {
-            var productItems = await _context.ProductItems
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            var productItems = _context.ProductItems
+                .Where(p => p.Sold != 1)
                 .Include(pi => pi.Product).ThenInclude(p => p.Subcategories).ThenInclude(p => p.Category)
                 .Include(pi => pi.Images)
                 .Include(pi => pi.PriceHistories)
-                .ToListAsync();
+                .ToList();
 
-            if (productItems == null || productItems.Count == 0)
-            {
-                return new NoContentResult();
-            }
-            return productItems;
-        }
-
-        [HttpGet("GetProductItemDTOs")]
-        public async Task<ActionResult<IEnumerable<ProductItemDTO>>> GetProductItemDTOs()
-        {
-            var productItems = await _context.ProductItems
-                .Include(pi => pi.Images)
-                .Include(pi => pi.PriceHistories)
-                .Include(pi => pi.Product).ThenInclude(pi => pi.Subcategories).ThenInclude(pi => pi.Category)
-                .ToListAsync();
-
-
-            if (productItems == null || productItems.Count == 0)
-            {
-                return new NoContentResult();
-            }
-            List<ProductItemDTO> productItemDTOs = new();
+            List<ProductItemDTO> productItemDTOs = new List<ProductItemDTO>();
             foreach (var productItem in productItems)
             {
-                productItemDTOs.Add(MapProductItemToDTO(productItem));
+                productItemDTOs.Add(DTOMapper.MapProductItemToDTO(productItem));
             }
+
+            if (productItems == null || productItems.Count == 0)
+            {
+                return new NoContentResult();
+            }
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine("\nIt took {0} seconds to read and convert ProductItems from database", (elapsedMs / 1000));
             return productItemDTOs;
         }
 
 
-        [EnableCors]
         [HttpPost]
         public HttpResponseMessage Post([FromBody] ProductItem req)
         {
@@ -167,29 +158,6 @@ namespace API.Controllers
             }
 
             return true;
-        }
-        private static ProductItemDTO MapProductItemToDTO(ProductItem pi)
-        {
-            var piDTO = new ProductItemDTO
-            {
-                Id = pi.Id,
-                Price = pi.CurrentPrice,
-                CreatedDate = pi.CreatedDate,
-                Condition = pi.Condition,
-                Quality = pi.Quality,
-                Sold = pi.Sold,
-                Weight = pi.Weight,
-                CustomText = pi.CustomText != null || pi.CustomText != string.Empty ? pi.CustomText! : "",
-                Product = pi.Product
-            };
-            List<string> imageUrls = new();
-            foreach (var image in pi.Images)
-            {
-                imageUrls.Add(image.Url);
-            }
-            piDTO.Images = imageUrls.ToArray();
-
-            return piDTO;
         }
     }
 }
