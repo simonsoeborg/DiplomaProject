@@ -5,7 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "Development" ]
+    branches: [ "Dev_AddFeature_DemoDataGenerator" ]
   pull_request:
     branches: [ "Development" ]
 
