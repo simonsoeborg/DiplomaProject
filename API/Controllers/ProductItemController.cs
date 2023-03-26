@@ -9,7 +9,6 @@ using System.Net;
 namespace API.Controllers
 
 {
-    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductItemController : ControllerBase
