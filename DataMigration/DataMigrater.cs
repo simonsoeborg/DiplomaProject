@@ -13,6 +13,15 @@ class DataMigrater
         RegexHelper = new();
         _context = context;
     }
+    public void CreateDataInDatabase()
+    {
+        MsSqlSetIdentityInsert("ON");
+        CreateCategoriesInDatabase();
+        CreateSubcategoriesInDatabase();
+        CreateProductsInDatabase();
+        MsSqlSetIdentityInsert("OFF");
+
+    }
     public void PrintProducts()
     {
         int counter = 0;
@@ -46,59 +55,47 @@ class DataMigrater
 
     }
 
-    public void CreateDataInDatabase()
+
+
+    private void MsSqlSetIdentityInsert(string onOrOff)
     {
-        CheckForCategoriesInDatabase();
-        CheckForSubcategoriesInDatabase();
-        CheckForProductsInDatabase();
-
-        var getData = ExtractProducts();
-        List<Product> Products = getData.Products;
-        List<ProductItem> ProductItems = getData.ProductItems;
-
-        foreach (Product prod in Products)
+        List<string> queries = new()
         {
-            _context.Products.Add(prod);
+            $"SET IDENTITY_INSERT GroenlundDB.dbo.Categories {onOrOff};",
+            $"SET IDENTITY_INSERT GroenlundDB.dbo.Subcategories {onOrOff};",
+            $"SET IDENTITY_INSERT GroenlundDB.dbo.Products {onOrOff};",
+            $"SET IDENTITY_INSERT GroenlundDB.dbo.ProductItems {onOrOff};"
+        };
+
+        foreach (string query in queries)
+        {
             try
             {
+                _context.Database.ExecuteSqlRaw(query);
                 _context.SaveChanges();
-                Console.WriteLine(prod.Name + " added");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine("Failed creating product" + ex.Message);
+                Console.WriteLine(e.Message);
             }
         }
 
-        foreach (ProductItem productItem in ProductItems)
-        {
-            _context.ProductItems.Add(productItem);
-            try
-            {
-                _context.SaveChanges();
-                Console.WriteLine("ProductItem for " + productItem.Product.Name + " added");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed creating productItem" + ex.Message + "\n");
-                Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
-                Console.WriteLine("InnerException:" + ex.InnerException + "\n");
-            }
-        }
     }
 
-    private void CheckForCategoriesInDatabase()
+    private void CreateCategoriesInDatabase()
     {
         var categories = _context.Categories;
         if (categories.Any())
         {
             // Deletes all rows/data in the table
             _context.Categories.ExecuteDelete();
-            Console.WriteLine("Database contains categories\n");
-            Console.WriteLine("Deleting all categories\n");
+            _context.SaveChanges();
+            Console.WriteLine("Database contains categories");
+            Console.WriteLine("Deleting all categories");
         }
 
-        Console.WriteLine("Creating categories\n");
+        Console.WriteLine("Creating categories");
+
         var categoriesJson = DemoDataRepository.GetCategories();
         foreach (var category in categoriesJson)
         {
@@ -112,20 +109,24 @@ class DataMigrater
                 Console.WriteLine(ex.ToString());
             }
         }
+
+        Console.WriteLine("Successfully created categories");
     }
 
-    private void CheckForSubcategoriesInDatabase()
+    private void CreateSubcategoriesInDatabase()
     {
         var subcategories = _context.Subcategories;
         if (subcategories.Any())
         {
             // Deletes all rows/data in the table
             _context.Subcategories.ExecuteDelete();
-            Console.WriteLine("Database contains subcategories\n");
-            Console.WriteLine("Deleting all subcategories\n");
+            _context.SaveChanges();
+            Console.WriteLine("Database contains subcategories");
+            Console.WriteLine("Deleting all subcategories");
         }
 
-        Console.WriteLine("Creating subcategories\n");
+        Console.WriteLine("Creating subcategories");
+
         var subcategoriesJson = DemoDataRepository.GetSubcategories();
         foreach (var subcategory in subcategoriesJson)
         {
@@ -140,9 +141,10 @@ class DataMigrater
             }
         }
 
+        Console.WriteLine("Successfully created subcategories\n");
     }
 
-    private void CheckForProductsInDatabase()
+    private void CreateProductsInDatabase()
     {
         var existingProducts = _context.Products;
         var existingProductItems = _context.ProductItems;
@@ -173,6 +175,42 @@ class DataMigrater
             }
         }
 
+        var getData = ExtractProducts();
+        List<Product> Products = getData.Products;
+        List<ProductItem> ProductItems = getData.ProductItems;
+
+        foreach (Product prod in Products)
+        {
+            _context.Products.Add(prod);
+            try
+            {
+                _context.SaveChanges();
+                Console.WriteLine(prod.Name + " added");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed creating product" + ex.Message);
+            }
+        }
+
+
+        _context.SaveChanges();
+
+        foreach (ProductItem productItem in ProductItems)
+        {
+            _context.ProductItems.Add(productItem);
+            try
+            {
+                _context.SaveChanges();
+                Console.WriteLine("ProductItem for " + productItem.Product.Name + " added");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed creating productItem" + ex.Message + "\n");
+                Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
+                Console.WriteLine("InnerException:" + ex.InnerException + "\n");
+            }
+        }
     }
 
     private (List<Product> Products, List<ProductItem> ProductItems) ExtractProducts()
