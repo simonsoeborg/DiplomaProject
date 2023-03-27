@@ -19,12 +19,10 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResult RunLauritzSniper(string? arg)
+        public IActionResult RunLauritzSniper(string? arg)
         {
-            //_logger.LogInformation(_sniperHandler?.GetLauritz(arg)?[0]?.Varenummer.ToString());
             var data = _sniperHandler.GetLauritz(arg);
-            _logger.LogInformation(data.ToString());
-            return Json(data);
+            return new OkObjectResult(data);
         }
     }
 }
