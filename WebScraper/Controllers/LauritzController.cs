@@ -63,7 +63,7 @@ namespace WebScraper.Controllers
 
                             int i = tableEntries.IndexOf(tableEntry) + 1;
 
-                            if (!(i >= tableEntries.Count))
+                            if (!(i >= 11))
                             {
                                 if (HandleItemSearch(i, itemStringPriceLabel, wait) != null && !string.IsNullOrEmpty(HandleItemSearch(i, itemStringPriceLabel, wait).Text))
                                 {
