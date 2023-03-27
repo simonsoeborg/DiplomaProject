@@ -1,0 +1,906 @@
+[
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Blomst Flettet",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Blomst Flettet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Blomst Juliane Marie",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Blomst Juliane Marie"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Blomst Kantet",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Blomst Kantet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Blomst Svejfet",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Blomst Svejfet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Blomst Svejfet med Guldkant",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Blomst Svejfet med Guldkant"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Buket",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Buket"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Fasan",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Fasan"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Rose",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Rose"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Tone",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Tone"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blå Vifte",
+    "Order": 10,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Vifte"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Blåmalet",
+    "Order": 11,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blåmalet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Empire",
+    "Order": 12,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Empire"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Fiskestel",
+    "Order": 13,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Fiskestel"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Flora Danica",
+    "Order": 14,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Flora Danica"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Golden Summer",
+    "Order": 15,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Golden Summer"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Grøn Blomst Svejfet",
+    "Order": 16,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Grøn Blomst Svejfet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Guld Vifte",
+    "Order": 17,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Guld Vifte"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Henriette",
+    "Order": 18,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Henriette"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Konkylie, Hvid",
+    "Order": 19,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Konkylie, Hvid"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Konkylie, Rosa",
+    "Order": 20,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Konkylie, Rosa"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Mega Blå",
+    "Order": 21,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Mega Blå"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Musselmalet",
+    "Order": 22,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Musselmalet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Musselmalet Halvblonde",
+    "Order": 23,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Musselmalet Halvblonde"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Musselmalet Helblonde",
+    "Order": 24,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Musselmalet Helblonde"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Måge med guldkant",
+    "Order": 25,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Måge med guldkant"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Måge uden guldkant",
+    "Order": 26,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Måge uden guldkant"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Palmette",
+    "Order": 27,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Palmette"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Prinsesse",
+    "Order": 28,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Prinsesse"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Purpur",
+    "Order": 29,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Purpur"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Relief",
+    "Order": 30,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Relief"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Saksisk Blomst Fuld",
+    "Order": 31,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Saksisk Blomst Fuld"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Saksisk Blomst Juliane Marie",
+    "Order": 32,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Saksisk Blomst Juliane Marie"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Saksisk Blomst Let",
+    "Order": 33,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Saksisk Blomst Let"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Skærsommernatsdrøm",
+    "Order": 34,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Skærsommernatsdrøm"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Sommerfugl",
+    "Order": 35,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Sommerfugl"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Sommerfugl Dickens",
+    "Order": 36,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Sommerfugl Dickens"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Sommerfugl Kipling",
+    "Order": 37,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Sommerfugl Kipling"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Stjerneriflet",
+    "Order": 38,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Stjerneriflet"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Tranquebar",
+    "Order": 39,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Tranquebar"
+  },
+  {
+
+    "CategoryId": 2,
+    "Name": "Ursula",
+    "Order": 40,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Ursula"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Royal Copenhagen",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Royal Copenhagen"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "B&G",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af B&G"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Dahl Jensen",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Dahl Jensen"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Lyngby",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Lyngby"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Bjørne",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Bjørne"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Fugle",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Fugle"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Hunde",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Hunde"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Katte",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Katte"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Andre dyr",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Andre dyr"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Faun",
+    "Order": 10,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Faun"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Håndværkere",
+    "Order": 11,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Håndværkere"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Menneske-figurer",
+    "Order": 12,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Menneske-figurer"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Stentøj figurer",
+    "Order": 13,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Stentøj figurer"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Aluminia",
+    "Order": 14,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Aluminia"
+  },
+  {
+
+    "CategoryId": 3,
+    "Name": "Keramik figurer",
+    "Order": 15,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Keramik figurer"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Georg Jensen",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Georg Jensen"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Hans Hansen",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Hans Hansen"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Anton Michelsen",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Anton Michelsen"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Armbånd",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Armbånd"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Brocher",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Brocher"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Halskæder & Vedhæng",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Halskæder & Vedhæng"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Ringe",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Ringe"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Øreringe",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Øreringe"
+  },
+  {
+
+    "CategoryId": 4,
+    "Name": "Øvrige smykker",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Øvrige smykker"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Georg Jensen bestik",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Georg Jensen bestik"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Hans Hansen bestik",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Hans Hansen bestik"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Arne Jacobsen bestik",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Arne Jacobsen bestik"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Rosenborg bestik",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Rosenborg bestik"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Julebestik Georg Jensen",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Julebestik Georg Jensen"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Julebestik Michelsen",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Julebestik Michelsen"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Julebestik Øvrigt",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Julebestik Øvrigt"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Mindebestik",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Mindebestik"
+  },
+  {
+
+    "CategoryId": 7,
+    "Name": "Andre bestik",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Andre bestik"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Bjørn Wiinblad",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Bjørn Wiinblad"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Hjorth – Søholm - Michael Andersen",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Hjorth – Søholm - Michael Andersen"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Ipsen",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Ipsen"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Kähler",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Kähler"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Royal Copenhagen - Bing & Grøndahl - Aluminia",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Royal Copenhagen - Bing & Grøndahl - Aluminia"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Saxbo",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Saxbo"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Arne bang",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Arne bang"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Palshus",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Palshus"
+  },
+  {
+
+    "CategoryId": 8,
+    "Name": "Øvrig Keramik",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Øvrig Keramik"
+  },
+  {
+
+    "CategoryId": 9,
+    "Name": "Aluminia platter",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Aluminia platter"
+  },
+  {
+
+    "CategoryId": 9,
+    "Name": "Bjørn Wiinblad platter",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Bjørn Wiinblad platter"
+  },
+  {
+
+    "CategoryId": 9,
+    "Name": "Bing & Grøndahl platter",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Bing & Grøndahl platter"
+  },
+  {
+
+    "CategoryId": 9,
+    "Name": "Royal Copenhagen platter",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Royal Copenhagen platter"
+  },
+  {
+
+    "CategoryId": 9,
+    "Name": "Forhandlerskilte",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Forhandlerskilte"
+  },
+  {
+
+    "CategoryId": 9,
+    "Name": "Årskrus",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Årskrus"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Aluminia Julehjerter",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Aluminia Julehjerter"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Arne Bang keramik",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Arne Bang keramik"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Bjørn Wiinblad",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Bjørn Wiinblad"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Blå Blomst",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blå Blomst"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Blåmalet",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Blåmalet"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Dahl Jensen figurer ",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Dahl Jensen figurer "
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Danske møbler",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Danske møbler"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Empire stel",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Empire stel"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Figurer",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Figurer"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Flora Danica",
+    "Order": 10,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Flora Danica"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Georg Jensen Juleuroer",
+    "Order": 11,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Georg Jensen Juleuroer"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Georg Jensen sølv",
+    "Order": 12,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Georg Jensen sølv"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Guld",
+    "Order": 13,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Guld"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Henriette",
+    "Order": 14,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Henriette"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Juleplatter",
+    "Order": 15,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Juleplatter"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Kay Bojesen træfigurer",
+    "Order": 16,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Kay Bojesen træfigurer"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Konkylie stel",
+    "Order": 17,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Konkylie stel"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Musselmalet",
+    "Order": 18,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Musselmalet"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Halvblonde",
+    "Order": 19,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Halvblonde"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Helblonde",
+    "Order": 20,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Helblonde"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Måge med & uden guldkant ",
+    "Order": 21,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Måge med & uden guldkant "
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Purpur Musselmalet",
+    "Order": 22,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Purpur Musselmalet"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Saxbo keramik",
+    "Order": 23,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Saxbo keramik"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Sommerfugl",
+    "Order": 24,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Sommerfugl"
+  },
+  {
+
+    "CategoryId": 13,
+    "Name": "Sølv",
+    "Order": 25,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Beskrivelse af Sølv"
+  }
+]

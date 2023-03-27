@@ -1,0 +1,56 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "Dev_AddFeature_DemoDataGenerator" ]
+  pull_request:
+    branches: [ "Development" ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check if container is running
+        run: |
+          if docker ps | grep groenlundapicontainer; then
+            echo "CHECK_CONTAINER_RUNNING=true" >> $GITHUB_ENV
+          else
+            echo "CHECK_CONTAINER_RUNNING=false" >> $GITHUB_ENV
+          fi
+      - name: Stop container
+        if: env.CHECK_CONTAINER_RUNNING == 'true'
+        run: docker stop groenlundapicontainer
+      - name: Check if image exists
+        run: |
+          if docker image inspect groenlundapiimage >/dev/null 2>&1; then
+            echo "DOCKER_IMAGE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "DOCKER_IMAGE_EXISTS=false" >> $GITHUB_ENV
+          fi
+      - name: Delete docker container
+        run: |
+          if docker ps -a | grep groenlundapicontainer; then
+            docker rm groenlundapicontainer
+          else
+            echo "Container groenlundapicontainer does not exist"
+          fi
+      - name: Remove docker image
+        run: |
+          if [[ "${{ env.DOCKER_IMAGE_EXISTS }}" == 'true' ]]; then
+            docker rmi groenlundapiimage
+          fi
+      - name: Delete old docker images
+        run: |
+          if [[ "${{ env.DOCKER_IMAGE_EXISTS }}" == 'true' ]]; then
+            docker image prune -a --force --filter "until=2h"
+          fi
+      - name: Change directory on server
+        run: cd ~/actions-runner/_work/DiplomaProject/DiplomaProject/
+      - name: Build Docker Image
+        run: docker build -t groenlundapiimage -f UbuntuDockerfile .
+      - name: Run Docker
+        run: docker run -d -p 5001:5000 --name groenlundapicontainer groenlundapiimage
