@@ -7,13 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 /* Add services to the container */
 builder.Services.AddControllers().AddNewtonsoftJson();
-
-//builder.Services.AddDbContext<GroenlundDbContext>(
-//options =>
-//{
-//    //System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-//});
-
 builder.Services.AddDbContext<GroenlundDbContext>();
 
 builder.Services.AddSingleton<IWebDriver>(provider =>
@@ -27,12 +20,11 @@ builder.Services.AddSingleton<IWebDriver>(provider =>
 });
 
 builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
-
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-//builder.WebHost.UseUrls("http://*:5000");
+builder.WebHost.UseUrls("http://*:5000");
 
 var app = builder.Build();
 
