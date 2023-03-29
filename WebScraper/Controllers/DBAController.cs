@@ -69,6 +69,7 @@ namespace WebScraper.Controllers
 
                                 json = JObject.Parse(scriptData);
                                 string? imageUrl = json["image"]?.ToString();
+                                string? name = json["name"]?.ToString();
                                 string? itemUrl = json["url"]?.ToString();
                                 string? price = json["offers"]["price"]?.ToString();
 
@@ -82,6 +83,7 @@ namespace WebScraper.Controllers
                                 model.DBAItemLink = itemUrl;
                                 model.DBAItemPrice = price;
                                 model.DBAItemDescription = description;
+                                model.ItemTitle = name.Replace("&amp;quot;", "").Replace("...", "");
 #pragma warning restore CS8601 // Possible null reference assignment.
                                 results.Add(model);
                             }
