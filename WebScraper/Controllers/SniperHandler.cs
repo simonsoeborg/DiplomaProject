@@ -10,7 +10,6 @@ namespace WebScraper.Controllers
     public class SniperHandler : Controller
     {
         private readonly IWebDriver _driver;
-        private readonly IWebDriver _tempDriver;
         private LauritzController _lauritzController;
         private DBAController _dbaController;
         private bool hasRunnedOnce = false;

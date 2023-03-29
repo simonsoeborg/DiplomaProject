@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IActionResult RunSniper(string? arg)
+        public async Task<IActionResult> RunSniper(string? arg)
         {
             var lauritz = _sniperHandler.GetLauritz(arg);
             var dba = _sniperHandler.getDBA(arg);
