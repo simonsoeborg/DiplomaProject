@@ -16,10 +16,10 @@ namespace WebScraper.Controllers
             _logger = logger;
         }
 
-        public List<Lauritz> SearchLauritz(string arg, IWebDriver _driver)
+        public List<ScrapingModel> SearchLauritz(string arg, IWebDriver _driver)
         {
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(0.100));
-            var results = new ConcurrentBag<Lauritz>();
+            var results = new ConcurrentBag<ScrapingModel>();
 
             string itemStringItemLabel = "ItemTitle";
             string itemStringItemDescription = "ItemDescription";
@@ -122,7 +122,7 @@ namespace WebScraper.Controllers
 
                                 var imageUrls = new List<string>();
                                 imageUrls.Add(getImageURL);
-                                var data = new Lauritz
+                                var data = new ScrapingModel
                                 {
                                     ItemTitle = getItemTitle,
                                     Varenummer = lotId,
@@ -161,9 +161,9 @@ namespace WebScraper.Controllers
                 else
                     return wait.Until(ExpectedConditions.ElementIsVisible(By.Id($"List_LotListRepeater_ctl{index}_{itemString}")));
             }
-            catch (WebDriverTimeoutException e)
+            catch (WebDriverTimeoutException)
             {
-                Console.WriteLine($"Error: {index}; {itemString} not found!" + e);
+                Console.WriteLine($"Error: {index}; {itemString} not found!");
                 _logger.LogInformation($"Error: {index}; {itemString} not found!");
             }
             return null;

@@ -1,7 +1,7 @@
 ﻿
 namespace ClassLibrary.WebScraping
 {
-    public class Lauritz
+    public class ScrapingModel
     {
         public int Varenummer { get; set; }
         public string ItemTitle { get; set; } = null!;
@@ -11,5 +11,9 @@ namespace ClassLibrary.WebScraping
         public string Description { get; set; } = null!;
         public List<string> ImageUrls { get; set; } = new List<string>();
         public string ItemUrl { get; set; } = null!;
+        public string DBAItemLink { get; set; } = null!;
+        public string DBAItemPrice { get; set; } = null!;
+        public string DBAItemImages { get; set; } = null!;
+        public string DBAItemDescription { get; set; } = null!;
     }
 }
