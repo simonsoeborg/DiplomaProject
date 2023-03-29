@@ -2,6 +2,9 @@
 using DataMigration;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Data;
+using System.Runtime.Intrinsics.X86;
 
 class DataMigrater
 {
@@ -16,9 +19,10 @@ class DataMigrater
     public void CreateDataInDatabase()
     {
         MsSqlSetIdentityInsert("ON");
-        CreateCategoriesInDatabase();
-        CreateSubcategoriesInDatabase();
-        CreateProductsInDatabase();
+        CreateRolesInDatabase();
+        //CreateCategoriesInDatabase();
+        //CreateSubcategoriesInDatabase();
+        //CreateProductsInDatabase();
         MsSqlSetIdentityInsert("OFF");
 
     }
@@ -80,6 +84,47 @@ class DataMigrater
             }
         }
 
+    }
+
+    private void CreateRolesInDatabase()
+    {
+
+        // MSSQL
+        /****** Script for SelectTopNRows command from SSMS  ******/
+        //use GroenlundDB;
+        //SET IDENTITY_INSERT Roles ON;
+        //INSERT INTO Roles(RoleId, Title, description) VALUES(0, 'SuperAdmin', 'Full CRUD over all data, can create new users and roles');
+        //INSERT INTO Roles(RoleId, Title, description) VALUES(1, 'Admin', 'Full CRUD over all data');
+        //INSERT INTO Roles(RoleId, Title, description) VALUES(2, 'User', 'CRUD on user-owned data');
+        //INSERT INTO Roles(RoleId, Title, description) VALUES(3, 'Guest', 'Can view user-data but read-only');
+        var roles = _context.Roles;
+        if (roles.Any())
+        {
+            _context.Roles.ExecuteDelete();
+            _context.SaveChanges();
+            Console.WriteLine("Database contains roles");
+            Console.WriteLine("Deleting all roles");
+        }
+
+        Console.WriteLine("Creating roles");
+
+        var rolesJson = DemoDataRepository.GetRoles();
+        foreach (var role in rolesJson)
+        {
+            try
+            {
+                _context.Roles.Add(role);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed creating Role" + e.Message + "\n");
+                Console.WriteLine("StackTrace:" + e.StackTrace + "\n");
+                Console.WriteLine("InnerException:" + e.InnerException + "\n");
+            }
+        }
+
+        Console.WriteLine("Successfully created roles");
     }
 
     private void CreateCategoriesInDatabase()

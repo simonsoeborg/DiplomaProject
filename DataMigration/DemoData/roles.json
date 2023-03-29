@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 1,
+    "Title": "SuperAdmin",
+    "Description": "Full CRUD over all data, can create new users and roles"
+  },
+  {
+    "Id": 2,
+    "Title": "Admin",
+    "Description": "Full CRUD over all data"
+  },
+  {
+    "Id": 3,
+    "Title": "User",
+    "Description": "CRUD on user-owned data"
+  },
+  {
+    "Id": 4,
+    "Title": "Guest",
+    "Description": "Can view user-data but read-only"
+  }
+]

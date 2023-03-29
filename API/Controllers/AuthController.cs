@@ -62,7 +62,6 @@ namespace API.Controllers
             {
                 User user = new()
                 {
-                    Id = _context.Users.Count() + 1,
                     RoleId = 2,
                     FirstName = newUser.FirstName,
                     LastName = newUser.LastName,
