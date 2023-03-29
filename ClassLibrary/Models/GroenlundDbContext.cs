@@ -26,16 +26,16 @@ namespace ClassLibrary.Models
             string connectionString;
 
             /* MySql GroenlundDB */
-            //connectionString = configRoot.GetConnectionString("GroenlundDB")!;
-            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            connectionString = configRoot.GetConnectionString("GroenlundDB")!;
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             /* MySql TestDB */
             //connectionString = configRoot.GetConnectionString("TestDB")!;
             //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             /* MsSql GroenlundDB */
-            connectionString = configRoot.GetConnectionString("MsSql")!;
-            optionsBuilder.UseSqlServer(connectionString);
+            //connectionString = configRoot.GetConnectionString("MsSql")!;
+            //optionsBuilder.UseSqlServer(connectionString);
 
         }
     }
