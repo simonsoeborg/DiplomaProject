@@ -131,7 +131,8 @@ namespace WebScraper.Controllers
                                     PriceEstimate = getValuation,
                                     ImageUrls = imageUrls,
                                     ItemUrl = getItemURL,
-                                    BuyNowPrice = getBuyNowPriceLabel
+                                    BuyNowPrice = getBuyNowPriceLabel,
+                                    Source = "Lauritz.com"
                                 };
                                 results.Add(data);
                             }

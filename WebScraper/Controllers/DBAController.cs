@@ -83,6 +83,7 @@ namespace WebScraper.Controllers
                                 model.DBAItemLink = itemUrl;
                                 model.DBAItemPrice = price;
                                 model.DBAItemDescription = description;
+                                model.Source = "dba.dk";
                                 model.ItemTitle = name.Replace("&amp;quot;", "").Replace("...", "");
 #pragma warning restore CS8601 // Possible null reference assignment.
                                 results.Add(model);
