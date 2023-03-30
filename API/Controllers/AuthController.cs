@@ -51,7 +51,7 @@ namespace API.Controllers
                 return BadRequest("Wrong password");
             }
 
-            Console.WriteLine("User", dbUser);
+            //Console.WriteLine("User", dbUser.ToString());
             string token = CreateToken(dbUser).Result;
             return Ok(token);
         }
