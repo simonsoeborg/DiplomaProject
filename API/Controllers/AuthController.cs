@@ -40,6 +40,7 @@ namespace API.Controllers
         public async Task<ActionResult<string>> Login(UserLoginDTO request)
         {
             User? dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+
             // Lookup user in DB so we can compare hash and salt
             if (dbUser == null)
             {
@@ -50,6 +51,7 @@ namespace API.Controllers
                 return BadRequest("Wrong password");
             }
 
+            //Console.WriteLine("User", dbUser.ToString());
             string token = CreateToken(dbUser).Result;
             return Ok(token);
         }
@@ -62,7 +64,6 @@ namespace API.Controllers
             {
                 User user = new()
                 {
-                    Id = _context.Users.Count() + 1,
                     RoleId = 2,
                     FirstName = newUser.FirstName,
                     LastName = newUser.LastName,

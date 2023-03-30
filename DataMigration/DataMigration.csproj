@@ -17,6 +17,9 @@
 		<None Update="DemoData\products.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="DemoData\roles.json">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="DemoData\subcategories.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

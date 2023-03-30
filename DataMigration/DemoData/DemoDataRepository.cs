@@ -29,5 +29,11 @@ namespace DataMigration
             var json = File.ReadAllText("DemoData/productitems.json");
             return JsonConvert.DeserializeObject<List<ProductItem>>(json)!;
         }
+
+        public static List<Role> GetRoles()
+        {
+            var json = File.ReadAllText("DemoData/roles.json");
+            return JsonConvert.DeserializeObject<List<Role>>(json)!;
+        }
     }
 }
