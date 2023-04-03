@@ -20,6 +20,7 @@ namespace ClassLibrary.Models
         public DbSet<Payment> Payments { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Inventory> CategoryProductCount { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
