@@ -1,7 +1,5 @@
 ﻿using ClassLibrary.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace API.Controllers
 
