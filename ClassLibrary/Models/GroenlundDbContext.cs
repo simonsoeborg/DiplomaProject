@@ -24,6 +24,7 @@ namespace ClassLibrary.Models
         public DbSet<SalesSummary> SalesSummary { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderDetails> OrderDetails { get; set; } = null!;
+        public DbSet<ProductItemDetails> ProductsWithWeight { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
