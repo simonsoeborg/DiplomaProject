@@ -20,18 +20,18 @@ namespace DataMigration
             var categories = CreateCategoriesList();
             var subCategories = CreateSubcategories(categories);
 
-            string folderPath = Path.Combine(AppContext.BaseDirectory, "DemoData", "SøborgData");
-            Directory.CreateDirectory(folderPath);
+            //string folderPath = Path.Combine(AppContext.BaseDirectory, "DemoData", "SøborgData");
+            //Directory.CreateDirectory(folderPath);
 
             // Serialize the categories list to JSON
-            string categoriesJson = JsonSerializer.Serialize(categories);
-            string subCategoriesJson = JsonSerializer.Serialize(subCategories);
+            //string categoriesJson = JsonSerializer.Serialize(categories);
+            //string subCategoriesJson = JsonSerializer.Serialize(subCategories);
 
-            // Write the JSON to a file in the SøborgData folder
-            string categoriesPath = Path.Combine(folderPath, "categoriesSøborg.json");
-            string subcategoriesPath = Path.Combine(folderPath, "subcategoriesSøborg.json");
-            File.WriteAllText(categoriesPath, categoriesJson);
-            File.WriteAllText(subcategoriesPath, subCategoriesJson);
+            //// Write the JSON to a file in the SøborgData folder
+            //string categoriesPath = Path.Combine(folderPath, "categoriesSøborg.json");
+            //string subcategoriesPath = Path.Combine(folderPath, "subcategoriesSøborg.json");
+            //File.WriteAllText(categoriesPath, categoriesJson);
+            //File.WriteAllText(subcategoriesPath, subCategoriesJson);
             //var json = File.ReadAllText(subcategoriesPath);
             //List<Subcategory> test = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Subcategory>>(json)!;
 
@@ -40,8 +40,8 @@ namespace DataMigration
             //    Console.WriteLine(item.Name);
             //}
 
-            CreateCategoriesInDatabase();
-            CreateSubcategoriesInDatabase();
+            //CreateCategoriesInDatabase();
+            //CreateSubcategoriesInDatabase();
         }
 
         private void CreateCategoriesInDatabase()
