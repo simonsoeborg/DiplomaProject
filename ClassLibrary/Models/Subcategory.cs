@@ -10,8 +10,8 @@ namespace ClassLibrary.Models
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
         public int CategoryId { get; set; }
-        //public virtual Category Category { get; set; } = null!;
-        //[JsonIgnore]
-        //public virtual ICollection<Product> Products { get; set; } = null!;
+        public virtual Category Category { get; set; } = null!;
+        [JsonIgnore]
+        public virtual ICollection<Product> Products { get; set; } = null!;
     }
 }
