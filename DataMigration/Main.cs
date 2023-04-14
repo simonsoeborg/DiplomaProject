@@ -1,8 +1,5 @@
-﻿using ClassLibrary.Models;
+﻿
+using DataMigration;
 
-GroenlundDbContext context = new();
-DataMigrater dataMigrater = new(context);
-//DemoDataGenerator demoDataGenerator = new(context);
-
-dataMigrater.CreateDataInDatabase();
-//dataMigrater.PrintProducts();
+DemoDataGenerator dataGenerator = new();
+dataGenerator.PopulateDatabase();
