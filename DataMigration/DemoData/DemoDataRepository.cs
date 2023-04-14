@@ -11,6 +11,11 @@ namespace DataMigration
             var json = File.ReadAllText("DemoData/categories.json");
             return JsonConvert.DeserializeObject<List<Category>>(json)!;
         }
+        public static void createDataSøborg(GroenlundDbContext _context)
+        {
+            DataPopulatorNOGL data = new DataPopulatorNOGL(_context);
+            data.PopulateSomeDataToJSON();
+        }
 
         public static List<Subcategory> GetSubcategories()
         {

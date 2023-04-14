@@ -19,29 +19,30 @@ class DataMigrater
     public void CreateDataInDatabase()
     {
         MsSqlSetIdentityInsert("ON");
-        CreateRolesInDatabase();
-        //CreateCategoriesInDatabase();
+        //CreateRolesInDatabase();
+        //CreateCategoriesInDatabase(); 
         //CreateSubcategoriesInDatabase();
         //CreateProductsInDatabase();
+        DemoDataRepository.createDataSøborg(_context);
         MsSqlSetIdentityInsert("OFF");
 
     }
-    public void PrintProducts()
-    {
-        int counter = 0;
-        var products = _context.Products.Include(p => p.Subcategories).ThenInclude(s => s.Category).ToList();
-        foreach (var product in products)
-        {
-            counter++;
-            Console.WriteLine(product + "\n");
-            foreach (var subcategory in product.Subcategories)
-            {
-                Console.WriteLine("Subcategory's category: " + subcategory.Category.Name);
-            }
-            Console.WriteLine("\n\n\n");
-        }
-        Console.WriteLine("Counted {0} Products", counter);
-    }
+    //public void PrintProducts()
+    //{
+    //    int counter = 0;
+    //    var products = _context.Products.Include(p => p.Subcategories).ThenInclude(s => s.Category).ToList();
+    //    foreach (var product in products)
+    //    {
+    //        counter++;
+    //        Console.WriteLine(product + "\n");
+    //        foreach (var subcategory in product.Subcategories)
+    //        {
+    //            Console.WriteLine("Subcategory's category: " + subcategory.Category.Name);
+    //        }
+    //        Console.WriteLine("\n\n\n");
+    //    }
+    //    Console.WriteLine("Counted {0} Products", counter);
+    //}
     public void CreateJsonFiles()
     {
         var getData = ExtractProducts();
@@ -157,7 +158,6 @@ class DataMigrater
 
         Console.WriteLine("Successfully created categories");
     }
-
     private void CreateSubcategoriesInDatabase()
     {
         var subcategories = _context.Subcategories;
