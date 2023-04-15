@@ -4,7 +4,7 @@ namespace DataMigration
 {
     class TupleConverter
     {
-        static void Main()
+        public void TupleToObject()
         {
             var subcategoryTupleList = TupleList.subcategoryTupleList;
             var jsonArray = new List<object>();

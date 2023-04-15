@@ -23,7 +23,7 @@ namespace DataMigration
 
             /* Subcategories table */
             ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context);
-            //InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
+            InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
 
             ///* Products table */
             //ClearTableAndResetSeed(_context.Products, "Products", _context);
