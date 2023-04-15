@@ -4,7 +4,7 @@
     "Id": 1,
     "Name": "Mega",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://www.fotoagent.dk/images/w/jmEWgSnDCPB2bJYXUndHqQ/s/11385/138/Royal_copenhagen_bl___mega_riflet_1017373.jpg?v=106390496",
     "Description": "Mega Stel",
     "CategoryId": 1
   },
@@ -12,7 +12,7 @@
     "Id": 2,
     "Name": "Musselmalet",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_8fe2c312120847c99fd3fc7da384c4cd~mv2.jpeg/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_8fe2c312120847c99fd3fc7da384c4cd~mv2.webp",
     "Description": "Musselmalet Stel",
     "CategoryId": 1
   },
@@ -20,39 +20,39 @@
     "Id": 3,
     "Name": "Halvblonde",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_667ddfbf7bd643898abe1e26d64ffd81~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_667ddfbf7bd643898abe1e26d64ffd81~mv2.webp",
     "Description": "Halvblonde Stel",
     "CategoryId": 1
   },
   {
     "Id": 4,
-    "Name": "Riflet",
+    "Name": "Helblonde",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
-    "Description": "Riflet Stel",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_5827467fe9354e62ad8ed7bde2d55742~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_5827467fe9354e62ad8ed7bde2d55742~mv2.webp",
+    "Description": "Helblonde Stel",
     "CategoryId": 1
   },
   {
     "Id": 5,
-    "Name": "Facet",
+    "Name": "Riflet",
     "Order": 5,
-    "ImageUrl": "https://via.placeholder.com/600x400",
-    "Description": "Facet Stel",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_35b46290ee8544f9aec6e8f57d2826c6~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_35b46290ee8544f9aec6e8f57d2826c6~mv2.webp",
+    "Description": "Riflet Stel",
     "CategoryId": 1
   },
   {
     "Id": 6,
-    "Name": "Flora Danica",
+    "Name": "Flora",
     "Order": 6,
-    "ImageUrl": "https://via.placeholder.com/600x400",
-    "Description": "Flora Danica Stel",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_69dc80a0ab0d43669013b688b2f12974~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_69dc80a0ab0d43669013b688b2f12974~mv2.webp",
+    "Description": "Flora Stel",
     "CategoryId": 1
   },
   {
     "Id": 7,
     "Name": "Konkylie",
     "Order": 6,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_5c539532e28546a093bd984eb8848bd7~mv2.png/v1/fill/w_321,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_5c539532e28546a093bd984eb8848bd7~mv2.webp",
     "Description": "Konkylie Stel",
     "CategoryId": 1
   },
@@ -60,7 +60,7 @@
     "Id": 8,
     "Name": "Purpur",
     "Order": 8,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_b6c11c4fd2ba4c31aac64a0ba9c00241~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_b6c11c4fd2ba4c31aac64a0ba9c00241~mv2.webp",
     "Description": "Purpur Stel",
     "CategoryId": 1
   },
@@ -71,7 +71,7 @@
     "Id": 9,
     "Name": "Tallerkener",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_77406b3361d14146965ff0f7f49e0b4a~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_77406b3361d14146965ff0f7f49e0b4a~mv2.webp",
     "Description": "Middagstallerkener, dybe tallerkener, frokosttallerkener, firkantede tallerkener, øvrige tallerkener",
     "CategoryId": 2
   },
@@ -79,7 +79,7 @@
     "Id": 10,
     "Name": "Kopper og Krus",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_ce571d0931e442e7b7bf709b1c3eef61~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_ce571d0931e442e7b7bf709b1c3eef61~mv2.webp",
     "Description": "Kaffekopper, espressokopper, højhankskopper, tekopper, termokrus, øvrige krus og kopper",
     "CategoryId": 2
   },
@@ -87,7 +87,7 @@
     "Id": 11,
     "Name": "Skåle",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_1addbf3e823c4865a9853f6f99e87f5f~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_1addbf3e823c4865a9853f6f99e87f5f~mv2.webp",
     "Description": "Frugtskåle, salatskåle, snackskåle, øvrige skåle",
     "CategoryId": 2
   },
@@ -95,7 +95,7 @@
     "Id": 12,
     "Name": "Kander",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_e3642da27bd04b74ae23d53df8aa4994~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_e3642da27bd04b74ae23d53df8aa4994~mv2.webp",
     "Description": "Tekander, fløde- og mælkekander, kander til vand, øvrige kander",
     "CategoryId": 2
   },
@@ -103,7 +103,7 @@
     "Id": 13,
     "Name": "Serveringsdele",
     "Order": 5,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_a00f90c25a304ef68c0b23dd6de929ce~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_a00f90c25a304ef68c0b23dd6de929ce~mv2.webp",
     "Description": "Fade, Kageopsatser, Asietter, Æggebægre, Étagères, Serveringsbræddder, Terrin",
     "CategoryId": 2
   },
@@ -111,7 +111,7 @@
     "Id": 14,
     "Name": "Andet i porcelæn",
     "Order": 6,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_2f917b4a1e7d4ff8acdeaab754702ae9~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_2f917b4a1e7d4ff8acdeaab754702ae9~mv2.webp",
     "Description": "Skeer, opbevaringskrukker",
     "CategoryId": 2
   },
@@ -122,7 +122,7 @@
     "Id": 15,
     "Name": "Bjørne",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_97bc0cd3b2a543419b5699f9ce1fab9a~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_97bc0cd3b2a543419b5699f9ce1fab9a~mv2.webp",
     "Description": "Beskrivelse af Bjørne",
     "CategoryId": 3
   },
@@ -130,7 +130,7 @@
     "Id": 16,
     "Name": "Fugle",
     "Order": 6,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_b0687ff7bbd141e5a6106b327d6d5403~mv2.jpeg/v1/fill/w_323,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_b0687ff7bbd141e5a6106b327d6d5403~mv2.webp",
     "Description": "Beskrivelse af Fugle",
     "CategoryId": 3
   },
@@ -138,7 +138,7 @@
     "Id": 17,
     "Name": "Hunde",
     "Order": 7,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_2c57d3b8e2af45fb84ae076e1027a759~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_2c57d3b8e2af45fb84ae076e1027a759~mv2.webp",
     "Description": "Beskrivelse af Hunde",
     "CategoryId": 3
   },
@@ -146,7 +146,7 @@
     "Id": 18,
     "Name": "Katte",
     "Order": 8,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_962150ff9196436bb3fc5212122b98d5~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_962150ff9196436bb3fc5212122b98d5~mv2.webp",
     "Description": "Beskrivelse af Katte",
     "CategoryId": 3
   },
@@ -154,7 +154,7 @@
     "Id": 19,
     "Name": "Andre dyr",
     "Order": 9,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_8f715acab4424e38a5cb71be9dfe278c~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_8f715acab4424e38a5cb71be9dfe278c~mv2.webp",
     "Description": "Beskrivelse af Andre dyr",
     "CategoryId": 3
   },
@@ -162,7 +162,7 @@
     "Id": 20,
     "Name": "Mennesker",
     "Order": 9,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_03ab8fefc6da4fc786dcc936940680f8~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_03ab8fefc6da4fc786dcc936940680f8~mv2.webp",
     "Description": "Beskrivelse af mennesker",
     "CategoryId": 3
   },
@@ -172,7 +172,7 @@
     "Id": 21,
     "Name": "Royal Copenhagen",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_3baf12f0336c4db0bdc13c4fc70c41a9~mv2_d_3024_4032_s_4_2.jpg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_3baf12f0336c4db0bdc13c4fc70c41a9~mv2_d_3024_4032_s_4_2.webp",
     "Description": "Beskrivelse af Royal Copenhagen",
     "CategoryId": 4
   },
@@ -180,7 +180,7 @@
     "Id": 22,
     "Name": "Bing & Grøndahl",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://www.antikk.dk/images/apZoom/446166z.jpg",
     "Description": "Beskrivelse af Bing & Grøndahl",
     "CategoryId": 4
   },
@@ -188,7 +188,7 @@
     "Id": 23,
     "Name": "Aluminia",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_0308ccbac0004a15943a6efcbb49c8c1~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_0308ccbac0004a15943a6efcbb49c8c1~mv2.webp",
     "Description": "Beskrivelse af Aluminia",
     "CategoryId": 4
   },
@@ -196,7 +196,7 @@
     "Id": 24,
     "Name": "Saxbo",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_a5600e8ae45b443193e88d97718b7be3~mv2.png/v1/fill/w_312,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_a5600e8ae45b443193e88d97718b7be3~mv2.webp",
     "Description": "Beskrivelse af Saxbo",
     "CategoryId": 4
   },
@@ -204,7 +204,7 @@
     "Id": 25,
     "Name": "Arne bang",
     "Order": 5,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_44d16fd4d81d45b49fdea9c4a38a20fa~mv2.jpg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_44d16fd4d81d45b49fdea9c4a38a20fa~mv2.webp",
     "Description": "Beskrivelse af Arne bang",
     "CategoryId": 4
   },
@@ -212,7 +212,7 @@
     "Id": 26,
     "Name": "Palshus",
     "Order": 6,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_da3076262f464866b06da08bfb9622af~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_da3076262f464866b06da08bfb9622af~mv2.webp",
     "Description": "Beskrivelse af Palshus",
     "CategoryId": 4
   },
@@ -220,7 +220,7 @@
     "Id": 27,
     "Name": "Øvrig Keramik",
     "Order": 7,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_1fd2a663ef2142818d5467f56bdf6cd8~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_1fd2a663ef2142818d5467f56bdf6cd8~mv2.webp",
     "Description": "Beskrivelse af Øvrig Keramik",
     "CategoryId": 4
   },
@@ -231,7 +231,7 @@
     "Id": 28,
     "Name": "Brocher",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_10b6214286c74dd0a7218ffb017c6da8~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_10b6214286c74dd0a7218ffb017c6da8~mv2.webp",
     "Description": "Beskrivelse af Brocher",
     "CategoryId": 5
   },
@@ -239,7 +239,7 @@
     "Id": 29,
     "Name": "Halskæder",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_9ff17b35f38145c3b3e376739b7dae51~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_9ff17b35f38145c3b3e376739b7dae51~mv2.webp",
     "Description": "Beskrivelse af Halskæder",
     "CategoryId": 5
   },
@@ -247,7 +247,7 @@
     "Id": 30,
     "Name": "Smykker",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_a95c952cb14e4862993f896a701f4b90~mv2.png/v1/fill/w_310,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_a95c952cb14e4862993f896a701f4b90~mv2.webp",
     "Description": "Beskrivelse af Smykker",
     "CategoryId": 5
   },
@@ -255,7 +255,7 @@
     "Id": 31,
     "Name": "Øvrige",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_1f76706bf40b49ca90d7726f7aef306a~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_1f76706bf40b49ca90d7726f7aef306a~mv2.webp",
     "Description": "Beskrivelse af Øvrige",
     "CategoryId": 5
   },
@@ -265,7 +265,7 @@
     "Id": 32,
     "Name": "Kagebestik",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_d80404fec9424f7d81ffb75f91a3335e~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_d80404fec9424f7d81ffb75f91a3335e~mv2.webp",
     "Description": "Beskrivelse af Kagegafler",
     "CategoryId": 6
   },
@@ -273,7 +273,7 @@
     "Id": 33,
     "Name": "Knive",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_d95c542cdf8c464991a3ad84e284d681~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_d95c542cdf8c464991a3ad84e284d681~mv2.webp",
     "Description": "Beskrivelse af Knive",
     "CategoryId": 6
   },
@@ -281,7 +281,7 @@
     "Id": 34,
     "Name": "Gafler",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_b2e244cede6c4cdfb3bb3d3bf5775569~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_b2e244cede6c4cdfb3bb3d3bf5775569~mv2.webp",
     "Description": "Beskrivelse af Gafler",
     "CategoryId": 6
   },
@@ -289,7 +289,7 @@
     "Id": 35,
     "Name": "Skeer",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_4c192fe0d85e478398a998ee2f916ce7~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_4c192fe0d85e478398a998ee2f916ce7~mv2.webp",
     "Description": "Beskrivelse af Skeer",
     "CategoryId": 6
   },
@@ -297,7 +297,7 @@
     "Id": 36,
     "Name": "Fiskebestik",
     "Order": 5,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_c15193046be84d38a7b5adc14b93488e~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_c15193046be84d38a7b5adc14b93488e~mv2.webp",
     "Description": "Beskrivelse af Fiskebestik",
     "CategoryId": 6
   },
@@ -308,7 +308,7 @@
     "Id": 37,
     "Name": "Aluminia platter",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_52dfba35c857440b9698a537db5b6843~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_52dfba35c857440b9698a537db5b6843~mv2.webp",
     "Description": "Beskrivelse af Aluminia platter",
     "CategoryId": 7
   },
@@ -316,7 +316,7 @@
     "Id": 38,
     "Name": "Bjørn Wiinblad platter",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://www.antikk.dk/images/antLarge/240975.jpg",
     "Description": "Beskrivelse af Bjørn Wiinblad platter",
     "CategoryId": 7
   },
@@ -324,7 +324,7 @@
     "Id": 39,
     "Name": "Bing & Grøndahl platter",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_d36f4991f26e4cdd8165ec3a02abf985~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_d36f4991f26e4cdd8165ec3a02abf985~mv2.webp",
     "Description": "Beskrivelse af Bing & Grøndahl platter",
     "CategoryId": 7
   },
@@ -332,7 +332,7 @@
     "Id": 40,
     "Name": "Royal Copenhagen platter",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_74aa5e7123b1465e95658cb470b1029e~mv2.jpeg/v1/fill/w_315,h_420,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_74aa5e7123b1465e95658cb470b1029e~mv2.webp",
     "Description": "Beskrivelse af Royal Copenhagen platter",
     "CategoryId": 7
   },
@@ -342,7 +342,7 @@
     "Id": 41,
     "Name": "Vinglas",
     "Order": 1,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_cc2c79b1a9b54ae4a18aba499db780b9~mv2.png/v1/fill/w_317,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_cc2c79b1a9b54ae4a18aba499db780b9~mv2.webp",
     "Description": "Beskrivelse af Vinglas",
     "CategoryId": 8
   },
@@ -350,7 +350,7 @@
     "Id": 42,
     "Name": "Dessertglas",
     "Order": 2,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_c5d8e15c36a245fe966ac7fe14f28957~mv2.png/v1/fill/w_315,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_c5d8e15c36a245fe966ac7fe14f28957~mv2.webp",
     "Description": "Beskrivelse af Dessertglas",
     "CategoryId": 8
   },
@@ -358,7 +358,7 @@
     "Id": 43,
     "Name": "Ølglas",
     "Order": 3,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_125818abb8c34b90a4111222f1af9ac9~mv2.png/v1/fill/w_281,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_125818abb8c34b90a4111222f1af9ac9~mv2.webp",
     "Description": "Beskrivelse af Ølglas",
     "CategoryId": 8
   },
@@ -366,7 +366,7 @@
     "Id": 44,
     "Name": "Vaser",
     "Order": 4,
-    "ImageUrl": "https://via.placeholder.com/600x400",
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_b5fa5df134014aecbfa45e083e0757f7~mv2.png/v1/fill/w_312,h_420,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_b5fa5df134014aecbfa45e083e0757f7~mv2.webp",
     "Description": "Beskrivelse af Vaser",
     "CategoryId": 8
   }
