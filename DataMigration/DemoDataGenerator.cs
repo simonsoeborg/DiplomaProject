@@ -15,15 +15,15 @@ namespace DataMigration
 
             /* Roles table */
             ClearTableAndResetSeed(_context.Roles, "Roles", _context);
-            InsertEntityInDatabase(_context.Roles, "Roles");
+            InsertEntityInDatabase(_context.Roles, "Roles", DemoDataRepository.Roles());
 
             /* Categories table */
             ClearTableAndResetSeed(_context.Categories, "Categories", _context);
-            InsertEntityInDatabase(_context.Categories, "Categories");
+            InsertEntityInDatabase(_context.Categories, "Categories", DemoDataRepository.Categories());
 
             /* Subcategories table */
             ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context);
-            InsertEntityInDatabase(_context.Subcategories, "Subcategories");
+            //InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
 
             ///* Products table */
             //ClearTableAndResetSeed(_context.Products, "Products", _context);
@@ -35,25 +35,19 @@ namespace DataMigration
 
         }
 
-        private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName) where T : class
+        private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities) where T : class
         {
             Console.WriteLine("Creating " + tableName);
-            var jsondata = GetData(tableEntity);
-            //var rolesJson = DemoDataRepository.GetRoles();
 
-            foreach (var dataEntry in jsondata)
+            foreach (var entity in entities)
             {
                 using var transaction = _context.Database.BeginTransaction();
                 try
                 {
                     _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " ON");
-
-                    //_context.Set<Role>().Add(role);
-                    tableEntity.Add(dataEntry);
+                    tableEntity.Add(entity);
                     _context.SaveChanges();
-
                     _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
-
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -69,17 +63,17 @@ namespace DataMigration
         }
 
 
-        private void ClearTableAndResetSeed<T>(DbSet<T> tableEntity, string tableName, GroenlundDbContext context) where T : class
+        private static void ClearTableAndResetSeed<T>(DbSet<T> dbTable, string tableName, GroenlundDbContext context) where T : class
         {
-            if (tableEntity.Any())
+            if (dbTable.Any())
             {
-                tableEntity.ExecuteDelete();
-                _context.SaveChanges();
+                dbTable.ExecuteDelete();
+                context.SaveChanges();
                 Console.WriteLine("Database contains " + tableName);
                 Console.WriteLine("Deleting all roles " + tableName);
 
                 // Detach deleted entities from the context
-                foreach (var entity in _context.ChangeTracker.Entries())
+                foreach (var entity in context.ChangeTracker.Entries())
                 {
                     if (entity.State == EntityState.Deleted)
                     {
@@ -91,38 +85,6 @@ namespace DataMigration
             // Reset the seed
             context.Database.ExecuteSqlRaw("DBCC CHECKIDENT('" + tableName + "', RESEED, 0)");
             Console.WriteLine("Resetted seed for " + tableName);
-        }
-
-        private static List<T> GetData<T>(DbSet<T> tableEntity) where T : class
-        {
-            var entityType = tableEntity.EntityType.ClrType;
-
-            if (entityType == typeof(Role))
-            {
-                return DemoDataRepository.Roles().Cast<T>().ToList();
-            }
-            if (entityType == typeof(Category))
-            {
-                return DemoDataRepository.SøborgCategories().Cast<T>().ToList();
-            }
-            if (entityType == typeof(Subcategory))
-            {
-                return DemoDataRepository.SøborgSubcategories().Cast<T>().ToList();
-            }
-            if (entityType == typeof(Product))
-            {
-                return DemoDataRepository.Products().Cast<T>().ToList();
-            }
-            if (entityType == typeof(ProductItem))
-            {
-                return DemoDataRepository.ProductItems().Cast<T>().ToList();
-            }
-            else
-            {
-                Console.Error.WriteLine("Unable to match entitytype with a list of json objects");
-            }
-
-            return new List<T>();
         }
     }
 }
