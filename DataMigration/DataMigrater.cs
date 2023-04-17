@@ -117,11 +117,16 @@ class DataMigrater
                     foreach (var img in imageUrls)
                     {
                         if (string.IsNullOrEmpty(img)) continue;
+                        var imgId = img.Split('.')[0];
+                        string imgReducedSize = "https://static.wixstatic.com/media/" + img + "/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/" + imgId + ".webp";
+                        //Console.WriteLine(imgId);
+                        //Console.WriteLine(imgReducedSize);
+
                         Image image = new()
                         {
                             ProductItemId = productItem.Id,
                             Id = poImageIdCounter,
-                            Url = "https://static.wixstatic.com/media/" + img,
+                            Url = imgReducedSize,
                         };
                         productItem.Images.Add(image);
                         poImageIdCounter++;

@@ -12,6 +12,8 @@ namespace ClassLibrary.Models
         public GroenlundDbContext(DbContextOptions<GroenlundDbContext> options) : base(options) { }
 
         public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<DiscountCode> DiscountCodes { get; set; } = null!;
         public DbSet<Subcategory> Subcategories { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<ProductItem> ProductItems { get; set; } = null!;
@@ -20,10 +22,12 @@ namespace ClassLibrary.Models
         public DbSet<Payment> Payments { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Inventory> CategoryProductCount { get; set; } = null!;
-        public DbSet<SalesSummary> SalesSummary { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
+
+        // Views
         public DbSet<OrderDetails> OrderDetails { get; set; } = null!;
+        public DbSet<SalesSummary> SalesSummary { get; set; } = null!;
+        public DbSet<Inventory> CategoryProductCount { get; set; } = null!;
         public DbSet<ProductItemDetails> ProductsWithWeight { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

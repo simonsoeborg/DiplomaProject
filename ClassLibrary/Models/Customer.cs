@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary.Models.NotInUse
+﻿namespace ClassLibrary.Models
 {
     public class Customer
     {

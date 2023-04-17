@@ -39,20 +39,26 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Images, "Images", _context);
             InsertEntityInDatabase(_context.Images, "Images", Images);
 
-            /* Orders table */
-            ClearTableAndResetSeed(_context.Orders, "Orders", _context);
-            InsertEntityInDatabase(_context.Orders, "Orders", DemoDataRepository.Orders());
 
-            /* Customers, Payments, DiscountCodes tables */
+            /* Customers table */
+            ClearTableAndResetSeed(_context.Customers, "Customers", _context);
+            InsertEntityInDatabase(_context.Customers, "Customers", DemoDataRepository.Customers());
 
-            //TODO
-            //ClearTableAndResetSeed(_context.Customers, "Customers", _context);
-            //ClearTableAndResetSeed(_context.Payments, "Payments", _context);
-            //ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
+            /* Payments table */
+            ClearTableAndResetSeed(_context.Payments, "Payments", _context);
+            InsertEntityInDatabase(_context.Payments, "Payments", DemoDataRepository.Payments());
+
+            /* DiscountCodes table */
+            ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
+            InsertEntityInDatabase(_context.DiscountCodes, "DiscountCodes", DemoDataRepository.DiscountCodes());
 
             /* Users table */
             ClearTableAndResetSeed(_context.Users, "Users", _context);
             InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users());
+
+            ///* Orders table */
+            //ClearTableAndResetSeed(_context.Orders, "Orders", _context);
+            //InsertEntityInDatabase(_context.Orders, "Orders", DemoDataRepository.Orders());
         }
 
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities) where T : class
@@ -115,7 +121,7 @@ namespace DataMigration
             Console.WriteLine("Successfully created " + tableName);
         }
 
-        private void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
+        private static void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
         {
             List<Subcategory> productSubcategories = product.Subcategories.ToList();
             List<Subcategory> newProductSubcategories = new();
