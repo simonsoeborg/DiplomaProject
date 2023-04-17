@@ -47,6 +47,9 @@
 		<None Update="DemoData\SøborgJSON\s_subcategories.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="DemoData\users.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="products.csv">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

@@ -44,10 +44,15 @@ namespace DataMigration
             InsertEntityInDatabase(_context.Orders, "Orders", DemoDataRepository.Orders());
 
             /* Customers, Payments, DiscountCodes tables */
-            ClearTableAndResetSeed(_context.Customers, "Customers", _context);
-            ClearTableAndResetSeed(_context.Payments, "Payments", _context);
-            ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
 
+            //TODO
+            //ClearTableAndResetSeed(_context.Customers, "Customers", _context);
+            //ClearTableAndResetSeed(_context.Payments, "Payments", _context);
+            //ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
+
+            /* Users table */
+            ClearTableAndResetSeed(_context.Users, "Users", _context);
+            InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users());
         }
 
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities) where T : class
