@@ -8,6 +8,7 @@ namespace ClassLibrary.Models
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public int PaymentId { get; set; }
+        public int ProductId { get; set; }
         public int ProductItemId { get; set; }
         public string PaymentStatus { get; set; }
         public string DeliveryStatus { get; set; }

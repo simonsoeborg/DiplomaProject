@@ -47,5 +47,55 @@ namespace ClassLibrary.Models
             //optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SalesSummary>(
+            eb =>
+            {
+                eb.HasNoKey();
+                eb.ToView("SalesSummary");
+                eb.Property(v => v.TotalSales).HasColumnName("TotalSales");
+                eb.Property(v => v.TotalAmount).HasColumnName("TotalAmount");
+            });
+
+            modelBuilder.Entity<ProductItemDetails>(
+            eb =>
+            {
+                eb.HasNoKey();
+                eb.ToView("ProductsWithWeight");
+                eb.Property(v => v.Name).HasColumnName("Name");
+                eb.Property(v => v.Material).HasColumnName("Material");
+                eb.Property(v => v.Weight).HasColumnName("Weight");
+            });
+
+            modelBuilder.Entity<OrderDetails>(
+            eb =>
+            {
+                eb.HasNoKey();
+                eb.ToView("OrderDetails");
+                eb.Property(v => v.Name).HasColumnName("Name");
+                eb.Property(v => v.Manufacturer).HasColumnName("Manufacturer");
+                eb.Property(v => v.PaymentId).HasColumnName("PaymentId");
+                eb.Property(v => v.PaymentStatus).HasColumnName("PaymentStatus");
+                eb.Property(v => v.DeliveryStatus).HasColumnName("DeliveryStatus");
+                eb.Property(v => v.DiscountCode).HasColumnName("DiscountCode");
+                eb.Property(v => v.Active).HasColumnName("Active");
+                eb.Property(v => v.CustomerId).HasColumnName("CustomerId");
+                eb.Property(v => v.ProductItemId).HasColumnName("ProductItemId");
+                eb.Property(v => v.ProductId).HasColumnName("ProductId");
+
+            });
+
+            modelBuilder.Entity<Inventory>(
+            eb =>
+            {
+                eb.HasNoKey();
+                eb.ToView("CategoryProductCount");
+                eb.Property(v => v.Name).HasColumnName("Name");
+                eb.Property(v => v.TotalProducts).HasColumnName("TotalProducts");
+            });
+        }
     }
 }
