@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "Code": "WELCOME10",
+    "DiscountPercentage": 10
+  },
+  {
+    "Id": 2,
+    "Code": "HAPPY15",
+    "DiscountPercentage": 15
+  },
+  {
+    "Id": 3,
+    "Code": "SALE20",
+    "DiscountPercentage": 20
+  },
+  {
+    "Id": 4,
+    "Code": "LUCKY25",
+    "DiscountPercentage": 25
+  },
+  {
+    "Id": 5,
+    "Code": "SPRING30",
+    "DiscountPercentage": 30
+  },
+  {
+    "Id": 6,
+    "Code": "MAYDAY35",
+    "DiscountPercentage": 35
+  },
+  {
+    "Id": 7,
+    "Code": "MEMORIAL40",
+    "DiscountPercentage": 40
+  },
+  {
+    "Id": 8,
+    "Code": "FATHERSDAY45",
+    "DiscountPercentage": 45
+  },
+  {
+    "Id": 9,
+    "Code": "JULY50",
+    "DiscountPercentage": 50
+  },
+  {
+    "Id": 10,
+    "Code": "BACKTOSCHOOL55",
+    "DiscountPercentage": 55
+  },
+  {
+    "Id": 11,
+    "Code": "LABORDAY60",
+    "DiscountPercentage": 60
+  },
+  {
+    "Id": 12,
+    "Code": "HARVEST65",
+    "DiscountPercentage": 65
+  },
+  {
+    "Id": 13,
+    "Code": "HALLOWEEN70",
+    "DiscountPercentage": 70
+  },
+  {
+    "Id": 14,
+    "Code": "BLACKFRIDAY75",
+    "DiscountPercentage": 75
+  },
+  {
+    "Id": 15,
+    "Code": "CYBERMONDAY80",
+    "DiscountPercentage": 80
+  },
+  {
+    "Id": 16,
+    "Code": "CHRISTMAS85",
+    "DiscountPercentage": 85
+  },
+  {
+    "Id": 17,
+    "Code": "NEWYEAR90",
+    "DiscountPercentage": 90
+  },
+  {
+    "Id": 18,
+    "Code": "LOVE95",
+    "DiscountPercentage": 95
+  },
+  {
+    "Id": 19,
+    "Code": "IOWNTHISSTORE",
+    "DiscountPercentage": 100
+  },
+  {
+    "Id": 20,
+    "Code": "SPRING2023",
+    "DiscountPercentage": 23
+  }
+]

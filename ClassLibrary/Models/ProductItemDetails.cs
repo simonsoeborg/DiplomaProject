@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary.Models
 {
@@ -7,6 +9,7 @@ namespace ClassLibrary.Models
     {
         public string Name { get; set; }
         public int Material { get; set; }
+        [Column(TypeName = "decimal(12,2)")]
         public decimal Weight { get; set; }
     }
 }
