@@ -8,10 +8,22 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<None Update="DemoData\images.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="DemoData\OLD_categories.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="DemoData\categories.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="DemoData\OLD_productitems.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="DemoData\OLD_products.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="DemoData\orders.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="DemoData\productitems.json">

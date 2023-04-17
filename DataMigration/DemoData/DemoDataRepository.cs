@@ -10,7 +10,9 @@ namespace DataMigration
         public static List<Subcategory> Subcategories() { return JsonConvert.DeserializeObject<List<Subcategory>>(File.ReadAllText("DemoData/subcategories.json"))!; }
         public static List<Product> Products() { return JsonConvert.DeserializeObject<List<Product>>(File.ReadAllText("DemoData/products.json"))!; }
         public static List<ProductItem> ProductItems() { return JsonConvert.DeserializeObject<List<ProductItem>>(File.ReadAllText("DemoData/productitems.json"))!; }
+        public static List<Image> Images() { return JsonConvert.DeserializeObject<List<Image>>(File.ReadAllText("DemoData/images.json"))!; }
         public static List<Role> Roles() { return JsonConvert.DeserializeObject<List<Role>>(File.ReadAllText("DemoData/roles.json"))!; }
+        public static List<Order> Orders() { return JsonConvert.DeserializeObject<List<Order>>(File.ReadAllText("DemoData/orders.json"))!; }
         public static List<Category> SøborgCategories() { return JsonConvert.DeserializeObject<List<Category>>(File.ReadAllText("DemoData/SøborgJSON/s_categories.json"))!; }
         public static List<Category> SøborgSubcategories() { return JsonConvert.DeserializeObject<List<Category>>(File.ReadAllText("DemoData/SøborgJSON/s_subcategories.json"))!; }
     }

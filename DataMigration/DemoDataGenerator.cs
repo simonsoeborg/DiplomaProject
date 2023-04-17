@@ -12,7 +12,6 @@ namespace DataMigration
         }
         public void PopulateDatabase()
         {
-
             /* Roles table */
             ClearTableAndResetSeed(_context.Roles, "Roles", _context);
             InsertEntityInDatabase(_context.Roles, "Roles", DemoDataRepository.Roles());
@@ -25,13 +24,29 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context);
             InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
 
-            ///* Products table */
-            //ClearTableAndResetSeed(_context.Products, "Products", _context);
-            //InsertEntityInDatabase(_context.Products, "products");
+            DataMigrater dg = new();
+            var (Products, ProductItems, Images) = dg.ExtractProducts();
 
-            ///* ProductItems table */
-            //ClearTableAndResetSeed(_context.ProductItems, "ProductItems", _context);
-            //InsertEntityInDatabase(_context.ProductItems, "productitems");
+            /* Products table */
+            ClearTableAndResetSeed(_context.Products, "Products", _context);
+            InsertProductsInDatabase("Products", Products);
+
+            /* ProductItems table */
+            ClearTableAndResetSeed(_context.ProductItems, "ProductItems", _context);
+            InsertEntityInDatabase(_context.ProductItems, "ProductItems", ProductItems);
+
+            /* Images table */
+            ClearTableAndResetSeed(_context.Images, "Images", _context);
+            InsertEntityInDatabase(_context.Images, "Images", Images);
+
+            /* Orders table */
+            ClearTableAndResetSeed(_context.Orders, "Orders", _context);
+            InsertEntityInDatabase(_context.Orders, "Orders", DemoDataRepository.Orders());
+
+            /* Customers, Payments, DiscountCodes tables */
+            ClearTableAndResetSeed(_context.Customers, "Customers", _context);
+            ClearTableAndResetSeed(_context.Payments, "Payments", _context);
+            ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
 
         }
 
@@ -62,6 +77,51 @@ namespace DataMigration
             Console.WriteLine("Successfully created " + tableName);
         }
 
+        private void InsertProductsInDatabase(string tableName, List<Product> products)
+        {
+            List<Subcategory> subcategories = _context.Subcategories.Include(s => s.Category).ToList();
+
+            Console.WriteLine("Creating " + tableName);
+
+            foreach (var product in products)
+            {
+                // This has to be done in order for EF-Core to ensure tracking of subcategory entities is correct
+                MapSubcategoryEntityToProduct(subcategories, product);
+
+                using var transaction = _context.Database.BeginTransaction();
+                try
+                {
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo.Products ON");
+
+                    _context.Products.Add(product);
+                    _context.SaveChanges();
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    //transaction.Rollback();
+                    Console.WriteLine("Failed creating " + tableName + ex.Message + "\n");
+                    Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
+                    Console.WriteLine("InnerException:" + ex.InnerException + "\n");
+                }
+            }
+
+            Console.WriteLine("Successfully created " + tableName);
+        }
+
+        private void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
+        {
+            List<Subcategory> productSubcategories = product.Subcategories.ToList();
+            List<Subcategory> newProductSubcategories = new();
+
+            foreach (var productSubcat in productSubcategories)
+            {
+                newProductSubcategories.Add(subcategoryEntities.Find(s => s.Id == productSubcat.Id)!);
+            }
+
+            product.Subcategories = newProductSubcategories;
+        }
 
         private static void ClearTableAndResetSeed<T>(DbSet<T> dbTable, string tableName, GroenlundDbContext context) where T : class
         {
@@ -70,7 +130,7 @@ namespace DataMigration
                 dbTable.ExecuteDelete();
                 context.SaveChanges();
                 Console.WriteLine("Database contains " + tableName);
-                Console.WriteLine("Deleting all roles " + tableName);
+                Console.WriteLine("Deleting all " + tableName);
 
                 // Detach deleted entities from the context
                 foreach (var entity in context.ChangeTracker.Entries())
@@ -92,6 +152,37 @@ namespace DataMigration
 
 /*
  * 
+ * 
+ * 
+ * 
+ *  private void InsertProductItemsInDatabase(DbSet<ProductItem> productItemTable, string tableName, List<ProductItem> productItems)
+        {
+            Console.WriteLine("Creating " + tableName);
+
+            foreach (var productItem in productItems)
+            {
+                using var transaction = _context.Database.BeginTransaction();
+                try
+                {
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " ON");
+                    //_context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo.Images ON");
+                    productItemTable.Add(productItem);
+                    _context.SaveChanges();
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
+                    //_context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo.Images OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine("Failed creating " + tableName + ex.Message + "\n");
+                    Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
+                    Console.WriteLine("InnerException:" + ex.InnerException + "\n");
+                }
+            }
+
+            Console.WriteLine("Successfully created " + tableName);
+        }
  * 
     private void CreateProductsInDatabase()
     {

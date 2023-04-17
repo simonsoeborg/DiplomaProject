@@ -42,6 +42,10 @@ namespace ClassLibrary.Models
             connectionString = configRoot.GetConnectionString("MsSql")!;
             optionsBuilder.UseSqlServer(connectionString);
 
+            /* Enable logging */
+            //optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+
         }
     }
 }
