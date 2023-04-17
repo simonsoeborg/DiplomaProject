@@ -6,9 +6,11 @@ namespace DataMigration
     public class DemoDataGenerator
     {
         private readonly GroenlundDbContext _context;
+        private readonly DataMigrater dg;
         public DemoDataGenerator()
         {
             _context = new();
+            dg = new();
         }
         public void PopulateDatabase()
         {
@@ -24,7 +26,6 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context);
             InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
 
-            DataMigrater dg = new();
             var (Products, ProductItems, Images) = dg.ExtractProducts();
 
             /* Products table */
@@ -44,10 +45,6 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Customers, "Customers", _context);
             InsertEntityInDatabase(_context.Customers, "Customers", DemoDataRepository.Customers());
 
-            /* Payments table */
-            ClearTableAndResetSeed(_context.Payments, "Payments", _context);
-            InsertEntityInDatabase(_context.Payments, "Payments", DemoDataRepository.Payments());
-
             /* DiscountCodes table */
             ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
             InsertEntityInDatabase(_context.DiscountCodes, "DiscountCodes", DemoDataRepository.DiscountCodes());
@@ -56,9 +53,15 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Users, "Users", _context);
             InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users());
 
-            ///* Orders table */
-            //ClearTableAndResetSeed(_context.Orders, "Orders", _context);
-            //InsertEntityInDatabase(_context.Orders, "Orders", DemoDataRepository.Orders());
+            var (Orders, Payments) = GenerateOrders(_context);
+
+            /* Payments table */
+            ClearTableAndResetSeed(_context.Payments, "Payments", _context);
+            InsertEntityInDatabase(_context.Payments, "Payments", Payments);
+
+            /* Orders table */
+            ClearTableAndResetSeed(_context.Orders, "Orders", _context);
+            InsertEntityInDatabase(_context.Orders, "Orders", Orders);
         }
 
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities) where T : class
@@ -156,6 +159,73 @@ namespace DataMigration
             // Reset the seed
             context.Database.ExecuteSqlRaw("DBCC CHECKIDENT('" + tableName + "', RESEED, 0)");
             Console.WriteLine("Resetted seed for " + tableName);
+        }
+
+        private static (List<Order> Orders, List<Payment> Payments) GenerateOrders(GroenlundDbContext context)
+        {
+            var orders = new List<Order>();
+            var payments = new List<Payment>();
+            var customers = context.Customers.ToList();
+            var discountCodes = context.DiscountCodes.ToList();
+            var productItems = context.ProductItems.ToList();
+            List<int> usedProductItemIds = new();
+            List<string> deliveryStatuses = new() { "Delivered", "Pending", "Shipped" };
+            List<string> paymentMethods = new() { "Credit Card", "PayPal", "Bank Transfer", "MobilePay", "Stripe" };
+            int orderIdCounter = 1;
+
+            foreach (var customer in customers)
+            {
+                int numberOfOrders = new Random().Next(1, 10);
+                int randomProductItemId = new Random().Next(1, productItems.Count);
+
+                while (usedProductItemIds.Contains(randomProductItemId))
+                {
+                    randomProductItemId = new Random().Next(1, productItems.Count);
+                }
+
+                for (int i = 0; i < numberOfOrders; i++)
+                {
+                    var order = new Order
+                    {
+                        Id = orderIdCounter,
+                        CustomerId = customer.Id,
+                        Active = numberOfOrders % 2 == 0,
+                        DeliveryStatus = deliveryStatuses[new Random().Next(1, 3)],
+                        DiscountCode = discountCodes[new Random().Next(1, discountCodes.Count)].Code,
+                        ProductItemId = randomProductItemId,
+
+                    };
+
+                    decimal paymentAmount = productItems.FirstOrDefault(po => po.Id == order.ProductItemId) != null ? productItems.FirstOrDefault(po => po.Id == order.ProductItemId)!.CurrentPrice : 2000;
+
+                    var payment = new Payment
+                    {
+                        Id = orderIdCounter,
+                        Amount = (double)paymentAmount,
+                        DatePaid = RandomDay(),
+                        Method = paymentMethods[new Random().Next(1, paymentMethods.Count)],
+                        Approved = Convert.ToSByte(orderIdCounter % 2)
+                    };
+
+                    order.PaymentId = payment.Id;
+                    order.PaymentStatus = payment.Approved == 1 ? "Approved" : "Pending";
+
+                    orders.Add(order);
+                    payments.Add(payment);
+
+                    orderIdCounter++;
+
+                }
+
+            }
+
+            return (orders, payments);
+        }
+        private static DateTime RandomDay()
+        {
+            DateTime start = new(2019, 1, 1);
+            int range = (DateTime.Today - start).Days;
+            return start.AddDays(new Random().Next(range));
         }
     }
 }
