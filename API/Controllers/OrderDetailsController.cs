@@ -27,5 +27,19 @@ namespace API.Controllers
 
             return new OkObjectResult(orderDetails);
         }
+
+        // GET: api/Order/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OrderDetails>> GetOrder(int id)
+        {
+            var order = await _context.OrderDetails.FindAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return order;
+        }
     }
 }
