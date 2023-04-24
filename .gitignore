@@ -69,3 +69,7 @@ GroenlundWS/obj/
 /API/bin/Release/net7.0
 /ClassLibrary/bin/Release/net7.0
 /WebScraper/bin/Release/net7.0
+
+WebScraper/bin/
+
+ClassLibrary/bin/
