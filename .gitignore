@@ -66,3 +66,6 @@ GroenlundWS/obj/
 /DataMigration/.vs
 /DataMigration/obj
 /WebScraper/bin/Release/net6.0
+/API/bin/Release/net7.0
+/ClassLibrary/bin/Release/net7.0
+/WebScraper/bin/Release/net7.0
