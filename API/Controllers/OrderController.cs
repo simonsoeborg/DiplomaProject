@@ -68,12 +68,20 @@ namespace API.Controllers
 
         // POST: api/Order
         [HttpPost]
-        public async Task<ActionResult<Payment>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            _context.Orders.Add(order);
+            var createdOrder = _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+            // Return OrderDetails instead of Order 
+            var orderDetail = await _context.OrderDetails.FirstOrDefaultAsync(od => od.OrderId == order.Id);
+
+            if (orderDetail == null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtAction("GetOrder", new { id = orderDetail.OrderId }, orderDetail);
         }
 
         // DELETE: api/Order/5

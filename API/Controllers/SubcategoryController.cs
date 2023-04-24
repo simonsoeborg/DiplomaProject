@@ -6,6 +6,7 @@ using System.Net;
 namespace API.Controllers
 
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class SubcategoryController : ControllerBase
@@ -31,45 +32,47 @@ namespace API.Controllers
         }
 
 
-        [EnableCors]
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] Subcategory req)
+        public ActionResult<OkResult> Post([FromBody] Subcategory req)
         {
-            if (PropertiesHasValues(req))
+
+            try
             {
+                var category = _context.Categories.Find(req.CategoryId);
+                if (category == null)
+                {
+                    return new BadRequestObjectResult("Could not find category with categoryid: " + req.CategoryId);
+                }
                 // Removing ID property from request since database auto-increments.
                 Subcategory reqSubcategory = new()
                 {
                     Name = req.Name,
                     Order = req.Order,
-                    CategoryId = req.CategoryId
+                    ImageUrl = req.ImageUrl != null ? req.ImageUrl : null,
+                    Description = req.Description != null ? req.Description : null,
+                    CategoryId = req.CategoryId,
+                    Category = category,
+                    Products = new List<Product>()
                 };
-                if (req.ImageUrl != null) { reqSubcategory.ImageUrl = req.ImageUrl; }
-                if (req.Description != null) { reqSubcategory.Description = req.Description; }
 
                 _context.Subcategories.Add(reqSubcategory);
-            }
-            else
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            }
-
-            try
-            {
                 _context.SaveChanges();
-                return new HttpResponseMessage(HttpStatusCode.Created);
+                return new OkResult();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return new BadRequestResult();
             }
+
+            return new NoContentResult();
         }
 
 
         [HttpPut("{id}")]
         public HttpResponseMessage Put(int id, [FromBody] Subcategory req)
         {
+            Console.WriteLine("req Id: " + req.Id);
             var subCategory = _context.Subcategories.Find(id);
 
             if (subCategory == null)
@@ -130,13 +133,7 @@ namespace API.Controllers
 
         private static bool PropertiesHasValues(Subcategory subCategory)
         {
-            if (string.IsNullOrEmpty(subCategory.Name)
-                //|| string.IsNullOrEmpty(subCategory.Description)
-                //|| string.IsNullOrWhiteSpace(subCategory.ImageUrl)
-                || subCategory.CategoryId <= 0
-                || subCategory.Order <= 0
-                || subCategory.CategoryId <= 0
-            )
+            if (string.IsNullOrEmpty(subCategory.Name) || subCategory.CategoryId <= 0 || subCategory.Order <= 0)
             {
                 return false;
             }

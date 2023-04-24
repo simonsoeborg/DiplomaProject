@@ -6,6 +6,7 @@ using System.Net;
 namespace API.Controllers
 
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -31,7 +32,6 @@ namespace API.Controllers
         }
 
 
-        [EnableCors]
         [HttpPost]
         public HttpResponseMessage Post([FromBody] Category value)
         {

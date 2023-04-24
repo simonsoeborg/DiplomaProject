@@ -16,6 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddDbContext<GroenlundDbContext>();
 
+
 builder.Services.AddSingleton<IWebDriver>(provider =>
 {
     var chromeOptions = new ChromeOptions();
@@ -27,9 +28,22 @@ builder.Services.AddSingleton<IWebDriver>(provider =>
 });
 
 builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
-
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen(options =>
+//{
+//    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+//    {
+//        In = ParameterLocation.Header,
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.ApiKey
+//    });
+
+//    options.OperationFilter<SecurityRequirementsOperationFilter>();
+//});
+
+//builder.Services.AddAuthentication().AddJwtBearer();
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 
