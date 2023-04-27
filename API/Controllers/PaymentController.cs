@@ -1,11 +1,14 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.PaymentModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 namespace API.Controllers
 {
+    [EnableCors]
+
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase

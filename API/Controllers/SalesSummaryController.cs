@@ -1,9 +1,11 @@
 ﻿using ClassLibrary.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class SalesSummaryController : ControllerBase

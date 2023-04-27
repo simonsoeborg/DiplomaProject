@@ -1,9 +1,11 @@
 ﻿using ClassLibrary.WebScraping;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WebScraper.Controllers;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class SniperController : Controller
