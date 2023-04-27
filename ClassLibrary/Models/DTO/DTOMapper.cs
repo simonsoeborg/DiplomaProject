@@ -42,10 +42,9 @@ namespace ClassLibrary.Models.DTO
             List<int> elemntIds = new();
             foreach (var element in order.OrderElements)
             {
-                elemntIds.Add(element.OrderId);
+                elemntIds.Add(element.Id);
             }
             ord.OrderElementIDs = elemntIds.ToList();
-
 
             return ord;
         }

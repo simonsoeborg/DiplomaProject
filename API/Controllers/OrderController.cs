@@ -1,10 +1,12 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Models.DTO;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
