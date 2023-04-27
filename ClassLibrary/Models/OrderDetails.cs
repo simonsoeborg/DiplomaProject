@@ -16,6 +16,7 @@ namespace ClassLibrary.Models
         public bool Active { get; set; }
         public string Name { get; set; }
         public string Manufacturer { get; set; }
-    }
+        public ICollection<OrderElements> OrderElements { get; set; } = new List<OrderElements>(); // Collection navigation containing dependents
 
+    }
 }

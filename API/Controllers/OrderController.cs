@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models;
+using ClassLibrary.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,16 @@ namespace API.Controllers
 
         // GET: api/Order
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            var orders = await _context.Orders.Include(oe => oe.OrderElements).ToListAsync();
+            List<OrderDTO> orderDTOs = new();
+
+            foreach (var order in orders)
+            {
+                orderDTOs.Add(DTOMapper.mapOrderToOrderDTO(order));
+            }
+            return orderDTOs;
         }
 
         // GET: api/Order/5

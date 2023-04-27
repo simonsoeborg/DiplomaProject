@@ -27,6 +27,31 @@ namespace ClassLibrary.Models.DTO
             return piDTO;
         }
 
+        public static OrderDTO mapOrderToOrderDTO(Order order) {
+
+            var ord = new OrderDTO
+            {
+                Id = order.Id,
+                CustomerId = order.CustomerId,
+                PaymentId = order.PaymentId,
+                PaymentStatus = order.PaymentStatus,
+                DeliveryStatus = order.DeliveryStatus,
+                DiscountCode = order.DiscountCode,
+                Active = order.Active
+            };
+            List<int> elemntIds = new();
+            foreach (var element in order.OrderElements)
+            {
+                elemntIds.Add(element.OrderId);
+            }
+            ord.OrderElementIDs = elemntIds.ToList();
+
+
+            return ord;
+        }
+   
+
+
         public static ProductItemDTO MapProductItemToBackofficeDTO(ProductItem pi)
         {
             var piDTO = new ProductItemDTO

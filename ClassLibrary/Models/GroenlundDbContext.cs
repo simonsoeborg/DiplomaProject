@@ -24,6 +24,9 @@ namespace ClassLibrary.Models
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
 
+        public DbSet<OrderElements> OrderElements { get; set;} = null!;
+        
+
         // Views
         public DbSet<OrderDetails> OrderDetails { get; set; } = null!;
         public DbSet<SalesSummary> SalesSummary { get; set; } = null!;
@@ -74,7 +77,7 @@ namespace ClassLibrary.Models
                 eb.Property(v => v.Weight).HasColumnName("Weight");
             });
 
-            modelBuilder.Entity<OrderDetails>(
+           /* modelBuilder.Entity<OrderDetails>(
             eb =>
             {
                 eb.HasNoKey();
@@ -90,7 +93,7 @@ namespace ClassLibrary.Models
                 eb.Property(v => v.ProductItemId).HasColumnName("ProductItemId");
                 eb.Property(v => v.ProductId).HasColumnName("ProductId");
 
-            });
+            });*/
 
             modelBuilder.Entity<Inventory>(
             eb =>
