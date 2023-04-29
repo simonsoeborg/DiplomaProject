@@ -83,7 +83,7 @@ namespace DataMigration
                     continue;
                 }
 
-                Product product = new()s
+                Product product = new()
                 {
                     Id = productIdCounter,
                     Name = name,
