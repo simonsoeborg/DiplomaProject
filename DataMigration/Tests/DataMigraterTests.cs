@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.Models;
-using Microsoft.EntityFrameworkCore;
+using DataMigration.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DataMigration.Tests
@@ -206,12 +206,81 @@ namespace DataMigration.Tests
             Assert.AreEqual(dataItemsCount, productDimensionMatchCounter);
         }
         [TestMethod]
+        public void TestProductCategoryExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            List<string> failedMatches = new();
+            List<Category> categories = context.Categories.ToList();
+            int productCategoryMatchCounter = 0;
+            int dataItemsCount = data.Count;
+
+            int figurer = 0;
+            int stel = 0;
+            int stelDele = 0;
+            int glas = 0;
+            int guldOgSoelv = 0;
+            int keramik = 0;
+            int bestik = 0;
+            int platter = 0;
+            int nullCounter = 0;
+
+
+            // Act
+            for (int i = 0; i < dataItemsCount - 1; i++)
+            {
+                var dataItem = data[i];
+                string dataInput = dataItem[2] + dataItem[3] + dataItem[5];
+                var productCategory = CategoryHelper.InferCategory(categories, dataInput);
+                if (productCategory == null)
+                {
+                    nullCounter++;
+                    failedMatches.Add(dataInput);
+                    continue;
+                }
+                else
+                {
+                    productCategoryMatchCounter++;
+                    if (productCategory.Name == "Stel|Dinnerware") stel++;
+                    if (productCategory.Name == "Steldele|Dinnerware parts") stelDele++;
+                    if (productCategory.Name == "Figurer|Figurines") figurer++;
+                    if (productCategory.Name == "Keramik|Ceramics") keramik++;
+                    if (productCategory.Name == "Guld & Sølv|Gold & Silver") guldOgSoelv++;
+                    if (productCategory.Name == "Bestik|Cutlery") bestik++;
+                    if (productCategory.Name == "Platter|Plaques") platter++;
+                    if (productCategory.Name == "Glas|Glass") glas++;
+
+                }
+            }
+
+            //Show failed attempts
+            foreach (var mat in failedMatches)
+            {
+                Console.WriteLine(mat + "\n");
+            }
+
+            Console.WriteLine("Stel|Dinnerware: " + stel);
+            Console.WriteLine("Steldele|Dinnerware parts: " + stelDele);
+            Console.WriteLine("Figurer|Figurines: " + figurer);
+            Console.WriteLine("Keramik|Ceramics: " + keramik);
+            Console.WriteLine("Guld & Sølv|Gold & Silver: " + guldOgSoelv);
+            Console.WriteLine("Bestik|Cutlery: " + bestik);
+            Console.WriteLine("Platter|Plaques: " + platter);
+            Console.WriteLine("Glas|Glass: " + glas);
+            Console.WriteLine("Category returned null: " + nullCounter);
+
+            // Assert
+            Assert.AreEqual(dataItemsCount, productCategoryMatchCounter);
+        }
+        [TestMethod]
         public void TestProductSubcategoriesExtraction()
         {
             // Arrange
             DataMigrater dataMigrater = new();
             List<string[]> data = dataMigrater.GetCsvEntries();
             List<string> failedMatches = new();
+            List<string> subcategoryNames = new();
             List<Category> categories = context.Categories.ToList();
             List<Subcategory> subcategories = context.Subcategories.ToList();
             int productSubcategoriesMatchCounter = 0;
@@ -222,24 +291,55 @@ namespace DataMigration.Tests
             for (int i = 0; i < dataItemsCount - 1; i++)
             {
                 var dataItem = data[i];
-                var productSubcategories = dataMigrater.ExtractSubcategories(categories, subcategories, dataItem[2] + dataItem[3] + dataItem[5]);
-
-                if (productSubcategories.Count == 0)
+                string dataInput = dataItem[2] + dataItem[3] + dataItem[5];
+                var productCategory = CategoryHelper.InferCategory(categories, dataInput);
+                if (productCategory == null)
                 {
-                    failedMatches.Add(dataItem[3]);
+                    failedMatches.Add(dataInput);
                     continue;
                 }
-                else productSubcategoriesMatchCounter++;
-            }
+                else
+                {
+                    var productSubcategories = CategoryHelper.ExtractSubcategories(productCategory, subcategories, dataInput);
 
-            // Show failed attempts
-            foreach (var mat in failedMatches)
-            {
-                Console.WriteLine(mat + "\n");
-            }
+                    if (productSubcategories.Count == 0)
+                    {
+                        failedMatches.Add(dataItem[3]);
+                        continue;
+                    }
+                    else
+                    {
+                        foreach (var subcategory in productSubcategories)
+                        {
+                            subcategoryNames.Add(subcategory.Name);
 
-            // Assert
-            Assert.AreEqual(dataItemsCount, productSubcategoriesMatchCounter);
+                        }
+                        productSubcategoriesMatchCounter++;
+                    }
+                }
+
+                //Show failed attempts
+                //foreach (var mat in failedMatches)
+                //{
+                //    Console.WriteLine(mat + "\n");
+                //}
+
+                foreach (var subcategory in subcategories)
+                {
+                    int x = 0;
+                    foreach (var subcategoryName in subcategoryNames)
+                    {
+                        if (subcategoryName == subcategory.Name)
+                        {
+                            x += 1;
+                        }
+                    }
+                    Console.WriteLine("Subcategory " + subcategory.Name + " has " + x + " items");
+                }
+
+                // Assert
+                Assert.AreEqual(dataItemsCount, productSubcategoriesMatchCounter);
+            }
         }
         [TestMethod]
         public void FindCategoriesFromOldWebsite()
@@ -255,7 +355,7 @@ namespace DataMigration.Tests
                 string[] dataItemCategories = dataItem[5].Split(';');
                 if (dataItemCategories != null && dataItemCategories.Length > 0)
                 {
-                    foreach(string cat in dataItemCategories)
+                    foreach (string cat in dataItemCategories)
                     {
                         if (!categories.Contains(cat))
                         {
@@ -264,7 +364,7 @@ namespace DataMigration.Tests
                     }
                 }
             }
-            foreach(string cat in categories)
+            foreach (string cat in categories)
             {
                 Console.WriteLine(cat);
             }

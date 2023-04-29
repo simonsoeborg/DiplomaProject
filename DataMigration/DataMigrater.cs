@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models;
+using DataMigration.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
@@ -73,7 +74,15 @@ namespace DataMigration
             {
                 var dataItem = data[i];
                 var (name, modelNumber) = RegexHelper.RecognizeModelnumberPattern(dataItem[2]);
-                var productSubcategories = ExtractSubcategories(categories, subcategories, dataItem[2] + dataItem[3] + dataItem[5]);
+                string categoryStringInput = dataItem[2] + dataItem[3] + dataItem[5];
+                var productCategory = CategoryHelper.InferCategory(categories, categoryStringInput);
+                if (productCategory == null)
+                {
+                    failedMatches.Add(dataItem);
+                    continue;
+                }
+
+                var productSubcategories = CategoryHelper.ExtractSubcategories(productCategory, subcategories, categoryStringInput);
                 var imageUrls = ExtractImages(dataItem[4]);
 
                 if (string.IsNullOrEmpty(name) || productSubcategories.Count == 0 || imageUrls.Count == 0)
@@ -188,29 +197,7 @@ namespace DataMigration
             return result;
         }
 
-        public bool ProductIsValid(Product product, List<ProductItem> productItems)
-        {
-            bool result = true;
-            if (
-                product.ModelNumber == "" ||
-                product.Material == ((int)MaterialType.undefined) ||
-                product.Design == null ||
-                product.Manufacturer == "" ||
-                product.Subcategories.Count == 0
-            )
-            {
-                result = false;
-            }
-            foreach (ProductItem po in productItems)
-            {
-                if (po.Images == null || po.Images.Count == 0)
-                {
-                    result = false;
-                }
-            }
 
-            return result;
-        }
 
         public DateTime RandomDay()
         {
@@ -257,68 +244,6 @@ namespace DataMigration
 
             return images;
         }
-        public List<Subcategory> ExtractSubcategories(List<Category> categories, List<Subcategory> subcategories, string input)
-        {
-            List<Subcategory> subcategoriesResult = new();
-            Category? cat = InferCategory(categories, subcategories, input);
-            if (cat == null)
-            {
-                return subcategoriesResult;
-            }
-
-            List<Subcategory> possibleSubcategories = subcategories.FindAll(x => x.Category == cat);
-            foreach (Subcategory subcategory in possibleSubcategories)
-            {
-                if (input.ToLowerInvariant().Contains(subcategory.Name.ToLowerInvariant()))
-                {
-                    subcategoriesResult.Add(subcategory);
-                }
-            }
-
-            return subcategoriesResult;
-        }
-
-        public Category? InferCategory(List<Category> categories, List<Subcategory> subcategories, string input)
-        {
-            List<Category> possibleCategories = new();
-            input = input.ToLowerInvariant();
-            List<CategoryStrings> categoryStrings = CategoryStringsList(categories);
-            categoryStrings.Reverse();
-
-            foreach (var catStrings in categoryStrings)
-            {
-                foreach (string catString in catStrings.categoryStrings)
-                {
-                    if (input.ToLowerInvariant().Contains(catString.ToLowerInvariant()))
-                    {
-                        return catStrings.category;
-                        //possibleCategories.Add(catStrings.category);
-                    }
-                }
-            }
-
-            if (possibleCategories.Count > 0)
-            {
-                List<string> categoryNames = possibleCategories.Select(c => c.Name).ToList();
-                string foundCategories = "Found " + categoryNames.Count;
-                foreach (var category in categoryNames)
-                {
-                    foundCategories += " " + category;
-                }
-                foundCategories += " categories for input\n" + input;
-                Console.WriteLine(foundCategories);
-            }
-
-            // Remove any double entries
-            possibleCategories = possibleCategories.Distinct().ToList();
-            if (possibleCategories.Count == 1)
-            {
-                return possibleCategories[0];
-            }
-            // If more than one possible category is found, return null so the program skips adding this product
-            return null;
-        }
-
         struct Manufacturer
         {
             public string name;
@@ -422,67 +347,7 @@ namespace DataMigration
 
             return MaterialType.undefined;
         }
-        private List<CategoryStrings> CategoryStringsList(List<Category> categories)
-        {
-            List<CategoryStrings> catStrings = new();
-            CategoryStrings one = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 1)!,
-                categoryStrings = new List<string>() { "mega", "musselmalet", "halvblonde", "helblonde", "riflet", "flora", "konkylie", "purpur" },
-            };
-            catStrings.Add(one);
 
-            CategoryStrings two = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 2)!,
-                categoryStrings = new List<string>() { "tallerken", "kop", "krus", "skål", "kande", "fad", "kage", "krukker", "frokost", "middag", "dyb" },
-            };
-            catStrings.Add(two);
-
-            CategoryStrings three = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 3)!,
-                categoryStrings = new List<string>() { "bjørn", "fugl", "hund", "kat", "hest", "menneske", "mand", "kvinde", "pige", "dreng" },
-            };
-            catStrings.Add(three);
-
-            CategoryStrings four = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 4)!,
-                categoryStrings = new List<string>() { "aluminia", "saxbo", "arne bang", "palshus", "kähler", "keramik", "stentøj" },
-            };
-            catStrings.Add(four);
-
-            CategoryStrings five = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 5)!,
-                categoryStrings = new List<string>() { "broche", "halskæde", "smykke", "saltkar", "guld", "sølv" },
-            };
-            catStrings.Add(five);
-
-            CategoryStrings six = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 6)!,
-                categoryStrings = new List<string>() { "gaffel", "gafler", "kniv", "ske", "bestik", "kage" },
-            };
-            catStrings.Add(six);
-
-            CategoryStrings seven = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 7)!,
-                categoryStrings = new List<string>() { "platte" },
-            };
-            catStrings.Add(seven);
-
-            CategoryStrings eight = new()
-            {
-                category = categories.FirstOrDefault(c => c.Id == 8)!,
-                categoryStrings = new List<string>() { "vinglas", "ølglas", "dessertglas", "vase" },
-            };
-            catStrings.Add(eight);
-
-            return catStrings;
-        }
         public List<string[]> GetCsvEntries()
         {
             return ReadCsv("./products.csv");
@@ -534,10 +399,30 @@ namespace DataMigration
             return data;
         }
 
-        class CategoryStrings
-        {
-            public Category category = new Category();
-            public List<string> categoryStrings = new();
-        }
+
     }
 }
+
+//public bool ProductIsValid(Product product, List<ProductItem> productItems)
+//{
+//    bool result = true;
+//    if (
+//        product.ModelNumber == "" ||
+//        product.Material == ((int)MaterialType.undefined) ||
+//        product.Design == null ||
+//        product.Manufacturer == "" ||
+//        product.Subcategories.Count == 0
+//    )
+//    {
+//        result = false;
+//    }
+//    foreach (ProductItem po in productItems)
+//    {
+//        if (po.Images == null || po.Images.Count == 0)
+//        {
+//            result = false;
+//        }
+//    }
+
+//    return result;
+//}
