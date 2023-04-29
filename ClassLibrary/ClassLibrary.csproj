@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Models\NotInUse\**" />
+	  <EmbeddedResource Remove="Models\NotInUse\**" />
+	  <None Remove="Models\NotInUse\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
 			<PrivateAssets>all</PrivateAssets>
@@ -21,10 +27,6 @@
 	  <None Update="db_appsettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Models\NotInUse\" />
 	</ItemGroup>
 
 </Project>

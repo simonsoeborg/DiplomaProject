@@ -222,7 +222,7 @@ namespace DataMigration.Tests
             for (int i = 0; i < dataItemsCount - 1; i++)
             {
                 var dataItem = data[i];
-                var productSubcategories = dataMigrater.ExtractSubcategories(categories, subcategories, dataItem[3]);
+                var productSubcategories = dataMigrater.ExtractSubcategories(categories, subcategories, dataItem[2] + dataItem[3] + dataItem[5]);
 
                 if (productSubcategories.Count == 0)
                 {
@@ -240,6 +240,34 @@ namespace DataMigration.Tests
 
             // Assert
             Assert.AreEqual(dataItemsCount, productSubcategoriesMatchCounter);
+        }
+        [TestMethod]
+        public void FindCategoriesFromOldWebsite()
+        {
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            int dataItemsCount = data.Count;
+            List<string> categories = new();
+
+            for (int i = 0; i < dataItemsCount - 1; i++)
+            {
+                var dataItem = data[i];
+                string[] dataItemCategories = dataItem[5].Split(';');
+                if (dataItemCategories != null && dataItemCategories.Length > 0)
+                {
+                    foreach(string cat in dataItemCategories)
+                    {
+                        if (!categories.Contains(cat))
+                        {
+                            categories.Add(cat);
+                        }
+                    }
+                }
+            }
+            foreach(string cat in categories)
+            {
+                Console.WriteLine(cat);
+            }
         }
     }
 }

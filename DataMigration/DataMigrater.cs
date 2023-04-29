@@ -73,7 +73,7 @@ namespace DataMigration
             {
                 var dataItem = data[i];
                 var (name, modelNumber) = RegexHelper.RecognizeModelnumberPattern(dataItem[2]);
-                var productSubcategories = ExtractSubcategories(categories, subcategories, dataItem[3]);
+                var productSubcategories = ExtractSubcategories(categories, subcategories, dataItem[2] + dataItem[3] + dataItem[5]);
                 var imageUrls = ExtractImages(dataItem[4]);
 
                 if (string.IsNullOrEmpty(name) || productSubcategories.Count == 0 || imageUrls.Count == 0)
@@ -317,7 +317,6 @@ namespace DataMigration
             }
             // If more than one possible category is found, return null so the program skips adding this product
             return null;
-
         }
 
         struct Manufacturer
