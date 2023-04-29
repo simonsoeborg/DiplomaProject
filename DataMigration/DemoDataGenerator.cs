@@ -6,11 +6,11 @@ namespace DataMigration
     public class DemoDataGenerator
     {
         private readonly GroenlundDbContext _context;
-        private readonly DataMigrater dg;
+        private readonly DataMigrater dm;
         public DemoDataGenerator()
         {
             _context = new();
-            dg = new();
+            dm = new();
         }
         public void PopulateDatabase()
         {
@@ -26,7 +26,7 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context);
             InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
 
-            var (Products, ProductItems, Images) = dg.ExtractProducts();
+            var (Products, ProductItems, Images) = dm.ExtractProducts();
 
             /* Products table */
             ClearTableAndResetSeed(_context.Products, "Products", _context);
