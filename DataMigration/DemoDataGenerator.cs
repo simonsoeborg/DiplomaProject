@@ -71,6 +71,8 @@ namespace DataMigration
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities) where T : class
         {
             Console.WriteLine("Creating " + tableName);
+            int numberOfEntities = entities.Count;
+            int i = 0;
 
             foreach (var entity in entities)
             {
@@ -82,6 +84,7 @@ namespace DataMigration
                     _context.SaveChanges();
                     _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
                     transaction.Commit();
+                    Console.Write($"{tableName} created: {i}/{numberOfEntities}\r");
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +95,7 @@ namespace DataMigration
                 }
             }
 
-            Console.WriteLine("Successfully created " + tableName);
+            Console.WriteLine("Successfully created " + tableName + "\n");
         }
 
         private void InsertProductsInDatabase(string tableName, List<Product> products)
