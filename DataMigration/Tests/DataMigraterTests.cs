@@ -284,17 +284,19 @@ namespace DataMigration.Tests
             List<Category> categories = context.Categories.ToList();
             List<Subcategory> subcategories = context.Subcategories.ToList();
             int productSubcategoriesMatchCounter = 0;
-            int dataItemsCount = data.Count;
+            int categoryFailCounter = 0;
+            int dataItemsCount = data.Count - 1;
 
 
             // Act
-            for (int i = 0; i < dataItemsCount - 1; i++)
+            for (int i = 1; i < dataItemsCount; i++)
             {
                 var dataItem = data[i];
                 string dataInput = dataItem[2] + dataItem[3] + dataItem[5];
                 var productCategory = CategoryHelper.InferCategory(categories, dataInput);
                 if (productCategory == null)
                 {
+                    categoryFailCounter++;
                     failedMatches.Add(dataInput);
                     continue;
                 }
@@ -317,30 +319,32 @@ namespace DataMigration.Tests
                         productSubcategoriesMatchCounter++;
                     }
                 }
-
-                //Show failed attempts
-                //foreach (var mat in failedMatches)
-                //{
-                //    Console.WriteLine(mat + "\n");
-                //}
-
-                foreach (var subcategory in subcategories)
-                {
-                    int x = 0;
-                    foreach (var subcategoryName in subcategoryNames)
-                    {
-                        if (subcategoryName == subcategory.Name)
-                        {
-                            x += 1;
-                        }
-                    }
-                    Console.WriteLine("Subcategory " + subcategory.Name + " has " + x + " items");
-                }
-
-                // Assert
-                Assert.AreEqual(dataItemsCount, productSubcategoriesMatchCounter);
             }
+
+            //Show failed attempts
+            //foreach (var mat in failedMatches)
+            //{
+            //    Console.WriteLine(mat + "\n");
+            //}
+
+            foreach (var subcategory in subcategories)
+            {
+                int x = 0;
+                foreach (var subcategoryName in subcategoryNames)
+                {
+                    if (subcategoryName == subcategory.Name)
+                    {
+                        x += 1;
+                    }
+                }
+                Console.WriteLine("Subcategory " + subcategory.Name + " has " + x + " items");
+            }
+
+            // Assert
+            Console.WriteLine("Failed matches: " + categoryFailCounter);
+            Assert.AreEqual(dataItemsCount, productSubcategoriesMatchCounter);
         }
+
         [TestMethod]
         public void FindCategoriesFromOldWebsite()
         {
