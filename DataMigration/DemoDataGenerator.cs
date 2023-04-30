@@ -14,6 +14,14 @@ namespace DataMigration
         }
         public void PopulateDatabase(bool? msSQL)
         {
+            InsertRolesCategoriesSubcategories(msSQL);
+            InsertProductsProductItemsImages(msSQL);
+            InsertCustomersDiscountCodesUsers(msSQL);
+            InsertOrdersPaymentsOrderElements(msSQL);
+        }
+
+        private void InsertRolesCategoriesSubcategories(bool? msSQL)
+        {
             /* Roles table */
             ClearTableAndResetSeed(_context.Roles, "Roles", _context, msSQL);
             InsertEntityInDatabase(_context.Roles, "Roles", DemoDataRepository.Roles(), msSQL);
@@ -25,7 +33,9 @@ namespace DataMigration
             /* Subcategories table */
             ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context, msSQL);
             InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories(), msSQL);
-
+        }
+        private void InsertProductsProductItemsImages(bool? msSQL)
+        {
             var (Products, ProductItems, Images) = dm.ExtractProducts();
 
             /* Products table */
@@ -39,8 +49,9 @@ namespace DataMigration
             /* Images table */
             ClearTableAndResetSeed(_context.Images, "Images", _context, msSQL);
             InsertEntityInDatabase(_context.Images, "Images", Images, msSQL);
-
-
+        }
+        private void InsertCustomersDiscountCodesUsers(bool? msSQL)
+        {
             /* Customers table */
             ClearTableAndResetSeed(_context.Customers, "Customers", _context, msSQL);
             InsertEntityInDatabase(_context.Customers, "Customers", DemoDataRepository.Customers(), msSQL);
@@ -52,7 +63,9 @@ namespace DataMigration
             /* Users table */
             ClearTableAndResetSeed(_context.Users, "Users", _context, msSQL);
             InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users(), msSQL);
-
+        }
+        private void InsertOrdersPaymentsOrderElements(bool? msSQL)
+        {
             var (Orders, Payments, OrderElements) = GenerateOrders(_context);
 
             /* Payments table */
@@ -67,7 +80,6 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context, msSQL);
             InsertEntityInDatabase(_context.OrderElements, "OrderElements", OrderElements, msSQL);
         }
-
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities, bool? msSQL) where T : class
         {
             Console.WriteLine("Creating " + tableName);
@@ -196,7 +208,7 @@ namespace DataMigration
             var orderElements = new List<OrderElements>();
             var customers = context.Customers.ToList();
             var discountCodes = context.DiscountCodes.ToList();
-            var productItems = context.ProductItems.ToList();
+            var productItems = context.ProductItems.Where(p => p.Sold == 1).ToList();
             List<int> usedProductItemIds = new();
             List<string> deliveryStatuses = new() { "Delivered", "Pending", "Shipped" };
             List<string> paymentMethods = new() { "Credit Card", "PayPal", "Bank Transfer", "MobilePay", "Stripe" };
@@ -294,107 +306,3 @@ namespace DataMigration
     }
 }
 
-
-/*
- * 
- * 
- * 
- * 
- *  private void InsertProductItemsInDatabase(DbSet<ProductItem> productItemTable, string tableName, List<ProductItem> productItems)
-        {
-            Console.WriteLine("Creating " + tableName);
-
-            foreach (var productItem in productItems)
-            {
-                using var transaction = _context.Database.BeginTransaction();
-                try
-                {
-                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " ON");
-                    //_context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo.Images ON");
-                    productItemTable.Add(productItem);
-                    _context.SaveChanges();
-                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
-                    //_context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo.Images OFF");
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    Console.WriteLine("Failed creating " + tableName + ex.Message + "\n");
-                    Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
-                    Console.WriteLine("InnerException:" + ex.InnerException + "\n");
-                }
-            }
-
-            Console.WriteLine("Successfully created " + tableName);
-        }
- * 
-    private void CreateProductsInDatabase()
-    {
-        var existingProducts = _context.Products;
-        var existingProductItems = _context.ProductItems;
-        if (existingProducts.Any())
-        {
-            try
-            {
-                _context.Products.ExecuteDelete();
-                Console.WriteLine("Deleted all products in database\n");
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-        if (existingProductItems.Any())
-        {
-            try
-            {
-                _context.ProductItems.ExecuteDelete();
-                Console.WriteLine("Deleted all productItems in database\n");
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        var getData = ExtractProducts();
-        List<Product> Products = getData.Products;
-        List<ProductItem> ProductItems = getData.ProductItems;
-
-        foreach (Product prod in Products)
-        {
-            _context.Products.Add(prod);
-            try
-            {
-                _context.SaveChanges();
-                Console.WriteLine(prod.Name + " added");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed creating product" + ex.Message);
-            }
-        }
-
-
-        _context.SaveChanges();
-
-        foreach (ProductItem productItem in ProductItems)
-        {
-            _context.ProductItems.Add(productItem);
-            try
-            {
-                _context.SaveChanges();
-                Console.WriteLine("ProductItem for " + productItem.Product.Name + " added");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed creating productItem" + ex.Message + "\n");
-                Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
-                Console.WriteLine("InnerException:" + ex.InnerException + "\n");
-            }
-        }
-    }
-*/

@@ -59,7 +59,7 @@ namespace DataMigration
 
         public (List<Product> Products, List<ProductItem> ProductItems, List<Image> Images) ExtractProducts()
         {
-            List<string[]> data = ReadCsv("./products.csv");
+            List<string[]> data = GetCsvEntries();
             List<string[]> failedMatches = new();
             List<Product> Products = new();
             List<ProductItem> ProductItems = new();
@@ -104,70 +104,73 @@ namespace DataMigration
                     Dimension = ExtractDimension(dataItem[3]),
                 };
 
+                // How many productItems for this product
+                var productItemCount = ExtractProductItemCount(dataItem[13]);
 
-                List<ProductItem> productItems = new();
-
-                // Create productItems for the product
-                int amount = new Random().Next(2);
-                int poImageIdCounter = imageIdCounter;
-                for (int x = 0; x <= amount; x++)
+                for (int x = 1; x <= productItemCount; x++)
                 {
-                    int conditionType = new Random().Next(3);
-                    int qualityType = new Random().Next(3);
-                    int purchasePrice = new Random().Next(10500);
-                    int currentPrice = purchasePrice * 2;
+
+                    // Create productItem for the product
+                    decimal currentPrice = ExtractPrice(dataItem[8]);
+                    decimal purchasePrice = currentPrice * (decimal)0.3;
+                    decimal? weight = ExtractWeight(dataItem[14]);
+                    if (weight == null)
+                    {
+                        weight = (decimal)new Random().NextDouble() * 15;
+                    }
+
                     ProductItem productItem = new()
                     {
-                        Id = productItemIdCounter + x,
+                        Id = productItemIdCounter,
                         Product = product,
                         ProductId = product.Id,
-                        Condition = (ConditionType)conditionType,
-                        Quality = (QualityType)qualityType,
+                        Condition = ExtractCondition(dataItem[3]),
+                        Quality = ExtractQuality(dataItem[3]),
                         Sold = 0,
-                        Weight = InferWeight(product.Material),
-                        PurchasePrice = purchasePrice,
+                        Weight = weight,
                         CurrentPrice = currentPrice,
+                        PurchasePrice = purchasePrice,
                         CreatedDate = RandomDay(),
                         CustomText = "",
-                        Images = new List<Image>(),
+                        Images = new List<Image>()
                     };
 
-                    if (imageUrls.Count > 0)
+                    bool? sold = ExtractSold(dataItem[10]);
+                    if (sold != null && sold == true)
                     {
-                        foreach (var img in imageUrls)
-                        {
-                            if (!string.IsNullOrEmpty(img))
-                            {
-                                var imgId = img.Split('.')[0];
-                                string imgReducedSize = "https://static.wixstatic.com/media/" + img + "/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/" + imgId + ".webp";
-                                //Console.WriteLine(imgId);
-                                //Console.WriteLine(imgReducedSize);
+                        productItem.Sold = 1;
+                        int randomDaysOnSale = new Random().Next(1, 150);
+                        productItem.SoldDate = productItem.CreatedDate + TimeSpan.FromDays(randomDaysOnSale);
+                    }
 
-                                Image image = new()
-                                {
-                                    ProductItemId = productItem.Id,
-                                    Id = poImageIdCounter,
-                                    Url = imgReducedSize,
-                                };
-                                productItem.Images.Add(image);
-                                poImageIdCounter++;
-                            }
+                    List<Image> productItemImages = new();
+                    foreach (var img in imageUrls)
+                    {
+                        if (!string.IsNullOrEmpty(img))
+                        {
+                            var imgId = img.Split('.')[0];
+                            string imgReducedSize = "https://static.wixstatic.com/media/" + img + "/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/" + imgId + ".webp";
+                            //Console.WriteLine(imgId);
+                            //Console.WriteLine(imgReducedSize);
+
+                            Image image = new()
+                            {
+                                ProductItemId = productItem.Id,
+                                Id = imageIdCounter,
+                                Url = imgReducedSize,
+                            };
+                            productItemImages.Add(image);
+                            imageIdCounter++;
                         }
                     }
 
-                    productItems.Add(productItem);
-                }
 
-                Products.Add(product);
-                ProductItems.AddRange(productItems);
-                productIdCounter++;
-                productItemIdCounter += productItems.Count;
-                foreach (var productItem in productItems)
-                {
-                    imageIdCounter += productItem.Images.Count;
-                    Images.AddRange(productItem.Images);
-                    productItem.Images = new List<Image>();
+                    ProductItems.Add(productItem);
+                    Images.AddRange(productItemImages);
+                    productItemIdCounter++;
                 }
+                Products.Add(product);
+                productIdCounter++;
             }
 
             Console.WriteLine("Added data to {0} products generated from {1} dataItems", Products.Count, data.Count);
@@ -187,16 +190,22 @@ namespace DataMigration
             RegexHelper.TestRegexFilter(names.ToArray(), RegexHelper.RegexMap());
         }
 
-        public decimal InferWeight(MaterialType material)
+        public decimal? ExtractWeight(string input)
         {
-            decimal result = 0;
-            if (material == MaterialType.gold || material == MaterialType.silver)
+            bool success = double.TryParse(input, out double sum);
+            if (success)
             {
-                result = (decimal)new Random().NextDouble() * 50;
+                return (decimal)sum;
             }
-            return result;
+            return null;
         }
 
+        public int ExtractProductItemCount(string input)
+        {
+            int result = 1;
+            var parseSuccessful = int.TryParse(input, out result);
+            return result;
+        }
 
 
         public DateTime RandomDay()
@@ -320,6 +329,73 @@ namespace DataMigration
             }
 
             return result;
+        }
+
+        public bool? ExtractSold(string input)
+        {
+            input = input.ToLowerInvariant();
+            if (input.Contains("true"))
+            {
+                return false;
+            }
+            if (input.Contains("false"))
+            {
+                return true;
+            }
+            return null;
+        }
+
+        public QualityType ExtractQuality(string input)
+        {
+            string pattern = @"(1|2|3)\.\s*(?i)(quality|sortering)";
+
+            Match match = Regex.Match(input, pattern);
+            if (match.Success)
+            {
+                //string phrase = match.Groups[2].Value;
+                switch (match.Groups[1].Value)
+                {
+                    case "1":
+                        return QualityType.FirstQuality;
+                    case "2":
+                        return QualityType.SecondQuality;
+                    case "3":
+                        return QualityType.ThirdQuality;
+                }
+            }
+            return QualityType.Undefined;
+        }
+
+        public ConditionType ExtractCondition(string input)
+        {
+            input = input.ToLowerInvariant();
+
+            if (input.Contains("skår") || input.Contains("shards"))
+            {
+                if (input.Contains("mange") || input.Contains("many"))
+                {
+                    return ConditionType.ManyShards;
+                }
+                if (input.Contains("få") || input.Contains("few"))
+                {
+                    return ConditionType.FewShards;
+                }
+                if (input.Contains("ingen") || input.Contains("no"))
+                {
+                    return ConditionType.NoShards;
+                }
+            }
+            return ConditionType.Undefined;
+        }
+
+        public decimal ExtractPrice(string input)
+        {
+            double.TryParse(input, out double result);
+            if (double.IsNaN(result) || double.IsInfinity(result) || result < 0)
+            {
+                result = 149.1;
+            }
+            return (decimal)result;
         }
 
         public MaterialType ExtractMaterialType(string input)

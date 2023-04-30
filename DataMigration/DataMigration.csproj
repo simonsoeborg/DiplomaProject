@@ -12,6 +12,9 @@
 		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<None Update="catalogproducts.csv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="DemoData\customers.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

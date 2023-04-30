@@ -1,6 +1,8 @@
 ﻿using ClassLibrary.Models;
 using DataMigration.Helpers;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace DataMigration.Tests
 {
@@ -344,7 +346,190 @@ namespace DataMigration.Tests
             Console.WriteLine("Failed matches: " + categoryFailCounter);
             Assert.AreEqual(dataItemsCount, productSubcategoriesMatchCounter);
         }
+        [TestMethod]
+        public void TestProductPriceExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            List<decimal> prices = new();
+            int productPricesMatchCounter = 0;
+            int dataItemsCount = data.Count - 1;
 
+
+            // Act
+            for (int i = 1; i < dataItemsCount; i++)
+            {
+                var dataItem = data[i];
+                var price = dataMigrater.ExtractPrice(dataItem[3]);
+                if (price != (decimal)149.1)
+                {
+                    prices.Add(price);
+                    productPricesMatchCounter++;
+                }
+            }
+
+
+            // Assert
+            Assert.AreEqual(dataItemsCount, productPricesMatchCounter);
+        }
+
+        [TestMethod]
+        public void TestProductQualityExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            List<QualityType> qualities = new();
+            int productQualityMatchCounter = 0;
+            int dataItemsCount = data.Count - 1;
+
+
+            // Act
+            for (int i = 1; i < dataItemsCount; i++)
+            {
+                var dataItem = data[i];
+                var quality = dataMigrater.ExtractQuality(dataItem[3]);
+                if (quality != QualityType.Undefined)
+                {
+                    qualities.Add(quality);
+                    productQualityMatchCounter++;
+                }
+            }
+
+            Console.WriteLine("Matched Quality for {0}/{1}", productQualityMatchCounter, dataItemsCount);
+
+
+            // Assert
+            Assert.AreEqual(dataItemsCount, productQualityMatchCounter);
+        }
+        [TestMethod]
+        public void TestProductConditionExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            List<ConditionType> conditions = new();
+            List<string> failedMatches = new();
+            int productConditionMatchCounter = 0;
+            int dataItemsCount = data.Count - 1;
+
+
+            // Act
+            for (int i = 1; i < dataItemsCount; i++)
+            {
+                var dataItem = data[i];
+                var condition = dataMigrater.ExtractCondition(dataItem[3]);
+                if (condition == ConditionType.Undefined)
+                {
+                    failedMatches.Add(dataItem[3]);
+                    continue;
+                }
+                conditions.Add(condition);
+                productConditionMatchCounter++;
+            }
+
+            foreach (string fail in failedMatches)
+            {
+                Console.WriteLine(fail);
+            }
+
+            Console.WriteLine("Matched Condition for {0}/{1}", productConditionMatchCounter, dataItemsCount);
+
+            // Assert
+            Assert.AreEqual(dataItemsCount, productConditionMatchCounter);
+        }
+        [TestMethod]
+        public void TestProductSoldExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            List<string> failedMatches = new();
+            int productSoldMatchCounter = 0;
+            int productsSold = 0;
+            int dataItemsCount = data.Count - 1;
+
+
+            // Act
+            for (int i = 1; i < dataItemsCount; i++)
+            {
+                var dataItem = data[i];
+                var itemSold = dataMigrater.ExtractSold(dataItem[10]);
+                if (itemSold == null)
+                {
+                    failedMatches.Add(dataItem[10]);
+                    continue;
+                }
+                if (itemSold == true)
+                {
+                    productsSold++;
+                }
+                productSoldMatchCounter++;
+            }
+
+            foreach (string fail in failedMatches)
+            {
+                Console.WriteLine(fail);
+            }
+
+            Console.WriteLine("Matched Sold for {0}/{1}", productSoldMatchCounter, dataItemsCount);
+            Console.WriteLine("Products sold: " + productsSold);
+
+            // Assert
+            Assert.AreEqual(dataItemsCount, productSoldMatchCounter);
+        }
+        [TestMethod]
+        public void TestProductItemCountExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            int productItemCountMatchCounter = 0;
+            int moreThanOne = 0;
+            int dataItemsCount = data.Count - 1;
+
+
+            // Act
+            for (int i = 1; i < dataItemsCount; i++)
+            {
+                var dataItem = data[i];
+                var itemSold = dataMigrater.ExtractProductItemCount(dataItem[13]);
+                if (itemSold > 1)
+                {
+                    moreThanOne++;
+                }
+                productItemCountMatchCounter++;
+            }
+
+            // Assert
+            Console.WriteLine("{0} products have more than one productItem", moreThanOne);
+            Assert.AreEqual(dataItemsCount, productItemCountMatchCounter);
+        }
+        [TestMethod]
+        public void TestProductWeightExtraction()
+        {
+            // Arrange
+            DataMigrater dataMigrater = new();
+            List<string[]> data = dataMigrater.GetCsvEntries();
+            int productWeightMatchCounter = 0;
+            int dataItemsCount = data.Count - 1;
+
+            // Act
+            for (int i = 1; i < dataItemsCount; i++)
+            {
+                var dataItem = data[i];
+                var weight = dataMigrater.ExtractWeight(dataItem[14]);
+                if (weight != null)
+                {
+                    productWeightMatchCounter++;
+
+                }
+            }
+
+            // Assert
+            Assert.AreEqual(dataItemsCount, productWeightMatchCounter);
+        }
         [TestMethod]
         public void FindCategoriesFromOldWebsite()
         {
