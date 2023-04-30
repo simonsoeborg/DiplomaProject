@@ -12,63 +12,63 @@ namespace DataMigration
             _context = new();
             dm = new();
         }
-        public void PopulateDatabase()
+        public void PopulateDatabase(bool? msSQL)
         {
             /* Roles table */
-            ClearTableAndResetSeed(_context.Roles, "Roles", _context);
-            InsertEntityInDatabase(_context.Roles, "Roles", DemoDataRepository.Roles());
+            ClearTableAndResetSeed(_context.Roles, "Roles", _context, msSQL);
+            InsertEntityInDatabase(_context.Roles, "Roles", DemoDataRepository.Roles(), msSQL);
 
             /* Categories table */
-            ClearTableAndResetSeed(_context.Categories, "Categories", _context);
-            InsertEntityInDatabase(_context.Categories, "Categories", DemoDataRepository.Categories());
+            ClearTableAndResetSeed(_context.Categories, "Categories", _context, msSQL);
+            InsertEntityInDatabase(_context.Categories, "Categories", DemoDataRepository.Categories(), msSQL);
 
             /* Subcategories table */
-            ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context);
-            InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories());
+            ClearTableAndResetSeed(_context.Subcategories, "Subcategories", _context, msSQL);
+            InsertEntityInDatabase(_context.Subcategories, "Subcategories", DemoDataRepository.Subcategories(), msSQL);
 
             var (Products, ProductItems, Images) = dm.ExtractProducts();
 
             /* Products table */
-            ClearTableAndResetSeed(_context.Products, "Products", _context);
-            InsertProductsInDatabase("Products", Products);
+            ClearTableAndResetSeed(_context.Products, "Products", _context, msSQL);
+            InsertProductsInDatabase("Products", Products, msSQL);
 
             /* ProductItems table */
-            ClearTableAndResetSeed(_context.ProductItems, "ProductItems", _context);
-            InsertEntityInDatabase(_context.ProductItems, "ProductItems", ProductItems);
+            ClearTableAndResetSeed(_context.ProductItems, "ProductItems", _context, msSQL);
+            InsertEntityInDatabase(_context.ProductItems, "ProductItems", ProductItems, msSQL);
 
             /* Images table */
-            ClearTableAndResetSeed(_context.Images, "Images", _context);
-            InsertEntityInDatabase(_context.Images, "Images", Images);
+            ClearTableAndResetSeed(_context.Images, "Images", _context, msSQL);
+            InsertEntityInDatabase(_context.Images, "Images", Images, msSQL);
 
 
             /* Customers table */
-            ClearTableAndResetSeed(_context.Customers, "Customers", _context);
-            InsertEntityInDatabase(_context.Customers, "Customers", DemoDataRepository.Customers());
+            ClearTableAndResetSeed(_context.Customers, "Customers", _context, msSQL);
+            InsertEntityInDatabase(_context.Customers, "Customers", DemoDataRepository.Customers(), msSQL);
 
             /* DiscountCodes table */
-            ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context);
-            InsertEntityInDatabase(_context.DiscountCodes, "DiscountCodes", DemoDataRepository.DiscountCodes());
+            ClearTableAndResetSeed(_context.DiscountCodes, "DiscountCodes", _context, msSQL);
+            InsertEntityInDatabase(_context.DiscountCodes, "DiscountCodes", DemoDataRepository.DiscountCodes(), msSQL);
 
             /* Users table */
-            ClearTableAndResetSeed(_context.Users, "Users", _context);
-            InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users());
+            ClearTableAndResetSeed(_context.Users, "Users", _context, msSQL);
+            InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users(), msSQL);
 
             var (Orders, Payments, OrderElements) = GenerateOrders(_context);
 
             /* Payments table */
-            ClearTableAndResetSeed(_context.Payments, "Payments", _context);
-            InsertEntityInDatabase(_context.Payments, "Payments", Payments);
+            ClearTableAndResetSeed(_context.Payments, "Payments", _context, msSQL);
+            InsertEntityInDatabase(_context.Payments, "Payments", Payments, msSQL);
 
             /* Orders table */
-            ClearTableAndResetSeed(_context.Orders, "Orders", _context);
-            InsertEntityInDatabase(_context.Orders, "Orders", Orders);
+            ClearTableAndResetSeed(_context.Orders, "Orders", _context, msSQL);
+            InsertEntityInDatabase(_context.Orders, "Orders", Orders, msSQL);
 
             /* OrderElements table */
-            ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context);
-            InsertEntityInDatabase(_context.OrderElements, "OrderElements", OrderElements);
+            ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context, msSQL);
+            InsertEntityInDatabase(_context.OrderElements, "OrderElements", OrderElements, msSQL);
         }
 
-        private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities) where T : class
+        private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities, bool? msSQL) where T : class
         {
             Console.WriteLine("Creating " + tableName);
             int numberOfEntities = entities.Count;
@@ -79,11 +79,18 @@ namespace DataMigration
                 using var transaction = _context.Database.BeginTransaction();
                 try
                 {
-                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " ON");
+                    if (msSQL != null && msSQL == true)
+                    {
+                        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " ON");
+                    }
                     tableEntity.Add(entity);
                     _context.SaveChanges();
-                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
+                    if (msSQL != null && msSQL == true)
+                    {
+                        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
+                    }
                     transaction.Commit();
+                    i++;
                     Console.Write($"{tableName} created: {i}/{numberOfEntities}\r");
                 }
                 catch (Exception ex)
@@ -93,15 +100,17 @@ namespace DataMigration
                     Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
                     Console.WriteLine("InnerException:" + ex.InnerException + "\n");
                 }
+
             }
 
-            Console.WriteLine("Successfully created " + tableName + "\n");
+            Console.WriteLine("Successfully created " + numberOfEntities + " " + tableName + "\n");
         }
 
-        private void InsertProductsInDatabase(string tableName, List<Product> products)
+        private void InsertProductsInDatabase(string tableName, List<Product> products, bool? msSQL)
         {
             List<Subcategory> subcategories = _context.Subcategories.Include(s => s.Category).ToList();
-
+            int numberOfProducts = products.Count;
+            int i = 0;
             Console.WriteLine("Creating " + tableName);
 
             foreach (var product in products)
@@ -112,12 +121,20 @@ namespace DataMigration
                 using var transaction = _context.Database.BeginTransaction();
                 try
                 {
-                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo.Products ON");
-
+                    if (msSQL != null && msSQL == true)
+                    {
+                        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " ON");
+                    }
                     _context.Products.Add(product);
                     _context.SaveChanges();
-                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
+                    if (msSQL != null && msSQL == true)
+                    {
+                        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT GroenlundDB.dbo." + tableName + " OFF");
+                    }
                     transaction.Commit();
+                    i++;
+                    Console.Write($"{tableName} created: {i}/{numberOfProducts}\r");
+
                 }
                 catch (Exception ex)
                 {
@@ -126,9 +143,10 @@ namespace DataMigration
                     Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
                     Console.WriteLine("InnerException:" + ex.InnerException + "\n");
                 }
+
             }
 
-            Console.WriteLine("Successfully created " + tableName);
+            Console.WriteLine("Successfully created " + numberOfProducts + " " + tableName);
         }
 
         private static void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
@@ -144,7 +162,7 @@ namespace DataMigration
             product.Subcategories = newProductSubcategories;
         }
 
-        private static void ClearTableAndResetSeed<T>(DbSet<T> dbTable, string tableName, GroenlundDbContext context) where T : class
+        private static void ClearTableAndResetSeed<T>(DbSet<T> dbTable, string tableName, GroenlundDbContext context, bool? msSQL) where T : class
         {
             if (dbTable.Any())
             {
@@ -164,8 +182,11 @@ namespace DataMigration
             }
 
             // Reset the seed
-            context.Database.ExecuteSqlRaw("DBCC CHECKIDENT('" + tableName + "', RESEED, 0)");
-            Console.WriteLine("Resetted seed for " + tableName);
+            if (msSQL != null && msSQL == true)
+            {
+                context.Database.ExecuteSqlRaw("DBCC CHECKIDENT('" + tableName + "', RESEED, 0)");
+                Console.WriteLine("Resetted seed for " + tableName);
+            }
         }
 
         private static (List<Order> Orders, List<Payment> Payments, List<OrderElements>) GenerateOrders(GroenlundDbContext context)

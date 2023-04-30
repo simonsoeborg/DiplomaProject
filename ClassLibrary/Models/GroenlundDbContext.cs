@@ -24,8 +24,8 @@ namespace ClassLibrary.Models
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
 
-        public DbSet<OrderElements> OrderElements { get; set;} = null!;
-        
+        public DbSet<OrderElements> OrderElements { get; set; } = null!;
+
 
         // Views
         public DbSet<OrderDetails> OrderDetails { get; set; } = null!;
@@ -77,23 +77,23 @@ namespace ClassLibrary.Models
                 eb.Property(v => v.Weight).HasColumnName("Weight");
             });
 
-           /* modelBuilder.Entity<OrderDetails>(
-            eb =>
-            {
-                eb.HasNoKey();
-                eb.ToView("OrderDetails");
-                eb.Property(v => v.Name).HasColumnName("Name");
-                eb.Property(v => v.Manufacturer).HasColumnName("Manufacturer");
-                eb.Property(v => v.PaymentId).HasColumnName("PaymentId");
-                eb.Property(v => v.PaymentStatus).HasColumnName("PaymentStatus");
-                eb.Property(v => v.DeliveryStatus).HasColumnName("DeliveryStatus");
-                eb.Property(v => v.DiscountCode).HasColumnName("DiscountCode");
-                eb.Property(v => v.Active).HasColumnName("Active");
-                eb.Property(v => v.CustomerId).HasColumnName("CustomerId");
-                eb.Property(v => v.ProductItemId).HasColumnName("ProductItemId");
-                eb.Property(v => v.ProductId).HasColumnName("ProductId");
+            /* modelBuilder.Entity<OrderDetails>(
+             eb =>
+             {
+                 eb.HasNoKey();
+                 eb.ToView("OrderDetails");
+                 eb.Property(v => v.Name).HasColumnName("Name");
+                 eb.Property(v => v.Manufacturer).HasColumnName("Manufacturer");
+                 eb.Property(v => v.PaymentId).HasColumnName("PaymentId");
+                 eb.Property(v => v.PaymentStatus).HasColumnName("PaymentStatus");
+                 eb.Property(v => v.DeliveryStatus).HasColumnName("DeliveryStatus");
+                 eb.Property(v => v.DiscountCode).HasColumnName("DiscountCode");
+                 eb.Property(v => v.Active).HasColumnName("Active");
+                 eb.Property(v => v.CustomerId).HasColumnName("CustomerId");
+                 eb.Property(v => v.ProductItemId).HasColumnName("ProductItemId");
+                 eb.Property(v => v.ProductId).HasColumnName("ProductId");
 
-            });*/
+             });*/
 
             modelBuilder.Entity<Inventory>(
             eb =>

@@ -2,7 +2,7 @@
 using DataMigration;
 
 DemoDataGenerator dataGenerator = new();
-dataGenerator.PopulateDatabase();
+dataGenerator.PopulateDatabase(msSQL: true);
 //DataMigrater dataMigrater = new();
 //var (Product, ProductItems, Images) = dataMigrater.ExtractProducts();
 
