@@ -14,6 +14,7 @@ namespace DataMigration
         }
         public void PopulateDatabase(bool? msSQL)
         {
+            Console.Clear();
             InsertRolesCategoriesSubcategories(msSQL);
             InsertProductsProductItemsImages(msSQL);
             InsertCustomersDiscountCodesUsers(msSQL);
@@ -158,7 +159,7 @@ namespace DataMigration
 
             }
 
-            Console.WriteLine("Successfully created " + numberOfProducts + " " + tableName);
+            Console.WriteLine("Successfully created " + numberOfProducts + " " + tableName+"\n");
         }
 
         private static void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
@@ -214,15 +215,19 @@ namespace DataMigration
             List<string> paymentMethods = new() { "Credit Card", "PayPal", "Bank Transfer", "MobilePay", "Stripe" };
             int orderIdCounter = 1;
             int orderElementsCounter = 1;
+            int customerProductItems = productItems.Count / customers.Count;
+            int remainingProductItems = productItems.Count;
 
             foreach (var customer in customers)
             {
-                int numberOfOrders = new Random().Next(1, 10);
-
-
-                for (int i = 0; i < numberOfOrders; i++)
+                int customerRemainingProductItems = customerProductItems;
+                while (customerRemainingProductItems > 0)
                 {
                     int randomNumberOfProductItems = new Random().Next(1, 5);
+                    if(randomNumberOfProductItems > remainingProductItems)
+                    {
+                        randomNumberOfProductItems = remainingProductItems;
+                    }
                     List<ProductItem> productItems1 = new();
                     for (int x = 0; x <= randomNumberOfProductItems; x++)
                     {
@@ -235,14 +240,11 @@ namespace DataMigration
                         productItems1.Add(productItems[randomProductItemId]);
                     }
 
-
-
-
                     var order = new Order
                     {
                         Id = orderIdCounter,
                         CustomerId = customer.Id,
-                        Active = numberOfOrders % 2 == 0,
+                        Active = false,
                         DeliveryStatus = deliveryStatuses[new Random().Next(1, 3)],
                         DiscountCode = discountCodes[new Random().Next(1, discountCodes.Count)].Code,
                     };
@@ -280,7 +282,7 @@ namespace DataMigration
                         Amount = (double)paymentAmount,
                         DatePaid = RandomDay(),
                         Method = paymentMethods[new Random().Next(1, paymentMethods.Count)],
-                        Approved = Convert.ToSByte(orderIdCounter % 2)
+                        Approved = 1/*Convert.ToSByte(orderIdCounter % 2)*/
                     };
 
                     order.PaymentId = payment.Id;
@@ -290,9 +292,9 @@ namespace DataMigration
                     payments.Add(payment);
 
                     orderIdCounter++;
+                    customerRemainingProductItems -= randomNumberOfProductItems;
 
                 }
-
             }
 
             return (orders, payments, orderElements);

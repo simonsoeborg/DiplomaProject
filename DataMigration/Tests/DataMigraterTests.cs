@@ -494,12 +494,15 @@ namespace DataMigration.Tests
             for (int i = 1; i < dataItemsCount; i++)
             {
                 var dataItem = data[i];
-                var itemSold = dataMigrater.ExtractProductItemCount(dataItem[13]);
-                if (itemSold > 1)
+                var productItemCount = dataMigrater.ExtractProductItemCount(dataItem[13]);
+                if (productItemCount > 1)
                 {
                     moreThanOne++;
                 }
-                productItemCountMatchCounter++;
+                else if (productItemCount == 1)
+                {
+                    productItemCountMatchCounter++;
+                }
             }
 
             // Assert
@@ -557,6 +560,16 @@ namespace DataMigration.Tests
             {
                 Console.WriteLine(cat);
             }
+        }
+        [TestMethod]
+        public void TestProductAndProductItemGeneration()
+        {
+            DataMigrater dataMigrater = new();
+            var (Products, ProductItems, Images) = dataMigrater.ExtractProducts();
+            Console.WriteLine("Products: {0}", Products.Count);
+            Console.WriteLine("ProductItems: {0}", ProductItems.Count);
+            Console.WriteLine("Images: {0}", Images.Count);
+            Assert.IsTrue(Products.Count < ProductItems.Count);
         }
     }
 }

@@ -107,17 +107,14 @@ namespace DataMigration
                 // How many productItems for this product
                 var productItemCount = ExtractProductItemCount(dataItem[13]);
 
-                for (int x = 1; x <= productItemCount; x++)
+                for (int x = 0; x < productItemCount; x++)
                 {
 
                     // Create productItem for the product
                     decimal currentPrice = ExtractPrice(dataItem[8]);
                     decimal purchasePrice = currentPrice * (decimal)0.3;
                     decimal? weight = ExtractWeight(dataItem[14]);
-                    if (weight == null)
-                    {
-                        weight = (decimal)new Random().NextDouble() * 15;
-                    }
+                    weight ??= (decimal)new Random().NextDouble() * 15;
 
                     ProductItem productItem = new()
                     {
@@ -202,9 +199,15 @@ namespace DataMigration
 
         public int ExtractProductItemCount(string input)
         {
-            int result = 1;
-            var parseSuccessful = int.TryParse(input, out result);
-            return result;
+            var parseSuccessful = int.TryParse(input, out int parseResult);
+            if (parseSuccessful)
+            {
+                if (parseResult != 0)
+                {
+                    return parseResult;
+                }
+            }
+            return 1;
         }
 
 
@@ -219,22 +222,22 @@ namespace DataMigration
         public string ExtractDimension(string input)
         {
             string result = "";
-            int startIndex = 0;
-            // Dimension can be Height / Højde - 
-            if (input.ToLowerInvariant().Contains("height"))
-            {
-                startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
+            //int startIndex = 0;
+            //// Dimension can be Height / Højde - 
+            //if (input.ToLowerInvariant().Contains("height"))
+            //{
+            //    startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
 
-            }
-            else if (input.ToLowerInvariant().Contains("højde"))
-            {
-                startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
-            }
-            if (startIndex != 0)
-            {
-                string substring = input.ToLowerInvariant().Substring(startIndex);
-                result = substring;
-            }
+            //}
+            //else if (input.ToLowerInvariant().Contains("højde"))
+            //{
+            //    startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
+            //}
+            //if (startIndex != 0)
+            //{
+            //    string substring = input.ToLowerInvariant().Substring(startIndex);
+            //    result = substring;
+            //}
 
             return result;
         }
@@ -323,7 +326,9 @@ namespace DataMigration
                     .Trim('&', ' ', ';', ':', '"')
                     .Split('<')[0]
                     .Trim()
-                    .Replace("&nbsp", "");
+                    .Replace("&nbsp", "")
+                    .Replace("&#160;", "")
+                    .Replace("&amp;nbsp;", "");
 
                 result = subString;
             }
