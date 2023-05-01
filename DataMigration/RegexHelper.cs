@@ -4,7 +4,7 @@ namespace DataMigration
 {
     public class RegexHelper
     {
-        public static string[] RecognizeModelnumberPattern(string input)
+        public static (string name, string modelNumber) RecognizeModelnumberPattern(string input)
         {
             Dictionary<int, Regex> regexMap = RegexMap();
             int type = 0;
@@ -44,37 +44,37 @@ namespace DataMigration
         }
 
 
-        public static string[] StringFormatter(string input, int type)
+        public static (string name, string modelNumber) StringFormatter(string input, int type)
         {
-            List<string> result = new();
+            string name = "";
+            string modelNumber = "";
             switch (type)
             {
+                case 0:
+                    {
+                        name = input.Trim().Replace("\"", "");
+                        break;
+                    }
                 case 1: // Nr: 1234567890/1234567890 - Modelname
                     {
                         string trimInput = input[(input.IndexOf("Nr:") + 3)..];
-                        string modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, trimInput.IndexOf('-')));
-                        string name = trimInput.Substring(trimInput.IndexOf('-') + 1).Trim();
-                        result.Add(modelNumber);
-                        result.Add(name);
+                        modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, trimInput.IndexOf('-')));
+                        name = trimInput.Substring(trimInput.IndexOf('-') + 1).Trim();
                         break;
                     }
                 case 2: // Nr: 1234567890/1234567890 Modelname
                     {
                         string trimInput = input[(input.IndexOf("Nr:") + 3)..].Trim();
                         int indexOfSeparator = trimInput.IndexOf(' ');
-                        string modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
-                        string name = trimInput.Substring(indexOfSeparator + 1).Trim();
-                        result.Add(modelNumber);
-                        result.Add(name);
+                        modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
+                        name = trimInput.Substring(indexOfSeparator + 1).Trim();
                         break;
                     }
                 case 3: // "Nr: 12345567890 - Modelname
                     {
                         string trimInput = input[(input.IndexOf("Nr:") + 3)..];
-                        string modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, trimInput.IndexOf('-')));
-                        string name = trimInput.Substring(trimInput.IndexOf('-') + 1).Trim();
-                        result.Add(modelNumber);
-                        result.Add(name);
+                        modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, trimInput.IndexOf('-')));
+                        name = trimInput.Substring(trimInput.IndexOf('-') + 1).Trim();
                         break;
                     }
 
@@ -82,52 +82,105 @@ namespace DataMigration
                     {
                         string trimInput = input[(input.IndexOf("Nr:") + 3)..].Trim();
                         int indexOfSeparator = trimInput.IndexOf(' ');
-                        string modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
-                        string name = trimInput.Substring(indexOfSeparator + 1).Trim();
-                        result.Add(modelNumber);
-                        result.Add(name);
+                        modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
+                        name = trimInput.Substring(indexOfSeparator + 1).Trim();
                         break;
                     }
                 case 5: // Nr: 1234567890a Modelname
                     {
                         string trimInput = input[(input.IndexOf("Nr:") + 3)..].Trim();
                         int indexOfSeparator = trimInput.IndexOf(' ');
-                        string modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
-                        string name = trimInput.Substring(indexOfSeparator + 1).Trim();
-                        result.Add(modelNumber);
-                        result.Add(name);
+                        modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
+                        name = trimInput.Substring(indexOfSeparator + 1).Trim();
                         break;
                     }
                 case 6: // 1234567890 Modelname UDEN 'stk'
                     {
                         string trimInput = input.Trim();
                         int indexOfSeparator = trimInput.IndexOf(' ');
-                        string modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
-                        string name = trimInput.Substring(indexOfSeparator + 1).Trim();
-                        result.Add(modelNumber);
-                        result.Add(name);
+                        modelNumber = TrimAllWithInplaceCharArray(trimInput.Substring(0, indexOfSeparator));
+                        name = trimInput.Substring(indexOfSeparator + 1).Trim();
                         break;
                     }
                 case 7: // Årgang
                     {
-                        // TODO
-                        result.Add("");
-                        result.Add("");
+                        string year = string.Empty;
+                        string remainder = string.Empty;
+
+                        int index = 0;
+
+                        // Iterate through each character in the input string
+                        while (index < input.Length)
+                        {
+                            // If the current character is a digit, assume it's the start of the year value
+                            if (char.IsDigit(input[index]))
+                            {
+                                // Continue iterating until the end of the year value
+                                while (char.IsDigit(input[index]))
+                                {
+                                    year += input[index];
+                                    index++;
+                                }
+
+                                // Once the year value has been extracted, skip any non-alphabetic characters and spaces until the start of the remainder string
+                                while (index < input.Length && !char.IsLetter(input[index]))
+                                {
+                                    index++;
+                                }
+
+                                // Store the remaining string in the remainder variable
+                                remainder = input.Substring(index).Trim();
+
+                                // Break out of the loop
+                                break;
+                            }
+
+                            // If the current character is not a digit, continue iterating
+                            index++;
+                        }
+                        modelNumber = "År:" + year;
+                        name = remainder;
                         break;
                     }
                 case 8: // År 1958 eller År: 1958
                     {
-                        // TODO
-                        result.Add("");
-                        result.Add("");
+                        string year = string.Empty;
+                        string remainder = string.Empty;
+
+                        int index = 0;
+
+                        // Iterate through each character in the input string
+                        while (index < input.Length)
+                        {
+                            // If the current character is a digit, assume it's the start of the year value
+                            if (char.IsDigit(input[index]))
+                            {
+                                // Continue iterating until the end of the year value
+                                while (char.IsDigit(input[index]))
+                                {
+                                    year += input[index];
+                                    index++;
+                                }
+
+                                // Once the year value has been extracted, store the remaining string in the remainder variable
+                                remainder = input.Substring(index).Trim();
+
+                                // Break out of the loop
+                                break;
+                            }
+
+                            // If the current character is not a digit, continue iterating
+                            index++;
+                        }
+                        modelNumber = "År:" + year;
+                        name = remainder;
+
                         break;
                     }
                 default:
-                    result.Add("");
-                    result.Add(input);
                     break;
             }
-            return result.ToArray();
+            return (name, modelNumber);
         }
 
         public static string TrimAllWithInplaceCharArray(string str)

@@ -4,10 +4,17 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<None Update="catalogproducts.csv">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="DemoData\customers.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

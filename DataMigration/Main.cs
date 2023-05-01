@@ -2,6 +2,12 @@
 using DataMigration;
 
 DemoDataGenerator dataGenerator = new();
-dataGenerator.PopulateDatabase();
+dataGenerator.PopulateDatabase(msSQL: true);
 //DataMigrater dataMigrater = new();
-//dataMigrater.ExtractProducts();
+//var (Product, ProductItems, Images) = dataMigrater.ExtractProducts();
+
+//foreach (var productItem in ProductItems)
+//{
+//    Console.WriteLine(productItem.ToString());
+//    Console.WriteLine(productItem.Product.ToString());
+//}

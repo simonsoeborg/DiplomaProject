@@ -50,6 +50,36 @@ namespace API.Controllers
             return productItemDTOs;
         }
 
+        [HttpGet("OrderElements")]
+        public ActionResult<IEnumerable<OrderElements>> GetOrderElements()
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            var orderElementsFromDb = _context.OrderElements.ToList();
+
+            List<OrderElements> orderElements = new();
+            foreach (var oe in orderElementsFromDb)
+            {
+                OrderElements orderElement = new()
+                {
+                    Id = oe.Id,
+                    OrderId = oe.OrderId,
+                    ProductItemId = oe.ProductItemId,
+                };
+                orderElements.Add(orderElement);
+            }
+
+            if (orderElementsFromDb == null || orderElementsFromDb.Count == 0)
+            {
+                return new NoContentResult();
+            }
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine("\nIt took {0} seconds to read and convert ProductItems from database", (elapsedMs / 1000));
+            return orderElements;
+        }
+
         [HttpPost("ProductItem")]
         public HttpResponseMessage Post([FromBody] ProductItem req)
         {
