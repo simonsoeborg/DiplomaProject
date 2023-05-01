@@ -373,7 +373,6 @@ namespace DataMigration.Tests
             // Assert
             Assert.AreEqual(dataItemsCount, productPricesMatchCounter);
         }
-
         [TestMethod]
         public void TestProductQualityExtraction()
         {
@@ -570,6 +569,39 @@ namespace DataMigration.Tests
             Console.WriteLine("ProductItems: {0}", ProductItems.Count);
             Console.WriteLine("Images: {0}", Images.Count);
             Assert.IsTrue(Products.Count < ProductItems.Count);
+        }
+        [TestMethod]
+        public void TestOrderPaymentOrderElementsGeneration()
+        {
+            GroenlundDbContext context = new();
+            List<DiscountCode> discountCodes = context.DiscountCodes.ToList();
+            var (Orders, Payments, OrderElements) = DemoDataGenerator.GenerateOrders(context);
+
+            double orderAmount = 0;
+
+            foreach (var order in Orders)
+            {
+                List<OrderElements> orderElements = OrderElements.FindAll(oe => oe.OrderId == order.Id);
+                double paymentAmount = 0.0;
+                foreach (var orderElement in orderElements)
+                {
+                    paymentAmount += (double)orderElement.ProductItem.CurrentPrice;
+                }
+                var discountCode = discountCodes.Find(d => d.Code == order.DiscountCode)!;
+                paymentAmount *= (100 - discountCode.DiscountPercentage);
+
+                Payment? orderPayment = Payments.FirstOrDefault(p => p.Id == order.PaymentId);
+                if (orderPayment != null)
+                {
+                    if (orderPayment.Amount <= 0.0 || orderPayment.Amount != paymentAmount)
+                    {
+                        Console.WriteLine("Inconsistency between orderPayment.Amount and the sum of productItems prices");
+                        continue;
+                    }
+                    orderAmount += 1;
+                }
+            }
+            Assert.AreEqual(Orders.Count, orderAmount);
         }
     }
 }

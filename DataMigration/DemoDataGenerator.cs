@@ -159,7 +159,7 @@ namespace DataMigration
 
             }
 
-            Console.WriteLine("Successfully created " + numberOfProducts + " " + tableName+"\n");
+            Console.WriteLine("Successfully created " + numberOfProducts + " " + tableName + "\n");
         }
 
         private static void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
@@ -202,7 +202,7 @@ namespace DataMigration
             }
         }
 
-        private static (List<Order> Orders, List<Payment> Payments, List<OrderElements>) GenerateOrders(GroenlundDbContext context)
+        public static (List<Order> Orders, List<Payment> Payments, List<OrderElements>) GenerateOrders(GroenlundDbContext context)
         {
             var orders = new List<Order>();
             var payments = new List<Payment>();
@@ -224,7 +224,7 @@ namespace DataMigration
                 while (customerRemainingProductItems > 0)
                 {
                     int randomNumberOfProductItems = new Random().Next(1, 5);
-                    if(randomNumberOfProductItems > remainingProductItems)
+                    if (randomNumberOfProductItems > remainingProductItems)
                     {
                         randomNumberOfProductItems = remainingProductItems;
                     }
@@ -268,7 +268,7 @@ namespace DataMigration
                     //order.OrderElements = specificOrderOrderElements;
 
                     decimal paymentAmount = 0;
-                    foreach (var orderElement in order.OrderElements)
+                    foreach (var orderElement in specificOrderOrderElements)
                     {
                         paymentAmount += orderElement.ProductItem.CurrentPrice;
                     }
