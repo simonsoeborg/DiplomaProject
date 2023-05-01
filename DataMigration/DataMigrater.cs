@@ -111,7 +111,7 @@ namespace DataMigration
                 {
 
                     // Create productItem for the product
-                    decimal currentPrice = ExtractPrice(dataItem[8]);
+                    decimal currentPrice = ExtractPrice(dataItem[8]) / 10;
                     decimal purchasePrice = currentPrice * (decimal)0.3;
                     decimal? weight = ExtractWeight(dataItem[14]);
                     weight ??= (decimal)new Random().NextDouble() * 15;
