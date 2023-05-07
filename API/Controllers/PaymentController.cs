@@ -108,16 +108,16 @@ namespace API.Controllers
             return NoContent();
         }
 
-        //// POST: api/Payment
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Payment>> PostPayment(Payment payment)
-        //{
-        //    _context.Payments.Add(payment);
-        //    await _context.SaveChangesAsync();
+        // POST: api/Payment
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Payment>> PostPayment(Payment payment)
+        {
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
-        //}
+            return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
+        }
 
         // DELETE: api/Payment/5
         [HttpDelete("{id}")]
