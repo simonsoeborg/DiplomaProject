@@ -1,5 +1,4 @@
 ﻿using ClassLibrary.Models;
-using ClassLibrary.PaymentModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,38 +22,38 @@ namespace API.Controllers
         }
 
         // STRIPE PAYMENTS
-        [HttpPost]
-        public async Task<IActionResult> CreateStripePayment([FromBody] StripePaymentModel stripe)
-        {
-            StripeConfiguration.ApiKey = "sk_test_51MxptJFjBrRZR0Ef1iKvUe8bcu8zg463eKwPvSZatwZgY4ilss1FpLlN6kFUNvluJR22jCxwjEyLWvQvkGttPCLq009ghU5JDA";
-            var paymentIntentService = new PaymentIntentService();
-            var paymentIntentCreateOptions = new PaymentIntentCreateOptions
-            {
-                Amount = stripe.Amount,
-                Currency = stripe.Currency,
-                PaymentMethod = stripe.PaymentMethodId,
-                Customer = stripe.CustomerId.ToString(),
-                Confirm = true
-            };
-            try
-            {
-                var paymentIntent = await paymentIntentService.CreateAsync(paymentIntentCreateOptions);
-                if (paymentIntent.Status == "succeeded")
-                {
-                    // Payment success
-                    return Ok(new { PaymentStatus = "succeeded" });
-                }
-                else
-                {
-                    // Payment failed
-                    return BadRequest(new { PaymentStatus = "failed", Error = "Payment failed." });
-                }
-            }
-            catch (StripeException ex)
-            {
-                return BadRequest(new { PaymentStatus = "failed", Error = ex.Message });
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateStripePayment([FromBody] StripePaymentModel stripe)
+        //{
+        //    StripeConfiguration.ApiKey = "sk_test_51MxptJFjBrRZR0Ef1iKvUe8bcu8zg463eKwPvSZatwZgY4ilss1FpLlN6kFUNvluJR22jCxwjEyLWvQvkGttPCLq009ghU5JDA";
+        //    var paymentIntentService = new PaymentIntentService();
+        //    var paymentIntentCreateOptions = new PaymentIntentCreateOptions
+        //    {
+        //        Amount = stripe.Amount,
+        //        Currency = stripe.Currency,
+        //        PaymentMethod = stripe.PaymentMethodId,
+        //        Customer = stripe.CustomerId.ToString(),
+        //        Confirm = true
+        //    };
+        //    try
+        //    {
+        //        var paymentIntent = await paymentIntentService.CreateAsync(paymentIntentCreateOptions);
+        //        if (paymentIntent.Status == "succeeded")
+        //        {
+        //            // Payment success
+        //            return Ok(new { PaymentStatus = "succeeded" });
+        //        }
+        //        else
+        //        {
+        //            // Payment failed
+        //            return BadRequest(new { PaymentStatus = "failed", Error = "Payment failed." });
+        //        }
+        //    }
+        //    catch (StripeException ex)
+        //    {
+        //        return BadRequest(new { PaymentStatus = "failed", Error = ex.Message });
+        //    }
+        //}
 
 
         // GET: api/Payment
