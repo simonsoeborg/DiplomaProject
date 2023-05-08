@@ -581,12 +581,12 @@ namespace DataMigration.Tests
 
             foreach (var order in Orders)
             {
-                List<OrderElements> orderElements = OrderElements.FindAll(oe => oe.OrderId == order.Id);
+                //List<OrderElements> orderElements = OrderElements.FindAll(oe => oe.OrderId == order.Id);
                 double paymentAmount = 0.0;
-                foreach (var orderElement in orderElements)
-                {
-                    paymentAmount += (double)orderElement.ProductItem.CurrentPrice;
-                }
+                //foreach (var orderElement in orderElements)
+                //{
+                //    paymentAmount += (double)orderElement.ProductItem.CurrentPrice;
+                //}
                 var discountCode = discountCodes.Find(d => d.Code == order.DiscountCode)!;
                 paymentAmount *= (100 - discountCode.DiscountPercentage);
 
