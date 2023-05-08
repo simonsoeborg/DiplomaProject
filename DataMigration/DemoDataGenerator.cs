@@ -255,7 +255,6 @@ namespace DataMigration
                         var oe = new OrderElements()
                         {
                             Id = orderElementsCounter,
-                            Order = order,
                             OrderId = order.Id,
                             ProductItem = po,
                             ProductItemId = po.Id,
