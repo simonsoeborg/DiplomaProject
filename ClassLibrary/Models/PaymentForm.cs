@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Models
 {
-    public class OrderElements
+    public class PaymentForm
     {
         public int Id { get; set; }
-        public int? OrderId { get; set; }
-        public int ProductItemId { get; set; }
-        public ProductItem? ProductItem { get; set; } = null!;
+        public string DeliveryMethod { get; set; }
+        public string PaymentMethod { get; set; }
     }
 }

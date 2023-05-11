@@ -19,6 +19,5 @@ namespace ClassLibrary.DTOModels
         public string[] ImageUrls { get; set; } = null!;
         public int[] ImageIds { get; set; } = null!;
         public int[] PriceHistoryIds { get; set; } = null!;
-
     }
 }

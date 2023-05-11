@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Models;
+﻿using ClassLibrary.DTOModels;
+using ClassLibrary.Models;
 using ClassLibrary.Models.DTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -78,20 +79,93 @@ namespace API.Controllers
 
         // POST: api/Order
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder(CreateOrderDTO order)
         {
-            var createdOrder = _context.Orders.Add(order);
+            // Create Payment
+            Payment newPayment = new Payment();
+            newPayment.Amount = (double)order.TotalPrice;
+            newPayment.Method = order.PaymentForm.PaymentMethod;
+            newPayment.DatePaid = DateTime.Now;
+
+            var payment = _context.Payments.Add(newPayment);
             await _context.SaveChangesAsync();
 
-            // Return OrderDetails instead of Order 
-            var orderDetail = await _context.OrderDetails.FirstOrDefaultAsync(od => od.OrderId == order.Id);
+            // Create Order
+            Order newOrder = new Order();
+            newOrder.CustomerId = order.Customer.Id;
+            newOrder.PaymentId = payment.Entity.Id;
 
-            if (orderDetail == null)
+            ProductItem newProduct = new ProductItem();
+
+            List<OrderElements> listOfProducts = new List<OrderElements>();
+            foreach (var productItem in order.ProductItemWeb)
+            {
+                newProduct.ProductId = productItem.ProductId;
+                newProduct.Product = productItem.Product;
+                newProduct.CurrentPrice = productItem.CurrentPrice;
+                newProduct.Condition = productItem.Condition;
+                newProduct.Weight = productItem.Weight;
+                newProduct.CreatedDate = productItem.CreatedDate;
+                newProduct.SoldDate = productItem.SoldDate;
+                newProduct.CustomText = productItem.CustomText;
+                newProduct.Images = productItem.Images;
+                newProduct.Quality = productItem.Quality;
+
+                listOfProducts.Add(new OrderElements{ ProductItemId = productItem.Id, ProductItem = newProduct });
+            }
+            if(listOfProducts.Count > 0)
+            {
+                newOrder.OrderElements = listOfProducts;
+            } else
+            {
+                newOrder.OrderElements = null;
+            }
+
+            var createdOrder = _context.Orders.Add(newOrder);
+            await _context.SaveChangesAsync();
+
+            foreach(var element in createdOrder.Entity.OrderElements)
+            {
+                element.OrderId = createdOrder.Entity.Id;
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Format the Confirmation Object and return it.
+            ConfirmationModel Confirmation = new ConfirmationModel();
+            List<ProductItem> newProducts = new List<ProductItem>();
+            foreach (var orderElement in createdOrder.Entity.OrderElements)
+            {
+                ProductItem temp = await _context.ProductItems
+                    .Where(p => p.Id == orderElement.ProductItemId)
+                    .Select(p => new ProductItem
+                    {
+                        Id = p.Id,
+                        ProductId = p.ProductId,
+                        Condition = p.Condition,
+                        Quality = p.Quality,
+                        Sold = p.Sold,
+                        PurchasePrice = p.PurchasePrice,
+                        CurrentPrice = p.CurrentPrice,
+                        CreatedDate = p.CreatedDate != null ? p.CreatedDate : DateTime.Now,
+                        CustomText = p.CustomText ?? "",
+                        Images = p.Images,
+                    }).FirstOrDefaultAsync();
+
+                newProducts.Add(temp);
+            }
+            Confirmation.Order = createdOrder.Entity;
+            Confirmation.Customer = order.Customer;
+            Confirmation.ProductItems = newProducts;
+            Confirmation.Payment = payment.Entity;
+
+
+            if (createdOrder == null)
             {
                 return NotFound();
             }
 
-            return CreatedAtAction("GetOrder", new { id = orderDetail.OrderId }, orderDetail);
+            return CreatedAtAction("GetOrder", new { id = order.Id }, Confirmation);
         }
 
         // DELETE: api/Order/5
