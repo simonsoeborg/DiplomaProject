@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.DTOModels;
 using ClassLibrary.Models;
+using ClassLibrary.Models.DTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -143,5 +144,73 @@ namespace API.Controllers
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return computedHash.SequenceEqual(passwordHash);
         }
+
+
+        [HttpGet("GetBestSellerProducts")]
+        public ActionResult<IEnumerable<Product>> GetProductItems(int amountOfBestSellers)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            var soldProductItems = _context.ProductItems
+                .Where(p => p.Sold == 1)
+                .Include(pi => pi.Product)
+                .ToList();
+
+            List<ProductItemWithEvalution> productItemWithVal = new();
+
+            foreach (var productItem in soldProductItems)
+            {
+                // New custom object for better differentiating the differen classes and new algorithm value. 
+                ProductItemWithEvalution tempProductItem = new ProductItemWithEvalution();
+                tempProductItem.Productitem = productItem;
+                tempProductItem.Product = productItem.Product;
+                decimal salesAlgorithmValue = 0;            
+               
+             // Algorithm for determing value of sales.
+            if (productItem.SoldDate.HasValue)
+             {
+                TimeSpan durration = productItem.SoldDate.Value - productItem.CreatedDate;
+                 int daysBetween = durration.Days;        
+                 salesAlgorithmValue = (productItem.CurrentPrice - productItem.PurchasePrice)/ daysBetween;
+                }
+                tempProductItem.SalesValue = salesAlgorithmValue;
+                productItemWithVal.Add(tempProductItem);
+            }
+        
+            // Group the items by ProductID and average their SalesValues + adjust algorithm for count. 
+            var productItemsUpdated = productItemWithVal.GroupBy(p => p.Productitem.ProductId)
+                .Select(g => new ProductItemWithEvalution
+                {
+                    Productitem = g.First().Productitem,
+                    SalesValue = g.Average(p => p.SalesValue) * (1+g.Count()/10)
+                }).ToList();
+
+            // Sort the list by SalesValue in descending order, and only return the amount of values indicated in the FE.
+            productItemsUpdated = productItemsUpdated.OrderByDescending(p => p.SalesValue).Take(amountOfBestSellers).ToList();
+
+
+            // Covert into product list
+            List<Product> productBestSellers = new();
+            foreach (var bestSellerItem in productItemsUpdated)
+            {
+                Product bestSeller = new Product();
+                bestSeller = bestSellerItem.Productitem.Product;
+                productBestSellers.Add(bestSeller);
+            }
+
+
+           if (soldProductItems == null || soldProductItems.Count == 0)
+            {
+                Console.WriteLine("null triggerd");
+                return new NoContentResult();
+            }
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Console.WriteLine("\nIt took {0} seconds to read and convert sold-ProductItems from database + running sales-algorithm.", (elapsedMs / 1000));
+            return productBestSellers;
+        }
+
     }
 }
