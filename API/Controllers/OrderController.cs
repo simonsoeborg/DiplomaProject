@@ -98,7 +98,16 @@ namespace API.Controllers
             ProductItem newProduct = new ProductItem();
 
             List<OrderElements> listOfProducts = new List<OrderElements>();
-            foreach (var productItem in order.ProductItemWeb)
+
+            var productItems = new List<ProductItem>();
+            for (int i = 0; i < order.ProductItemIds.Count; i++)
+            {
+                var temp = await _context.ProductItems.FindAsync(order.ProductItemIds[i]);
+                if( temp != null)
+                    productItems.Add(temp);
+            }
+
+            foreach (var productItem in productItems)
             {
                 newProduct.ProductId = productItem.ProductId;
                 newProduct.Product = productItem.Product;
