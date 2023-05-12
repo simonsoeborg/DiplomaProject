@@ -255,7 +255,7 @@ namespace DataMigration
                         var oe = new OrderElements()
                         {
                             Id = orderElementsCounter,
-                            //OrderId = order.Id,
+                            OrderId = order.Id,
                             ProductItem = po,
                             ProductItemId = po.Id,
                         };
@@ -264,7 +264,7 @@ namespace DataMigration
                         orderElementsCounter++;
                     }
 
-                    //order.OrderElements = specificOrderOrderElements;
+                    order.OrderElements = specificOrderOrderElements;
 
                     decimal paymentAmount = 0;
                     foreach (var orderElement in specificOrderOrderElements)

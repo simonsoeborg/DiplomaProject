@@ -79,102 +79,59 @@ namespace API.Controllers
 
         // POST: api/Order
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(CreateOrderDTO order)
+        public async Task<ActionResult<Order>> PostOrder(CreateOrderDTO orderDTO)
         {
+            if (orderDTO == null || orderDTO.ProductItemIds.Count == 0 || orderDTO.Customer == null || orderDTO.PaymentForm == null)
+            {
+                return BadRequest();
+            }
+
+            // Retrieve all the product items in the order from the database
+            var productItemsFromDb = _context.ProductItems.Where(po => orderDTO.ProductItemIds.Contains(po.Id)).ToList();
+
             // Create Payment
-            Payment newPayment = new Payment();
-            newPayment.Amount = (double)order.TotalPrice;
-            newPayment.Method = order.PaymentForm.PaymentMethod;
-            newPayment.DatePaid = DateTime.Now;
+            Payment newPayment = new()
+            {
+                Method = orderDTO.PaymentForm.PaymentMethod,
+                Approved = 1,
+                DatePaid = DateTime.Now,
+                Amount = (double)productItemsFromDb.Sum(productItem => productItem.CurrentPrice)
+            };
 
             var payment = _context.Payments.Add(newPayment);
             await _context.SaveChangesAsync();
 
             // Create Order
-            Order newOrder = new Order();
-            newOrder.CustomerId = order.Customer.Id;
-            newOrder.PaymentId = payment.Entity.Id;
-
-            ProductItem newProduct = new ProductItem();
-
-            List<OrderElements> listOfProducts = new List<OrderElements>();
-
-            var productItems = new List<ProductItem>();
-            for (int i = 0; i < order.ProductItemIds.Count; i++)
+            var orderStatus = payment.Entity.Approved != null? "Approved" : "Awaiting payment";
+            Order newOrder = new()
             {
-                var temp = await _context.ProductItems.FindAsync(order.ProductItemIds[i]);
-                if( temp != null)
-                    productItems.Add(temp);
-            }
+                CustomerId = orderDTO.Customer.Id,
+                PaymentId = payment.Entity.Id,
+                PaymentStatus = orderStatus,
+                Active = true,
+                DiscountCode = "",
+                DeliveryStatus = "Pending",
+            };
 
-            foreach (var productItem in productItems)
-            {
-                newProduct.ProductId = productItem.ProductId;
-                newProduct.Product = productItem.Product;
-                newProduct.CurrentPrice = productItem.CurrentPrice;
-                newProduct.Condition = productItem.Condition;
-                newProduct.Weight = productItem.Weight;
-                newProduct.CreatedDate = productItem.CreatedDate;
-                newProduct.SoldDate = productItem.SoldDate;
-                newProduct.CustomText = productItem.CustomText;
-                newProduct.Images = productItem.Images;
-                newProduct.Quality = productItem.Quality;
-
-                listOfProducts.Add(new OrderElements{ ProductItemId = productItem.Id, ProductItem = newProduct });
-            }
-            if(listOfProducts.Count > 0)
-            {
-                newOrder.OrderElements = listOfProducts;
-            } else
-            {
-                newOrder.OrderElements = null;
-            }
-
-            var createdOrder = _context.Orders.Add(newOrder);
+            var order = _context.Orders.Add(newOrder);
             await _context.SaveChangesAsync();
 
-            foreach(var element in createdOrder.Entity.OrderElements)
+            foreach(var productItemInOrder  in productItemsFromDb)
             {
-                element.OrderId = createdOrder.Entity.Id;
+                var orderElement = new OrderElements()
+                {
+                    OrderId = order.Entity.Id,
+                    Order = order.Entity,
+                    ProductItemId = productItemInOrder.ProductId,
+                    ProductItem = productItemInOrder
+                };
+                _context.OrderElements.Add(orderElement);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
 
-            // Format the Confirmation Object and return it.
-            ConfirmationModel Confirmation = new ConfirmationModel();
-            List<ProductItem> newProducts = new List<ProductItem>();
-            foreach (var orderElement in createdOrder.Entity.OrderElements)
-            {
-                ProductItem temp = await _context.ProductItems
-                    .Where(p => p.Id == orderElement.ProductItemId)
-                    .Select(p => new ProductItem
-                    {
-                        Id = p.Id,
-                        ProductId = p.ProductId,
-                        Condition = p.Condition,
-                        Quality = p.Quality,
-                        Sold = p.Sold,
-                        PurchasePrice = p.PurchasePrice,
-                        CurrentPrice = p.CurrentPrice,
-                        CreatedDate = p.CreatedDate != null ? p.CreatedDate : DateTime.Now,
-                        CustomText = p.CustomText ?? "",
-                        Images = p.Images,
-                    }).FirstOrDefaultAsync();
-
-                newProducts.Add(temp);
-            }
-            Confirmation.Order = createdOrder.Entity;
-            Confirmation.Customer = order.Customer;
-            Confirmation.ProductItems = newProducts;
-            Confirmation.Payment = payment.Entity;
-
-
-            if (createdOrder == null)
-            {
-                return NotFound();
-            }
-
-            return CreatedAtAction("GetOrder", new { id = order.Id }, Confirmation);
+            //return CreatedAtAction("GetOrder", order);
+            return order.Entity;
         }
 
         // DELETE: api/Order/5
