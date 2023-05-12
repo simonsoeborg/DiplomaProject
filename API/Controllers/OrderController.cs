@@ -116,18 +116,18 @@ namespace API.Controllers
             var order = _context.Orders.Add(newOrder);
             await _context.SaveChangesAsync();
 
-            foreach(var productItemInOrder  in productItemsFromDb)
-            {
-                var orderElement = new OrderElements()
-                {
-                    OrderId = order.Entity.Id,
-                    Order = order.Entity,
-                    ProductItemId = productItemInOrder.ProductId,
-                    ProductItem = productItemInOrder
-                };
-                _context.OrderElements.Add(orderElement);
-                await _context.SaveChangesAsync();
-            }
+            //foreach(var productItemInOrder  in productItemsFromDb)
+            //{
+            //    var orderElement = new OrderElements()
+            //    {
+            //        OrderId = order.Entity.Id,
+            //        Order = order.Entity,
+            //        ProductItemId = productItemInOrder.ProductId,
+            //        ProductItem = productItemInOrder
+            //    };
+            //    _context.OrderElements.Add(orderElement);
+            //    await _context.SaveChangesAsync();
+            //}
 
 
             //return CreatedAtAction("GetOrder", order);
