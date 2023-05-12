@@ -13,7 +13,7 @@ namespace ClassLibrary.Models.DTO
         public int Id { get; set; }
         public Customer Customer { get; set; }
         public PaymentForm PaymentForm { get; set; }
-        public List<ProductItemWeb> ProductItemWeb { get; set; }
+        public List<int> ProductItemIds { get; set; }
         [Column(TypeName = "decimal(12,2)")]
         public decimal TotalPrice { get; set; }
     }
