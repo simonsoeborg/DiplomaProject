@@ -37,7 +37,8 @@ namespace ClassLibrary.Models.DTO
                 PaymentStatus = order.PaymentStatus,
                 DeliveryStatus = order.DeliveryStatus,
                 DiscountCode = order.DiscountCode,
-                Active = order.Active
+                Active = order.Active,
+                CreatedDate = order.CreatedDate,
             };
             List<int> elemntIds = new();
             foreach (var element in order.OrderElements)

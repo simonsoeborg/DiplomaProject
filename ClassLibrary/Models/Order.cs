@@ -9,6 +9,7 @@
         public string DeliveryStatus { get; set; } = null!;
         public string? DiscountCode { get; set; }
         public bool Active { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public ICollection<OrderElements> OrderElements { get; set; } = new List<OrderElements>(); // Collection navigation containing dependents
     }

@@ -15,6 +15,7 @@ namespace ClassLibrary.Models.DTO
         public string DeliveryStatus { get; set; } = null!;
         public string? DiscountCode { get; set; }
         public bool Active { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public List<int> OrderElementIDs { get; set; }
     }

@@ -15,9 +15,9 @@ namespace DataMigration
         public void PopulateDatabase(bool? msSQL)
         {
             Console.Clear();
-            InsertRolesCategoriesSubcategories(msSQL);
-            InsertProductsProductItemsImages(msSQL);
-            InsertCustomersDiscountCodesUsers(msSQL);
+            //InsertRolesCategoriesSubcategories(msSQL);
+            //InsertProductsProductItemsImages(msSQL);
+            //InsertCustomersDiscountCodesUsers(msSQL);
             InsertOrdersPaymentsOrderElements(msSQL);
         }
 
@@ -73,13 +73,12 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Payments, "Payments", _context, msSQL);
             InsertEntityInDatabase(_context.Payments, "Payments", Payments, msSQL);
 
-            /* Orders table */
+            /* OrderElements & Orders table */
+            ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context, msSQL);
             ClearTableAndResetSeed(_context.Orders, "Orders", _context, msSQL);
             InsertEntityInDatabase(_context.Orders, "Orders", Orders, msSQL);
-
-            /* OrderElements table */
-            ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context, msSQL);
             InsertEntityInDatabase(_context.OrderElements, "OrderElements", OrderElements, msSQL);
+
         }
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities, bool? msSQL) where T : class
         {
@@ -240,6 +239,8 @@ namespace DataMigration
                         productItems1.Add(productItems[randomProductItemId]);
                     }
 
+                    var createdDate = RandomDay();
+
                     var order = new Order
                     {
                         Id = orderIdCounter,
@@ -247,6 +248,7 @@ namespace DataMigration
                         Active = false,
                         DeliveryStatus = deliveryStatuses[new Random().Next(1, 3)],
                         DiscountCode = discountCodes[new Random().Next(1, discountCodes.Count)].Code,
+                        CreatedDate = createdDate,
                     };
 
                     List<OrderElements> specificOrderOrderElements = new();
@@ -264,7 +266,7 @@ namespace DataMigration
                         orderElementsCounter++;
                     }
 
-                    order.OrderElements = specificOrderOrderElements;
+                    //order.OrderElements = specificOrderOrderElements;
 
                     decimal paymentAmount = 0;
                     foreach (var orderElement in specificOrderOrderElements)
@@ -279,7 +281,7 @@ namespace DataMigration
                     {
                         Id = orderIdCounter,
                         Amount = (double)paymentAmount,
-                        DatePaid = RandomDay(),
+                        DatePaid = createdDate,
                         Method = paymentMethods[new Random().Next(1, paymentMethods.Count)],
                         Approved = 1/*Convert.ToSByte(orderIdCounter % 2)*/
                     };
