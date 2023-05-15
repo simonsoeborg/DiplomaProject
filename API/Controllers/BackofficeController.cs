@@ -63,7 +63,7 @@ namespace API.Controllers
                 OrderElements orderElement = new()
                 {
                     Id = oe.Id,
-                    //OrderId = oe.OrderId,
+                    OrderId = oe.OrderId,
                     ProductItemId = oe.ProductItemId,
                 };
                 orderElements.Add(orderElement);
