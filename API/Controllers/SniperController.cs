@@ -5,6 +5,7 @@ using WebScraper.Controllers;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class SniperController : Controller
@@ -19,9 +20,21 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IActionResult RunLauritzSniper(string? arg)
+        public async Task<IActionResult> RunSniper(string? arg)
         {
-            var data = _sniperHandler.GetLauritz(arg);
+            var lauritz = _sniperHandler.GetLauritz(arg);
+            var dba = _sniperHandler.getDBA(arg);
+
+            List<ScrapingModel> data = new List<ScrapingModel>();
+            foreach (ScrapingModel item in lauritz)
+            {
+                data.Add(item);
+            }
+            foreach (ScrapingModel item in dba)
+            {
+                data.Add(item);
+            }
+
             return new OkObjectResult(data);
         }
     }

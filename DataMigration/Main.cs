@@ -1,8 +1,13 @@
-﻿using ClassLibrary.Models;
+﻿
+using DataMigration;
 
-GroenlundDbContext context = new();
-DataMigrater dataMigrater = new(context);
-//DemoDataGenerator demoDataGenerator = new(context);
+DemoDataGenerator dataGenerator = new();
+dataGenerator.PopulateDatabase(msSQL: true);
+//DataMigrater dataMigrater = new();
+//var (Product, ProductItems, Images) = dataMigrater.ExtractProducts();
 
-dataMigrater.CreateDataInDatabase();
-//dataMigrater.PrintProducts();
+//foreach (var productItem in ProductItems)
+//{
+//    Console.WriteLine(productItem.ToString());
+//    Console.WriteLine(productItem.Product.ToString());
+//}

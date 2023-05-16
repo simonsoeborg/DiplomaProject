@@ -1,0 +1,79 @@
+[
+  {
+    "Id": 1,
+    "Name": "Stel|Chineese Export",
+    "Order": 1,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Spisestel & Kaffestel | For Dining & Coffee"
+  },
+  {
+    "Id": 2,
+    "Name": "Figurer|Figurines",
+    "Order": 2,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Figurer & Skulpturer | Figurines & Sculptures"
+  },
+  {
+    "Id": 3,
+    "Name": "Smykker|Jewerly",
+    "Order": 3,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Smykker | Jewelry"
+  },
+  {
+    "Id": 4,
+    "Name": "Sølv|Silver",
+    "Order": 4,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Sølvtøj & Sølvsmykker | Silverware and Silver trinkets"
+  },
+  {
+    "Id": 5,
+    "Name": "Guld|Gold",
+    "Order": 5,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Guld og Guldsmykker | Gold and Gold trinkets"
+  },
+  {
+    "Id": 6,
+    "Name": "Bestik|Cutlery",
+    "Order": 6,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Bistik | Cutlery"
+  },
+  {
+    "Id": 7,
+    "Name": "Keramik|Ceramics",
+    "Order": 7,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Keramik og Stentøj | Ceramics and Stonework"
+  },
+  {
+    "Id": 8,
+    "Name": "Platter|Plaques",
+    "Order": 8,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Platter | Plaques and Plates"
+  },
+  {
+    "Id": 9,
+    "Name": "Malerier|Paintings",
+    "Order": 9,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Malerier | Paintings"
+  },
+  {
+    "Id": 10,
+    "Name": "Lamper|Lamps",
+    "Order": 10,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Lamper | Lamps"
+  },
+  {
+    "Id": 11,
+    "Name": "Glas|Glass",
+    "Order": 11,
+    "ImageUrl": "https://via.placeholder.com/600x400",
+    "Description": "Glas | Glass"
+  }
+]

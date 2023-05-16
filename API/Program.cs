@@ -16,6 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddDbContext<GroenlundDbContext>();
 
+
 builder.Services.AddSingleton<IWebDriver>(provider =>
 {
     var chromeOptions = new ChromeOptions();
@@ -27,23 +28,31 @@ builder.Services.AddSingleton<IWebDriver>(provider =>
 });
 
 builder.Services.AddSingleton<IWebDriverService, WebDriverService>();
-
 builder.Services.AddTransient<SniperHandler>();
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen(options =>
+//{
+//    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+//    {
+//        In = ParameterLocation.Header,
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.ApiKey
+//    });
+
+//    options.OperationFilter<SecurityRequirementsOperationFilter>();
+//});
+
+//builder.Services.AddAuthentication().AddJwtBearer();
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-//builder.WebHost.UseUrls("http://*:5000");
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

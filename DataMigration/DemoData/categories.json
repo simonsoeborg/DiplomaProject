@@ -1,80 +1,58 @@
 [
   {
-    "Name": "Nyheder",
+    "Id": 1,
+    "Name": "Stel|Dinnerware",
     "Order": 1,
-    "ImageUrl": "https://t4.ftcdn.net/jpg/01/67/74/79/360_F_167747932_NE1da5cf9FM30QExtlFjbmk9ypItoJl2.jpg",
-    "Description": "Nye varer i butikken"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_e642aedf542842e89fd20db88e797168~mv2.png/v1/fill/w_630,h_840,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_e642aedf542842e89fd20db88e797168~mv2.webp",
+    "Description": "Spisestel & Kaffestel | Dinnerware & Coffee sets"
   },
   {
-    "Name": "Stel",
+    "Id": 2,
+    "Name": "Steldele|Dinnerware parts",
     "Order": 2,
-    "ImageUrl": "https://em-epi-static-prod.azureedge.net/altdk-media/ba1142a50dd241e9801f3e9d466cd314/032d9425aa1e4b81ad0fe32b500d0513.jpg",
-    "Description": "Stel"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_e3642da27bd04b74ae23d53df8aa4994~mv2.jpeg/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_e3642da27bd04b74ae23d53df8aa4994~mv2.webp",
+    "Description": "Steldele | Dinnerware parts"
   },
   {
-    "Name": "Figurer",
+    "Id": 3,
+    "Name": "Figurer|Figurines",
     "Order": 3,
-    "ImageUrl": "https://gcp-la8-storage-cdn.lot-art.com/public/upl/61/Royal-Copenhagen-og-Bing-and-Grndahl-samling-figurer-af-porcelaen-14_1573590919_3737.jpg",
-    "Description": "Figurer"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_34607dffac0344ffafe0bd238b8ba470~mv2.png/v1/fill/w_630,h_840,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_34607dffac0344ffafe0bd238b8ba470~mv2.webp",
+    "Description": "Figurer & Skulpturer | Figurines & Sculptures"
   },
   {
-    "Name": "Smykker",
+    "Id": 4,
+    "Name": "Keramik|Ceramics",
     "Order": 4,
-    "ImageUrl": "https://images.squarespace-cdn.com/content/v1/5e7da489f524e90512c17a11/4c3f3572-9d83-455d-b50c-d5840146f5bc/smykbar_0318_2.jpg",
-    "Description": "Smykker"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_9685fe1680ab4d798d7cfa5f5530a8a4~mv2.png/v1/fill/w_702,h_840,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_9685fe1680ab4d798d7cfa5f5530a8a4~mv2.webp",
+    "Description": "Keramik og Stentøj | Ceramics and Stonework"
   },
   {
-    "Name": "Sølv",
+    "Id": 5,
+    "Name": "Guld & Sølv|Gold & Silver",
     "Order": 5,
-    "ImageUrl": "https://via.ritzau.dk/data/images/00774/deb4519e-e5d8-488b-b7fd-6af804af7519.jpg",
-    "Description": "Sølv"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_89e58a717b534e04b20a52cbde74291f~mv2.jpeg/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_89e58a717b534e04b20a52cbde74291f~mv2.webp",
+    "Description": "Guld, Sølvtøj, Guldsmykker og Sølvsmykker | Silverware and Silver trinkets"
   },
   {
-    "Name": "Guld",
+    "Id": 6,
+    "Name": "Bestik|Cutlery",
     "Order": 6,
-    "ImageUrl": "https://nyfortuna.dk/wp-content/uploads/100gr_Metalor-1-1.jpg",
-    "Description": "Guld"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_c15193046be84d38a7b5adc14b93488e~mv2.jpeg/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_c15193046be84d38a7b5adc14b93488e~mv2.webp",
+    "Description": "Bestik | Cutlery"
   },
   {
-    "Name": "Bestik",
+    "Id": 7,
+    "Name": "Platter|Plaques",
     "Order": 7,
-    "ImageUrl": "https://royaldesign.dk/image/4/dorre-new-england-bestikst-60-dele-1?w=1366&quality=80",
-    "Description": "Bestik"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_2b6cfee2a10e467d94bac733a0d1a0ff~mv2.png/v1/fill/w_630,h_840,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_2b6cfee2a10e467d94bac733a0d1a0ff~mv2.webp",
+    "Description": "Platter | Plaques and Plates"
   },
   {
-    "Name": "Keramik / Stentøj",
+    "Id": 8,
+    "Name": "Glas|Glass",
     "Order": 8,
-    "ImageUrl": "https://www.fof.dk/-/media/images/egne/aarhus/kreative-fag/keramik/1920x960-kompri-og-geo/kompri-geotag/keramik-og-stentoej-1-1920x960-komp-geo.jpg",
-    "Description": "Keramik / Stentøj"
-  },
-  {
-    "Name": "Platter",
-    "Order": 9,
-    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_6942d67c8014403996d80c001be6c9a9~mv2.jpg/v1/fill/w_347,h_462,al_c,q_85,usm_0.66_1.00_0.01/c38ac4_6942d67c8014403996d80c001be6c9a9~mv2.webp",
-    "Description": "Platter"
-  },
-  {
-    "Name": "Malerier",
-    "Order": 10,
-    "ImageUrl": "https://mynewart.dk/1097-large_default/froggy.jpg",
-    "Description": "Malerier"
-  },
-  {
-    "Name": "Lamper",
-    "Order": 11,
-    "ImageUrl": "https://images-bonnier.imgix.net/files/bob/production/2022/09/21105513/Koglen-e1663750522448.jpg?auto=format&w=1024&q=60",
-    "Description": "Lamper"
-  },
-  {
-    "Name": "Glas",
-    "Order": 12,
-    "ImageUrl": "https://shop11399.sfstatic.io/upload_dir/shop/_thumbs/25178.w1220.h1220.fill.png",
-    "Description": "Glas"
-  },
-  {
-    "Name": "Købes",
-    "Order": 13,
-    "ImageUrl": "https://via.placeholder.com/600x400",
-    "Description": "Købes"
+    "ImageUrl": "https://static.wixstatic.com/media/c38ac4_b5fa5df134014aecbfa45e083e0757f7~mv2.png/v1/fill/w_624,h_840,al_c,q_90,usm_0.66_1.00_0.01/c38ac4_b5fa5df134014aecbfa45e083e0757f7~mv2.webp",
+    "Description": "Glas | Glass"
   }
 ]

@@ -1,5 +1,7 @@
 ﻿using ClassLibrary.DTOModels;
 using ClassLibrary.Models;
+using ClassLibrary.Models.DTO;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +12,7 @@ using System.Text;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -40,6 +43,7 @@ namespace API.Controllers
         public async Task<ActionResult<string>> Login(UserLoginDTO request)
         {
             User? dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+
             // Lookup user in DB so we can compare hash and salt
             if (dbUser == null)
             {
@@ -50,6 +54,7 @@ namespace API.Controllers
                 return BadRequest("Wrong password");
             }
 
+            //Console.WriteLine("User", dbUser.ToString());
             string token = CreateToken(dbUser).Result;
             return Ok(token);
         }
@@ -62,7 +67,6 @@ namespace API.Controllers
             {
                 User user = new()
                 {
-                    Id = _context.Users.Count() + 1,
                     RoleId = 2,
                     FirstName = newUser.FirstName,
                     LastName = newUser.LastName,
@@ -102,11 +106,9 @@ namespace API.Controllers
         private async Task<string> CreateToken(User user)
         {
             Role? userRole = await _context.Roles.FindAsync(user.RoleId);
-            if (userRole == null)
+            if (userRole != null)
             {
-                throw new Exception("User role was not found in AuthController_CreateToken()!");
-            }
-            List<Claim> claims = new()
+                List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.Name, user.FirstName+" "+user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
@@ -114,19 +116,21 @@ namespace API.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value!));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    _configuration.GetSection("AppSettings:Token").Value!));
 
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: credentials);
+                var token = new JwtSecurityToken(
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: credentials);
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return jwt;
+                return jwt;
+            }
+            throw new Exception("User role was not found in AuthController_CreateToken()!");
         }
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {

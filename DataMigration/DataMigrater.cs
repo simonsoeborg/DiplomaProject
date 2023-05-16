@@ -1,562 +1,509 @@
 ﻿using ClassLibrary.Models;
-using DataMigration;
+using DataMigration.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
-class DataMigrater
+namespace DataMigration
 {
-    public RegexHelper RegexHelper;
-    private readonly GroenlundDbContext _context;
 
-    public DataMigrater(GroenlundDbContext context)
+    class DataMigrater
     {
-        RegexHelper = new();
-        _context = context;
-    }
-    public void CreateDataInDatabase()
-    {
-        MsSqlSetIdentityInsert("ON");
-        CreateCategoriesInDatabase();
-        CreateSubcategoriesInDatabase();
-        CreateProductsInDatabase();
-        MsSqlSetIdentityInsert("OFF");
+        public RegexHelper RegexHelper;
+        private readonly GroenlundDbContext _context;
 
-    }
-    public void PrintProducts()
-    {
-        int counter = 0;
-        var products = _context.Products.Include(p => p.Subcategories).ThenInclude(s => s.Category).ToList();
-        foreach (var product in products)
+        public DataMigrater()
         {
-            counter++;
-            Console.WriteLine(product + "\n");
-            foreach (var subcategory in product.Subcategories)
+            RegexHelper = new();
+            _context = new();
+        }
+
+        public void PrintProducts()
+        {
+            int counter = 0;
+            var products = _context.Products.Include(p => p.Subcategories).ThenInclude(s => s.Category).ToList();
+            foreach (var product in products)
             {
-                Console.WriteLine("Subcategory's category: " + subcategory.Category.Name);
-            }
-            Console.WriteLine("\n\n\n");
-        }
-        Console.WriteLine("Counted {0} Products", counter);
-    }
-    public void CreateJsonFiles()
-    {
-        var getData = ExtractProducts();
-        List<Product> Products = getData.Products;
-        List<ProductItem> ProductItems = getData.ProductItems;
-        var jsonString = JsonConvert.SerializeObject(Products, Formatting.Indented);
-        var fileName = "products.json";
-        File.WriteAllText(fileName, jsonString);
-        Console.WriteLine("JSON array saved to " + fileName);
-
-        jsonString = JsonConvert.SerializeObject(ProductItems, Formatting.Indented);
-        fileName = "productitems.json";
-        File.WriteAllText(fileName, jsonString);
-        Console.WriteLine("JSON array saved to " + fileName);
-
-    }
-
-
-
-    private void MsSqlSetIdentityInsert(string onOrOff)
-    {
-        List<string> queries = new()
-        {
-            $"SET IDENTITY_INSERT GroenlundDB.dbo.Categories {onOrOff};",
-            $"SET IDENTITY_INSERT GroenlundDB.dbo.Subcategories {onOrOff};",
-            $"SET IDENTITY_INSERT GroenlundDB.dbo.Products {onOrOff};",
-            $"SET IDENTITY_INSERT GroenlundDB.dbo.ProductItems {onOrOff};"
-        };
-
-        foreach (string query in queries)
-        {
-            try
-            {
-                _context.Database.ExecuteSqlRaw(query);
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-    }
-
-    private void CreateCategoriesInDatabase()
-    {
-        var categories = _context.Categories;
-        if (categories.Any())
-        {
-            // Deletes all rows/data in the table
-            _context.Categories.ExecuteDelete();
-            _context.SaveChanges();
-            Console.WriteLine("Database contains categories");
-            Console.WriteLine("Deleting all categories");
-        }
-
-        Console.WriteLine("Creating categories");
-
-        var categoriesJson = DemoDataRepository.GetCategories();
-        foreach (var category in categoriesJson)
-        {
-            try
-            {
-                _context.Categories.Add(category);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-
-        Console.WriteLine("Successfully created categories");
-    }
-
-    private void CreateSubcategoriesInDatabase()
-    {
-        var subcategories = _context.Subcategories;
-        if (subcategories.Any())
-        {
-            // Deletes all rows/data in the table
-            _context.Subcategories.ExecuteDelete();
-            _context.SaveChanges();
-            Console.WriteLine("Database contains subcategories");
-            Console.WriteLine("Deleting all subcategories");
-        }
-
-        Console.WriteLine("Creating subcategories");
-
-        var subcategoriesJson = DemoDataRepository.GetSubcategories();
-        foreach (var subcategory in subcategoriesJson)
-        {
-            try
-            {
-                _context.Subcategories.Add(subcategory);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-
-        Console.WriteLine("Successfully created subcategories\n");
-    }
-
-    private void CreateProductsInDatabase()
-    {
-        var existingProducts = _context.Products;
-        var existingProductItems = _context.ProductItems;
-        if (existingProducts.Any())
-        {
-            try
-            {
-                _context.Products.ExecuteDelete();
-                Console.WriteLine("Deleted all products in database\n");
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-        if (existingProductItems.Any())
-        {
-            try
-            {
-                _context.ProductItems.ExecuteDelete();
-                Console.WriteLine("Deleted all productItems in database\n");
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        var getData = ExtractProducts();
-        List<Product> Products = getData.Products;
-        List<ProductItem> ProductItems = getData.ProductItems;
-
-        foreach (Product prod in Products)
-        {
-            _context.Products.Add(prod);
-            try
-            {
-                _context.SaveChanges();
-                Console.WriteLine(prod.Name + " added");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed creating product" + ex.Message);
-            }
-        }
-
-
-        _context.SaveChanges();
-
-        foreach (ProductItem productItem in ProductItems)
-        {
-            _context.ProductItems.Add(productItem);
-            try
-            {
-                _context.SaveChanges();
-                Console.WriteLine("ProductItem for " + productItem.Product.Name + " added");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed creating productItem" + ex.Message + "\n");
-                Console.WriteLine("StackTrace:" + ex.StackTrace + "\n");
-                Console.WriteLine("InnerException:" + ex.InnerException + "\n");
-            }
-        }
-    }
-
-    private (List<Product> Products, List<ProductItem> ProductItems) ExtractProducts()
-    {
-        List<string[]> data = ReadCsv("./products.csv");
-
-        List<Product> Products = new();
-        List<ProductItem> ProductItems = new();
-        List<Subcategory> subcategories = _context.Subcategories.ToList();
-
-        for (int i = 1; i < data.Count; i++)
-        {
-            var dataItem = data[i];
-            Product product = ExtractProduct(dataItem, subcategories);
-            if (ProductIsValid(product))
-            {
-                Products.Add(product);
-                List<ProductItem> generatedProductItems = GenerateProductItems(product);
-                ProductItems.AddRange(generatedProductItems);
-            }
-        }
-
-        int productCount = 0;
-        int materialCount = 0;
-        int modelNumberCount = 0;
-        int designCount = 0;
-        int manufacturerCount = 0;
-        int subcategoryCount = 0;
-
-        foreach (var product in Products)
-        {
-            if (product.Material != MaterialType.undefined)
-            {
-                materialCount++;
-            }
-            if (product.ModelNumber != "")
-            {
-                modelNumberCount++;
-            }
-            if (product.Design != "")
-            {
-                designCount++;
-            }
-            if (product.Manufacturer != "")
-            {
-                manufacturerCount++;
-            }
-            if (product.Subcategories.Count > 0)
-            {
-                subcategoryCount++;
-            }
-            if (product.ModelNumber != "" &&
-                product.Material != ((int)MaterialType.undefined) &&
-                product.Design != null &&
-                product.Manufacturer != "" &&
-                product.Subcategories.Count > 0
-                )
-            {
-                productCount++;
-            }
-        }
-
-        Console.WriteLine("Materials mapped: {0}/{1}\n" +
-            "Modelnumbers mapped: {2}/{1}\n" +
-            "Designs mapped: {3}/{1}\n" +
-            "Manufacturers mapped: {4}/{1}\n" +
-            "Subcategories mapped: {5}/{1}\n",
-            materialCount, data.Count, modelNumberCount, designCount, manufacturerCount, subcategoryCount
-        );
-
-        Console.WriteLine("Added data to {0}/{1} products generated from {2} dataItems", productCount, Products.Count, data.Count);
-        return (Products, ProductItems);
-    }
-    public void TestRegExFilter()
-    {
-        List<string[]> data = ReadCsv("./products.csv");
-        List<string> names = new();
-
-        for (int i = 1; i < 5; i++)
-        {
-            var dataItem = data[i];
-            names.Add(dataItem[2]);
-        }
-
-        RegexHelper.TestRegexFilter(names.ToArray(), RegexHelper.RegexMap());
-    }
-
-    private bool ProductIsValid(Product product)
-    {
-        bool result = true;
-        if (
-            product.ModelNumber == "" ||
-            product.Material == ((int)MaterialType.undefined) ||
-            product.Design == null ||
-            product.Manufacturer == "" ||
-            product.Subcategories.Count == 0
-        )
-        {
-            result = false;
-        }
-
-        return result;
-    }
-    private List<ProductItem> GenerateProductItems(Product product)
-    {
-        List<ProductItem> productItems = new();
-        int amount = new Random().Next(2);
-        for (int i = 0; i <= amount; i++)
-        {
-
-            int conditionType = new Random().Next(3);
-            int qualityType = new Random().Next(3);
-            int purchasePrice = new Random().Next(10500);
-            int currentPrice = purchasePrice * 2;
-            ProductItem productItem = new()
-            {
-                Product = product,
-                ProductId = product.Id,
-                Condition = (ConditionType)conditionType,
-                Quality = (QualityType)qualityType,
-                Sold = 0,
-                Weight = 0,
-                PurchasePrice = purchasePrice,
-                CurrentPrice = currentPrice,
-                CreatedDate = RandomDay(),
-                CustomText = "",
-
-            };
-            productItems.Add(productItem);
-        }
-
-        return productItems;
-
-    }
-
-    private DateTime RandomDay()
-    {
-        DateTime start = new DateTime(2019, 1, 1);
-        int range = (DateTime.Today - start).Days;
-        return start.AddDays(new Random().Next(range));
-    }
-
-    private Product ExtractProduct(string[] dataItem, List<Subcategory> subcategories)
-    {
-        Product product = new();
-        string[] nameAndModelNumber = RegexHelper.RecognizeModelnumberPattern(dataItem[2]);
-        product.ModelNumber = nameAndModelNumber[0];
-        product.Name = nameAndModelNumber[1];
-        product.Material = ExtractMaterialType(dataItem[3]);
-        product.Manufacturer = ExtractManufacturer(dataItem[3]);
-        product.Design = ExtractDesign(dataItem[3]);
-        product.Subcategories = ExtractSubcategories(subcategories, dataItem[3]);
-        product.Dimension = ExtractDimension(dataItem[3]);
-
-        return product;
-    }
-
-    // TODO - This should be finished if time allows for it.
-    private string ExtractDimension(string input)
-    {
-        string result = "";
-        int startIndex = 0;
-        // Dimension can be Height / Højde - 
-        if (input.ToLowerInvariant().Contains("height"))
-        {
-            startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
-
-        }
-        else if (input.ToLowerInvariant().Contains("højde"))
-        {
-            startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
-        }
-        if (startIndex != 0)
-        {
-            string substring = input.ToLowerInvariant().Substring(startIndex);
-            result = substring;
-        }
-
-        return result;
-    }
-    private List<Subcategory> ExtractSubcategories(List<Subcategory> subcategories, string input)
-    {
-        List<Subcategory> subcategoriesResult = new();
-
-        foreach (Subcategory subcategory in subcategories)
-        {
-            if (input.Contains(subcategory.Name))
-            {
-                subcategoriesResult.Add(subcategory);
-            }
-        }
-
-        return subcategoriesResult;
-    }
-
-    private string ExtractManufacturer(string input)
-    {
-        string result = "";
-        string[] manufacturers = { "Royal Copenhagen", "Bing og Grøndahl", "Axel Brüel", "Dahl Jensen", "Kähler", "Holmegaard",
-                           "Georg Jensen", "Orrefors", "Hjorth", "Knabstrup", "Lyngby Porcelæn", "Aluminia", "Nymølle Keramik",
-                           "Saxbo Keramik", "Dansk Glasværk", "Palshus Keramik", "Arne Bang Keramik", "Søholm Keramik",
-                           "Ipsen & Co. Keramik", "A. Michelsen", "Cohr", "Anton Michelsen", "Evald Nielsen", "Hans Hansen",
-                           "Kay Bojesen", "Carl Hansen & Søn" };
-        foreach (string manufacturer in manufacturers)
-        {
-            if (input.Contains(manufacturer))
-            {
-                result = manufacturer;
-            }
-        }
-
-        return result;
-    }
-    private string ExtractDesign(string input)
-    {
-        string result = "";
-        if (input.Contains("Design"))
-        {
-            int startIndex = input.IndexOf("Design");
-            string subString = input.Substring(startIndex + "Design".Length, 40);
-
-            // Trim various characters;
-            subString = TrimString(subString, "&nsbp");
-            subString = TrimString(subString, "\"");
-            subString = TrimString(subString, ";");
-            subString = TrimString(subString, ":");
-            subString = TrimString(subString, "\"");
-            subString = subString.Trim();
-
-            if (subString.Contains("<"))
-            {
-                int charIndex = subString.IndexOf("<");
-                subString = subString.Substring(0, charIndex);
-            }
-
-            result = subString;
-        }
-
-        return result;
-    }
-    private string TrimString(string input, string removeValue)
-    {
-        string result = input;
-        if (input.Contains(removeValue))
-        {
-            int removeValueIndex = input.IndexOf(removeValue);
-            result = input.Substring(removeValueIndex + removeValue.Length);
-
-        }
-        return result;
-
-    }
-    private MaterialType ExtractMaterialType(string input)
-    {
-        string substring = "";
-        if (input.Contains("Materiale") || input.Contains("Material"))
-        {
-            int startIndex = input.IndexOf("Materiale");
-            if (startIndex < 0)
-            {
-                startIndex = input.IndexOf("Material");
-            }
-            substring = input.Substring(startIndex);
-        }
-
-        if (substring.ToLowerInvariant().Contains("porcelæn") || substring.ToLowerInvariant().Contains("porcelain"))
-        {
-            return MaterialType.porcelain;
-        }
-
-        if (substring.ToLowerInvariant().Contains("stål") || substring.ToLowerInvariant().Contains("steel"))
-        {
-            return MaterialType.steel;
-        }
-        if (substring.ToLowerInvariant().Contains("glas") || substring.ToLowerInvariant().Contains("glass"))
-        {
-            return MaterialType.glass;
-        }
-        if (substring.ToLowerInvariant().Contains("guld") || substring.ToLowerInvariant().Contains("gold"))
-        {
-            return MaterialType.gold;
-        }
-        if (substring.ToLowerInvariant().Contains("sølv") || substring.ToLowerInvariant().Contains("silver"))
-        {
-            return MaterialType.silver;
-        }
-        if (substring.ToLowerInvariant().Contains("keramik") || substring.ToLowerInvariant().Contains("ceramics"))
-        {
-            return MaterialType.ceramics;
-        }
-        if (substring.ToLowerInvariant().Contains("stentøj") || substring.ToLowerInvariant().Contains("stoneware"))
-        {
-            return MaterialType.stoneware;
-        }
-        if (substring.ToLowerInvariant().Contains("fajance"))
-        {
-            return MaterialType.fajance;
-        }
-
-
-        return MaterialType.undefined;
-    }
-    private List<string[]> ReadCsv(string filename)
-    {
-        List<string[]> data = new();
-        using (var reader = new StreamReader(filename))
-        {
-            string? line = reader.ReadLine();
-            while (line != null)
-            {
-                var values = new List<string>();
-                var currentField = "";
-
-                foreach (var c in line)
+                counter++;
+                Console.WriteLine(product + "\n");
+                foreach (var subcategory in product.Subcategories)
                 {
-                    if (c == ',' && currentField.StartsWith("\"\"") && !currentField.EndsWith("\"\""))
-                    {
-                        // This comma is inside a field, so ignore it
-                        currentField += c;
-                    }
-                    else if (c == ',' && currentField.EndsWith("\"\""))
-                    {
-                        // This comma is at the end of a quoted field, so add the field to the list and start a new field
-                        values.Add(currentField);
-                        currentField = "";
-                    }
-                    else if (c == ',' && !currentField.EndsWith("\"\""))
-                    {
-                        // This comma is at the end of a non-quoted field, so add the field to the list and start a new field
-                        values.Add(currentField);
-                        currentField = "";
-                    }
-                    else
-                    {
-                        // Add the character to the current field
-                        currentField += c;
-                    }
+                    Console.WriteLine("Subcategory's category: " + subcategory.Category.Name);
+                }
+                Console.WriteLine("\n\n\n");
+            }
+            Console.WriteLine("Counted {0} Products", counter);
+        }
+
+        public void CreateJsonFiles()
+        {
+            var (Products, ProductItems, Images) = ExtractProducts();
+
+            var jsonString = JsonConvert.SerializeObject(Products, Formatting.Indented);
+            var fileName = "products.json";
+            File.WriteAllText(fileName, jsonString);
+            Console.WriteLine("JSON file saved to " + fileName);
+
+            jsonString = JsonConvert.SerializeObject(ProductItems, Formatting.Indented);
+            fileName = "productitems.json";
+            File.WriteAllText(fileName, jsonString);
+            Console.WriteLine("JSON file saved to " + fileName);
+
+            jsonString = JsonConvert.SerializeObject(Images, Formatting.Indented);
+            fileName = "images.json";
+            File.WriteAllText(fileName, jsonString);
+            Console.WriteLine("JSON file saved to " + fileName);
+
+        }
+
+
+        public (List<Product> Products, List<ProductItem> ProductItems, List<Image> Images) ExtractProducts()
+        {
+            List<string[]> data = GetCsvEntries();
+            List<string[]> failedMatches = new();
+            List<Product> Products = new();
+            List<ProductItem> ProductItems = new();
+            List<Image> Images = new();
+            List<Category> categories = _context.Categories.ToList();
+            List<Subcategory> subcategories = _context.Subcategories.ToList();
+            int productIdCounter = 1;
+            int productItemIdCounter = 1;
+            int imageIdCounter = 1;
+
+            for (int i = 1; i < data.Count; i++)
+            {
+                var dataItem = data[i];
+                var (name, modelNumber) = RegexHelper.RecognizeModelnumberPattern(dataItem[2]);
+                string categoryStringInput = dataItem[2] + dataItem[3] + dataItem[5];
+                var productCategory = CategoryHelper.InferCategory(categories, categoryStringInput);
+                if (productCategory == null)
+                {
+                    failedMatches.Add(dataItem);
+                    continue;
                 }
 
-                // Add the last field to the list
-                values.Add(currentField);
+                var productSubcategories = CategoryHelper.ExtractSubcategories(productCategory, subcategories, categoryStringInput);
+                var imageUrls = ExtractImages(dataItem[4]);
 
-                data.Add(values.ToArray());
-                line = reader.ReadLine();
+                if (string.IsNullOrEmpty(name) || productSubcategories.Count == 0 || imageUrls.Count == 0)
+                {
+                    // No point in having this data in the project, but saving it for future reference to PO.
+                    failedMatches.Add(dataItem);
+                    continue;
+                }
+
+                Product product = new()
+                {
+                    Id = productIdCounter,
+                    Name = name,
+                    ModelNumber = modelNumber,
+                    Material = ExtractMaterialType(dataItem[3]),
+                    Manufacturer = ExtractManufacturer(dataItem[3]),
+                    Design = ExtractDesign(dataItem[3]),
+                    Subcategories = productSubcategories,
+                    Dimension = ExtractDimension(dataItem[3]),
+                };
+
+                // How many productItems for this product
+                var productItemCount = ExtractProductItemCount(dataItem[13]);
+
+                for (int x = 0; x < productItemCount; x++)
+                {
+
+                    // Create productItem for the product
+                    decimal currentPrice = ExtractPrice(dataItem[8]) / 10;
+                    decimal purchasePrice = currentPrice * (decimal)0.3;
+                    decimal? weight = ExtractWeight(dataItem[14]);
+                    weight ??= (decimal)new Random().NextDouble() * 15;
+
+                    ProductItem productItem = new()
+                    {
+                        Id = productItemIdCounter,
+                        Product = product,
+                        ProductId = product.Id,
+                        Condition = ExtractCondition(dataItem[3]),
+                        Quality = ExtractQuality(dataItem[3]),
+                        Sold = 0,
+                        Weight = weight,
+                        CurrentPrice = currentPrice,
+                        PurchasePrice = purchasePrice,
+                        CreatedDate = RandomDay(),
+                        CustomText = "",
+                        Images = new List<Image>()
+                    };
+
+                    bool? sold = ExtractSold(dataItem[10]);
+                    if (sold != null && sold == true)
+                    {
+                        productItem.Sold = 1;
+                        int randomDaysOnSale = new Random().Next(1, 150);
+                        productItem.SoldDate = productItem.CreatedDate + TimeSpan.FromDays(randomDaysOnSale);
+                    }
+
+                    List<Image> productItemImages = new();
+                    foreach (var img in imageUrls)
+                    {
+                        if (!string.IsNullOrEmpty(img))
+                        {
+                            var imgId = img.Split('.')[0];
+                            string imgReducedSize = "https://static.wixstatic.com/media/" + img + "/v1/fill/w_630,h_840,al_c,q_85,usm_0.66_1.00_0.01/" + imgId + ".webp";
+                            //Console.WriteLine(imgId);
+                            //Console.WriteLine(imgReducedSize);
+
+                            Image image = new()
+                            {
+                                ProductItemId = productItem.Id,
+                                Id = imageIdCounter,
+                                Url = imgReducedSize,
+                            };
+                            productItemImages.Add(image);
+                            imageIdCounter++;
+                        }
+                    }
+
+
+                    ProductItems.Add(productItem);
+                    Images.AddRange(productItemImages);
+                    productItemIdCounter++;
+                }
+                Products.Add(product);
+                productIdCounter++;
             }
+
+            Console.WriteLine("Added data to {0} products generated from {1} dataItems", Products.Count, data.Count);
+            return (Products, ProductItems, Images);
         }
-        return data;
+        public void TestRegExFilter()
+        {
+            List<string[]> data = ReadCsv("./products.csv");
+            List<string> names = new();
+
+            for (int i = 1; i < 5; i++)
+            {
+                var dataItem = data[i];
+                names.Add(dataItem[2]);
+            }
+
+            RegexHelper.TestRegexFilter(names.ToArray(), RegexHelper.RegexMap());
+        }
+
+        public decimal? ExtractWeight(string input)
+        {
+            bool success = double.TryParse(input, out double sum);
+            if (success)
+            {
+                return (decimal)sum;
+            }
+            return null;
+        }
+
+        public int ExtractProductItemCount(string input)
+        {
+            var parseSuccessful = int.TryParse(input, out int parseResult);
+            if (parseSuccessful)
+            {
+                if (parseResult != 0)
+                {
+                    return parseResult;
+                }
+            }
+            return 1;
+        }
+
+
+        public DateTime RandomDay()
+        {
+            DateTime start = new(2019, 1, 1);
+            int range = (DateTime.Today - start).Days;
+            return start.AddDays(new Random().Next(range));
+        }
+
+        // TODO - This should be finished if time allows for it.
+        public string ExtractDimension(string input)
+        {
+            string result = "";
+            //int startIndex = 0;
+            //// Dimension can be Height / Højde - 
+            //if (input.ToLowerInvariant().Contains("height"))
+            //{
+            //    startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
+
+            //}
+            //else if (input.ToLowerInvariant().Contains("højde"))
+            //{
+            //    startIndex = input.ToLowerInvariant().IndexOf("height") + "height".Length;
+            //}
+            //if (startIndex != 0)
+            //{
+            //    string substring = input.ToLowerInvariant().Substring(startIndex);
+            //    result = substring;
+            //}
+
+            return result;
+        }
+
+        public List<string> ExtractImages(string input)
+        {
+            List<string> images = new();
+            if (input.Contains("jpg") || input.Contains("wepb"))
+            {
+                string[] result = input.Split(';');
+                foreach (string s in result)
+                {
+                    images.Add(s.Trim('\"'));
+                }
+            }
+
+            return images;
+        }
+        struct Manufacturer
+        {
+            public string name;
+            public string[] keywords;
+        }
+
+        public string ExtractManufacturer(string input)
+        {
+            Manufacturer[] manufacturers = new Manufacturer[]
+            {
+                new Manufacturer { name = "Royal Copenhagen", keywords = new string[] { "Royal", "Copenhagen" } },
+                new Manufacturer { name = "Bing og Grøndahl", keywords = new string[] { "Bing", "Grøndahl", "Bing og Grøndahl" } },
+                new Manufacturer { name = "Axel Brüel", keywords = new string[] { "Axel", "Brüel" } },
+                new Manufacturer { name = "Dahl Jensen", keywords = new string[] { "Dahl Jensen" } },
+                new Manufacturer { name = "Kähler", keywords = new string[] { "Kähler" } },
+                new Manufacturer { name = "Holmegaard", keywords = new string[] { "Holmegaard" } },
+                new Manufacturer { name = "Georg Jensen", keywords = new string[] { "Georg Jensen" } },
+                new Manufacturer { name = "Orrefors", keywords = new string[] { "Orrefors" } },
+                new Manufacturer { name = "Hjorth", keywords = new string[] { "Hjorth" } },
+                new Manufacturer { name = "Knabstrup", keywords = new string[] { "Knabstrup" } },
+                new Manufacturer { name = "Lyngby Porcelæn", keywords = new string[] { "Lyngby Porcelæn" } },
+                new Manufacturer { name = "Aluminia", keywords = new string[] { "Aluminia" } },
+                new Manufacturer { name = "Nymølle Keramik", keywords = new string[] { "Nymølle Keramik" } },
+                new Manufacturer { name = "Saxbo Keramik", keywords = new string[] { "Saxbo Keramik" } },
+                new Manufacturer { name = "Dansk Glasværk", keywords = new string[] { "Dansk Glasværk" } },
+                new Manufacturer { name = "Palshus Keramik", keywords = new string[] { "Palshus Keramik" } },
+                new Manufacturer { name = "Arne Bang", keywords = new string[] { "Arne Bang" } },
+                new Manufacturer { name = "Søholm", keywords = new string[] { "Søholm" } },
+                new Manufacturer { name = "Ipsen & Co.", keywords = new string[] { "Ipsen & Co" } },
+                new Manufacturer { name = "A. Michelsen", keywords = new string[] { "A. Michelsen", "Anton Michelsen" } },
+                new Manufacturer { name = "Cohr", keywords = new string[] { "Cohr" } },
+                new Manufacturer { name = "Evald Nielsen", keywords = new string[] { "Evald Nielsen" } },
+                new Manufacturer { name = "Hans Hansen", keywords = new string[] { "Hans Hansen" } },
+                new Manufacturer { name = "Kay Bojesen", keywords = new string[] { "Kay Bojesen" } },
+                new Manufacturer { name = "Carl Hansen & Søn", keywords = new string[] { "Carl Hansen & Søn" } },
+                new Manufacturer { name = "Lyngby Glasværk", keywords = new string[] { "Lyngby Glasværk"}},
+                new Manufacturer { name = "Grønlund & Lefort", keywords = new string[]  {"Grønlund", "Lefort"}},
+                new Manufacturer { name = "Gun Von Wittrock", keywords = new string[] { "GUN VON WITTROCK" } },
+                new Manufacturer { name = "Michael Andersen", keywords = new string[] {"Michael Andersen"} },
+
+            };
+
+            string result = "";
+
+            foreach (var manufacturer in manufacturers)
+            {
+                foreach (var keyword in manufacturer.keywords)
+                {
+                    if (input.ToLowerInvariant().Contains(keyword.ToLowerInvariant()))
+                    {
+                        result = manufacturer.name;
+                    }
+
+                }
+            }
+
+            return result;
+        }
+        public string ExtractDesign(string input)
+        {
+            string result = "";
+            int startIndex = input.IndexOf("Design");
+
+            if (startIndex != -1)
+            {
+                startIndex += "Design".Length;
+                string subString = input.Substring(startIndex, 40)
+                    .Trim('&', ' ', ';', ':', '"')
+                    .Split('<')[0]
+                    .Trim()
+                    .Replace("&nbsp", "")
+                    .Replace("&#160;", "")
+                    .Replace("&amp;nbsp;", "");
+
+                result = subString;
+            }
+
+            return result;
+        }
+
+        public bool? ExtractSold(string input)
+        {
+            input = input.ToLowerInvariant();
+            if (input.Contains("true"))
+            {
+                return false;
+            }
+            if (input.Contains("false"))
+            {
+                return true;
+            }
+            return null;
+        }
+
+        public QualityType ExtractQuality(string input)
+        {
+            string pattern = @"(1|2|3)\.\s*(?i)(quality|sortering)";
+
+            Match match = Regex.Match(input, pattern);
+            if (match.Success)
+            {
+                //string phrase = match.Groups[2].Value;
+                switch (match.Groups[1].Value)
+                {
+                    case "1":
+                        return QualityType.FirstQuality;
+                    case "2":
+                        return QualityType.SecondQuality;
+                    case "3":
+                        return QualityType.ThirdQuality;
+                }
+            }
+            return QualityType.Undefined;
+        }
+
+        public ConditionType ExtractCondition(string input)
+        {
+            input = input.ToLowerInvariant();
+
+            if (input.Contains("skår") || input.Contains("shards"))
+            {
+                if (input.Contains("mange") || input.Contains("many"))
+                {
+                    return ConditionType.ManyShards;
+                }
+                if (input.Contains("få") || input.Contains("few"))
+                {
+                    return ConditionType.FewShards;
+                }
+                if (input.Contains("ingen") || input.Contains("no"))
+                {
+                    return ConditionType.NoShards;
+                }
+            }
+            return ConditionType.Undefined;
+        }
+
+        public decimal ExtractPrice(string input)
+        {
+            double.TryParse(input, out double result);
+            if (double.IsNaN(result) || double.IsInfinity(result) || result < 0)
+            {
+                result = 149.1;
+            }
+            return (decimal)result;
+        }
+
+        public MaterialType ExtractMaterialType(string input)
+        {
+            string substring = "";
+
+            Regex regexPattern = new(@"(?:Material|Materiale):\s*(.*)");
+            var match = regexPattern.Match(input);
+            if (match.Success)
+            {
+                substring = match.Groups[1].Value;
+                int endIndex = substring.IndexOf("<");
+                substring = substring[..endIndex];
+            }
+
+            string lowercaseSubstring = substring.ToLowerInvariant();
+            if (lowercaseSubstring.Contains("porcelæn") || lowercaseSubstring.Contains("porcelain")) { return MaterialType.porcelain; }
+            if (lowercaseSubstring.Contains("stål") || lowercaseSubstring.Contains("steel")) { return MaterialType.steel; }
+            if (lowercaseSubstring.Contains("glas") || lowercaseSubstring.Contains("glass")) { return MaterialType.glass; }
+            if (lowercaseSubstring.Contains("guld") || lowercaseSubstring.Contains("gold")) { return MaterialType.gold; }
+            if (lowercaseSubstring.Contains("sølv") || lowercaseSubstring.Contains("silver")) { return MaterialType.silver; }
+            if (lowercaseSubstring.Contains("keramik") || lowercaseSubstring.Contains("ceramics")) { return MaterialType.ceramics; }
+            if (lowercaseSubstring.Contains("stentøj") || lowercaseSubstring.Contains("stoneware")) { return MaterialType.stoneware; }
+            if (lowercaseSubstring.Contains("fajance")) { return MaterialType.fajance; }
+
+            return MaterialType.undefined;
+        }
+
+        public List<string[]> GetCsvEntries()
+        {
+            return ReadCsv("./products.csv");
+        }
+        private List<string[]> ReadCsv(string filename)
+        {
+            List<string[]> data = new();
+            using (var reader = new StreamReader(filename))
+            {
+                string? line = reader.ReadLine();
+                while (line != null)
+                {
+                    var values = new List<string>();
+                    var currentField = "";
+
+                    foreach (var c in line)
+                    {
+                        if (c == ',' && currentField.StartsWith("\"\"") && !currentField.EndsWith("\"\""))
+                        {
+                            // This comma is inside a field, so ignore it
+                            currentField += c;
+                        }
+                        else if (c == ',' && currentField.EndsWith("\"\""))
+                        {
+                            // This comma is at the end of a quoted field, so add the field to the list and start a new field
+                            values.Add(currentField);
+                            currentField = "";
+                        }
+                        else if (c == ',' && !currentField.EndsWith("\"\""))
+                        {
+                            // This comma is at the end of a non-quoted field, so add the field to the list and start a new field
+                            values.Add(currentField);
+                            currentField = "";
+                        }
+                        else
+                        {
+                            // Add the character to the current field
+                            currentField += c;
+                        }
+                    }
+
+                    // Add the last field to the list
+                    values.Add(currentField);
+
+                    data.Add(values.ToArray());
+                    line = reader.ReadLine();
+                }
+            }
+            return data;
+        }
+
+
     }
 }
+
+//public bool ProductIsValid(Product product, List<ProductItem> productItems)
+//{
+//    bool result = true;
+//    if (
+//        product.ModelNumber == "" ||
+//        product.Material == ((int)MaterialType.undefined) ||
+//        product.Design == null ||
+//        product.Manufacturer == "" ||
+//        product.Subcategories.Count == 0
+//    )
+//    {
+//        result = false;
+//    }
+//    foreach (ProductItem po in productItems)
+//    {
+//        if (po.Images == null || po.Images.Count == 0)
+//        {
+//            result = false;
+//        }
+//    }
+
+//    return result;
+//}

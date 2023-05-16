@@ -1,23 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 	<Target Name="ApplyTransform" AfterTargets="Publish">
 		<TransformXml Source="web.config" Transform="$(ProjectDir)Transforms\Web.Release.config" Destination="$(PublishDir)web.config" />
 	</Target>
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>c81679f7-7cd8-4f65-81ef-3ffc91b09d83</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.15" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
 		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="111.0.5563.6400" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="Stripe.net" Version="41.13.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>

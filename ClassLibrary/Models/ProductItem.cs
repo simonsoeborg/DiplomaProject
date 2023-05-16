@@ -20,7 +20,7 @@ namespace ClassLibrary.Models
         public DateTime CreatedDate { get; set; }
         public DateTime? SoldDate { get; set; }
         public string? CustomText { get; set; }
-        public ICollection<PriceHistory> PriceHistories { get; set; } = new List<PriceHistory>();
+        public ICollection<PriceHistory>? PriceHistories { get; set; } = new List<PriceHistory>();
         public ICollection<Image> Images { get; set; } = new List<Image>();
 
     }

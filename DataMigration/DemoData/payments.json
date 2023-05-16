@@ -1,0 +1,142 @@
+[
+  {
+    "Id": 1,
+    "DatePaid": "2023-04-02T18:29:45.869Z",
+    "Amount": 256.32,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 2,
+    "DatePaid": "2023-04-03T10:15:12.771Z",
+    "Amount": 97.15,
+    "Approved": 0,
+    "Method": "PayPal"
+  },
+  {
+    "Id": 3,
+    "DatePaid": "2023-04-06T09:45:57.041Z",
+    "Amount": 42.8,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 4,
+    "DatePaid": "2023-04-06T16:34:21.199Z",
+    "Amount": 175.99,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 5,
+    "DatePaid": "2023-04-07T20:09:33.707Z",
+    "Amount": 30.0,
+    "Approved": 1,
+    "Method": "PayPal"
+  },
+  {
+    "Id": 6,
+    "DatePaid": "2023-04-08T14:51:59.524Z",
+    "Amount": 499.99,
+    "Approved": 0,
+    "Method": "Bank Transfer"
+  },
+  {
+    "Id": 7,
+    "DatePaid": "2023-04-09T12:07:17.624Z",
+    "Amount": 123.45,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 8,
+    "DatePaid": "2023-04-10T08:44:32.148Z",
+    "Amount": 79.99,
+    "Approved": 1,
+    "Method": "PayPal"
+  },
+  {
+    "Id": 9,
+    "DatePaid": "2023-04-11T13:30:01.305Z",
+    "Amount": 200.0,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 10,
+    "DatePaid": "2023-04-12T19:16:49.579Z",
+    "Amount": 150.0,
+    "Approved": 0,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 11,
+    "DatePaid": "2023-04-13T16:45:34.926Z",
+    "Amount": 69.99,
+    "Approved": 1,
+    "Method": "PayPal"
+  },
+  {
+    "Id": 12,
+    "DatePaid": "2023-04-14T09:20:11.971Z",
+    "Amount": 44.0,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 13,
+    "DatePaid": "2023-04-15T15:37:22.372Z",
+    "Amount": 10.0,
+    "Approved": 1,
+    "Method": "Bank Transfer"
+  },
+  {
+    "Id": 14,
+    "DatePaid": "2023-04-15T18:22:59.902Z",
+    "Amount": 23.99,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 15,
+    "DatePaid": "2023-04-15T22:11:08.984Z",
+    "Amount": 49.99,
+    "Approved": 0,
+    "Method": "PayPal"
+  },
+  {
+    "Id": 16,
+    "DatePaid": "2023-04-16T11:33:54.525Z",
+    "Amount": 89.5,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 17,
+    "DatePaid": "2023-04-16T14:49:17.749Z",
+    "Amount": 150.0,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 18,
+    "DatePaid": "2023-04-16T20:01:33.822Z",
+    "Amount": 75.0,
+    "Approved": 0,
+    "Method": "PayPal"
+  },
+  {
+    "Id": 19,
+    "DatePaid": "2023-04-17T08:19:04.689Z",
+    "Amount": 199.99,
+    "Approved": 1,
+    "Method": "Credit Card"
+  },
+  {
+    "Id": 20,
+    "DatePaid": "2023-04-17T13:45:33.001Z",
+    "Amount": 500.0,
+    "Approved": 1,
+    "Method": "Bank Transfer"
+  }
+]
