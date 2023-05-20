@@ -1,6 +1,9 @@
 ﻿using ClassLibrary.Models;
+using ClassLibrary.Models.DTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Net;
 
 namespace API.Controllers
@@ -31,58 +34,72 @@ namespace API.Controllers
             return new OkObjectResult(Subcategories);
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<Subcategory> Get(int id)
+        {
+            var subcategory = _context.Subcategories.Find(id);
+            if (subcategory == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(subcategory);
+        }
+
+
 
         [HttpPost]
-        public ActionResult<OkResult> Post([FromBody] Subcategory req)
+        public ActionResult Post([FromBody] SubcategoryDTO req)
         {
-
             try
             {
                 var category = _context.Categories.Find(req.CategoryId);
                 if (category == null)
                 {
-                    return new BadRequestObjectResult("Could not find category with categoryid: " + req.CategoryId);
+                    return BadRequest("Could not find category with categoryid: " + req.CategoryId);
                 }
+
                 // Removing ID property from request since database auto-increments.
                 Subcategory reqSubcategory = new()
                 {
                     Name = req.Name,
                     Order = req.Order,
-                    ImageUrl = req.ImageUrl != null ? req.ImageUrl : null,
-                    Description = req.Description != null ? req.Description : null,
+                    ImageUrl = req.ImageUrl ?? null,
+                    Description = req.Description ?? null,
                     CategoryId = req.CategoryId,
                     Category = category,
                     Products = new List<Product>()
                 };
 
-                _context.Subcategories.Add(reqSubcategory);
+                var result = _context.Subcategories.Add(reqSubcategory);
                 _context.SaveChanges();
-                return new OkResult();
+                result.Entity.Products = new List<Product>();
+
+                // Return 201 Created with the URI of the newly created resource
+                return CreatedAtAction(nameof(Get), new { id = result.Entity.Id }, result.Entity);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new BadRequestResult();
+                return BadRequest();
             }
-
-            return new NoContentResult();
         }
 
 
+
         [HttpPut("{id}")]
-        public HttpResponseMessage Put(int id, [FromBody] Subcategory req)
+        public IActionResult Put(int id, [FromBody] SubcategoryDTO req)
         {
-            Console.WriteLine("req Id: " + req.Id);
-            var subCategory = _context.Subcategories.Find(id);
+            var subCategory = _context.Subcategories.Include(sc => sc.Products).FirstOrDefault(sc => sc.Id == id);
 
             if (subCategory == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                return NotFound(); // HTTP 404 Not Found
             }
 
             if (!PropertiesHasValues(req))
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return BadRequest(); // HTTP 400 Bad Request
             }
 
             subCategory.Name = req.Name;
@@ -96,14 +113,16 @@ namespace API.Controllers
             try
             {
                 _context.SaveChanges();
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                subCategory.Products = new List<Product>(); ;
+                return Ok(subCategory); // HTTP 200 OK with the updated object
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return StatusCode(500); // HTTP 500 Internal Server Error
             }
         }
+
 
 
         [HttpDelete("{id}")]
@@ -131,7 +150,7 @@ namespace API.Controllers
         }
 
 
-        private static bool PropertiesHasValues(Subcategory subCategory)
+        private static bool PropertiesHasValues(SubcategoryDTO subCategory)
         {
             if (string.IsNullOrEmpty(subCategory.Name) || subCategory.CategoryId <= 0 || subCategory.Order <= 0)
             {

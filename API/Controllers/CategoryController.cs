@@ -31,9 +31,22 @@ namespace API.Controllers
             return new OkObjectResult(categories);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
+        }
+
+
 
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] Category value)
+        public IActionResult Post([FromBody] Category value)
         {
             if (PropertiesHasValues(value))
             {
@@ -45,22 +58,14 @@ namespace API.Controllers
                     ImageUrl = value.ImageUrl,
                     Order = value.Order,
                 };
-                _context.Categories.Add(reqCategory);
+                var result = _context.Categories.Add(reqCategory);
+                _context.SaveChanges();
+
+                return CreatedAtAction(nameof(Get), new { id = result.Entity.Id }, result.Entity);
             }
             else
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            }
-
-            try
-            {
-                _context.SaveChanges();
-                return new HttpResponseMessage(HttpStatusCode.Created);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return BadRequest();
             }
         }
 
