@@ -287,7 +287,7 @@ namespace DataMigration
                     };
 
                     order.PaymentId = payment.Id;
-                    order.PaymentStatus = payment.Approved == 1 ? "Approved" : "Pending";
+                    //order.PaymentStatus = payment.Approved == 1 ? "Approved" : "Pending";
 
                     orders.Add(order);
                     payments.Add(payment);

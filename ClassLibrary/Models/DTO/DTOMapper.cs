@@ -27,14 +27,14 @@ namespace ClassLibrary.Models.DTO
             return piDTO;
         }
 
-        public static OrderDTO mapOrderToOrderDTO(Order order) {
+        public static OrderDTO mapOrderToOrderDTO(Order order)
+        {
 
             var ord = new OrderDTO
             {
                 Id = order.Id,
                 CustomerId = order.CustomerId,
                 PaymentId = order.PaymentId,
-                PaymentStatus = order.PaymentStatus,
                 DeliveryStatus = order.DeliveryStatus,
                 DiscountCode = order.DiscountCode,
                 Active = order.Active,
@@ -49,7 +49,7 @@ namespace ClassLibrary.Models.DTO
 
             return ord;
         }
-   
+
 
 
         public static ProductItemDTO MapProductItemToBackofficeDTO(ProductItem pi)
@@ -81,9 +81,12 @@ namespace ClassLibrary.Models.DTO
             piDTO.ImageUrls = imageUrls.ToArray();
 
             List<int> priceHistoryIds = new();
-            foreach (var priceHistory in pi.PriceHistories)
+            if (pi.PriceHistories != null)
             {
-                priceHistoryIds.Add(priceHistory.Id);
+                foreach (PriceHistory priceHistory in pi.PriceHistories)
+                {
+                    priceHistoryIds.Add(priceHistory.Id);
+                }
             }
             piDTO.PriceHistoryIds = priceHistoryIds.ToArray();
 

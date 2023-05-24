@@ -107,7 +107,7 @@ namespace API.Controllers
             {
                 CustomerId = orderDTO.Customer.Id,
                 PaymentId = payment.Entity.Id,
-                PaymentStatus = orderStatus,
+                Payment = payment.Entity,
                 Active = true,
                 DiscountCode = "",
                 DeliveryStatus = "Pending",

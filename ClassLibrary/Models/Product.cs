@@ -11,6 +11,7 @@ namespace ClassLibrary.Models
         public string? Design { get; set; }
         public string? Dimension { get; set; }
         public virtual ICollection<Subcategory> Subcategories { get; set; } = new List<Subcategory>();
+    
 
         public override string ToString()
         {

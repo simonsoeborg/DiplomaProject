@@ -4,8 +4,9 @@
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public Customer Customer { get; set; } = null!;
         public int PaymentId { get; set; }
-        public string PaymentStatus { get; set; } = null!;
+        public Payment? Payment { get; set; }
         public string DeliveryStatus { get; set; } = null!;
         public string? DiscountCode { get; set; }
         public bool Active { get; set; }

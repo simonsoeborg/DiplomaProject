@@ -28,7 +28,6 @@ namespace ClassLibrary.Models
 
 
         // Views
-        public DbSet<OrderDetails> OrderDetails { get; set; } = null!;
         public DbSet<SalesSummary> SalesSummary { get; set; } = null!;
         public DbSet<Inventory> CategoryProductCount { get; set; } = null!;
         public DbSet<ProductItemDetails> ProductsWithWeight { get; set; } = null!;
