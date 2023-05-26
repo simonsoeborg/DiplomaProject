@@ -79,59 +79,71 @@ namespace API.Controllers
 
         // POST: api/Order
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(CreateOrderDTO orderDTO)
+        public async Task<ActionResult<OrderDTO>> PostOrder(CreateOrderDTO orderDTO)
         {
-            if (orderDTO == null || orderDTO.ProductItemIds.Count == 0 || orderDTO.Customer == null || orderDTO.PaymentForm == null)
-            {
-                return BadRequest();
-            }
+            Console.WriteLine("OrderDTOValues:", OrderDTOContainsValues(orderDTO));
+            //if (!OrderDTOContainsValues(orderDTO))
+            //{
+            //    return BadRequest();
+            //}
+            var customer = _context.Customers.Add(orderDTO.Customer);
+            await _context.SaveChangesAsync();
 
             // Retrieve all the product items in the order from the database
-            var productItemsFromDb = _context.ProductItems.Where(po => orderDTO.ProductItemIds.Contains(po.Id)).ToList();
+            var productItemsFromDb = _context.ProductItems.Where(po => orderDTO!.ProductItemIds.Contains(po.Id)).ToList();
+
+            // Check if discountcode && discountcode is valid
+            // TODO
+
+            var totalPriceAmount = (double)productItemsFromDb.Sum(productItem => productItem.CurrentPrice);
 
             // Create Payment
             Payment newPayment = new()
             {
-                Method = orderDTO.PaymentForm.PaymentMethod,
-                Approved = 1,
                 DatePaid = DateTime.Now,
-                Amount = (double)productItemsFromDb.Sum(productItem => productItem.CurrentPrice)
+                Amount = totalPriceAmount,
+                Approved = 1,
+                Method = orderDTO.Payment.Method
             };
 
             var payment = _context.Payments.Add(newPayment);
             await _context.SaveChangesAsync();
 
             // Create Order
-            var orderStatus = payment.Entity.Approved != null? "Approved" : "Awaiting payment";
+            var orderStatus = payment.Entity.Approved != null ? "Approved" : "Awaiting payment";
             Order newOrder = new()
             {
-                CustomerId = orderDTO.Customer.Id,
+                CreatedDate = DateTime.Now,
+                Customer = customer.Entity,
+                CustomerId = customer.Entity.Id,
                 PaymentId = payment.Entity.Id,
                 Payment = payment.Entity,
                 Active = true,
                 DiscountCode = "",
                 DeliveryStatus = "Pending",
+                OrderElements = new List<OrderElements>()
             };
 
             var order = _context.Orders.Add(newOrder);
             await _context.SaveChangesAsync();
 
-            //foreach(var productItemInOrder  in productItemsFromDb)
-            //{
-            //    var orderElement = new OrderElements()
-            //    {
-            //        OrderId = order.Entity.Id,
-            //        Order = order.Entity,
-            //        ProductItemId = productItemInOrder.ProductId,
-            //        ProductItem = productItemInOrder
-            //    };
-            //    _context.OrderElements.Add(orderElement);
-            //    await _context.SaveChangesAsync();
-            //}
+            List<OrderElements> orderElements = new();
+            foreach (var productItemInOrder in productItemsFromDb)
+            {
+                var orderElement = new OrderElements()
+                {
+                    OrderId = order.Entity.Id,
+                    Order = order.Entity,
+                    ProductItemId = productItemInOrder.ProductId,
+                    ProductItem = productItemInOrder
+                };
+                _context.OrderElements.Add(orderElement);
+                await _context.SaveChangesAsync();
+            }
 
 
             //return CreatedAtAction("GetOrder", order);
-            return order.Entity;
+            return DTOMapper.mapOrderToOrderDTO(order.Entity);
         }
 
         // DELETE: api/Order/5
@@ -154,5 +166,50 @@ namespace API.Controllers
         {
             return _context.Orders.Any(e => e.Id == id);
         }
+
+        private bool OrderDTOContainsValues(CreateOrderDTO dto)
+        {
+            // Check if dto itself is not null
+            if (dto == null)
+            {
+                return false;
+            }
+
+            // Check if Customer properties are not null or empty
+            if (dto.Customer == null ||
+                string.IsNullOrWhiteSpace(dto.Customer.FirstName) ||
+                string.IsNullOrWhiteSpace(dto.Customer.LastName) ||
+                string.IsNullOrWhiteSpace(dto.Customer.Email) ||
+                string.IsNullOrWhiteSpace(dto.Customer.Address) ||
+                string.IsNullOrWhiteSpace(dto.Customer.ZipCode) ||
+                string.IsNullOrWhiteSpace(dto.Customer.City) ||
+                string.IsNullOrWhiteSpace(dto.Customer.Country) ||
+                string.IsNullOrWhiteSpace(dto.Customer.CountryCode))
+            {
+                return false;
+            }
+
+            // Check if DiscountCode properties are not null
+            if (dto.DiscountCode == null || string.IsNullOrEmpty(dto.DiscountCode.Code))
+            {
+                return false;
+            }
+
+            // Check if Payment properties are not null
+            if (dto.Payment == null || /*dto.Payment.Amount == null ||*/ string.IsNullOrEmpty(dto.Payment.Method))
+            {
+                return false;
+            }
+
+            // Check if ProductItemIds is not empty
+            if (!dto.ProductItemIds.Any())
+            {
+                return false;
+            }
+
+            // If everything above is valid, then return true
+            return true;
+        }
+
     }
 }

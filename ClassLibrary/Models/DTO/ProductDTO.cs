@@ -1,7 +1,6 @@
 ﻿
 namespace ClassLibrary.Models.DTO
 {
-
     public class ProductDTO
     {
         public int Id { get; set; }

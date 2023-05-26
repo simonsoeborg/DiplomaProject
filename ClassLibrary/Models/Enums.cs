@@ -7,7 +7,6 @@
         SecondQuality = 2,
         ThirdQuality = 3,
     }
-
     public enum ConditionType
     {
         Undefined = 0,
@@ -15,7 +14,6 @@
         FewShards = 2,
         ManyShards = 3,
     }
-
     public enum MaterialType
     {
         undefined = 0,

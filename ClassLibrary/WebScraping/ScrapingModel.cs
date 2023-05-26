@@ -3,7 +3,7 @@ namespace ClassLibrary.WebScraping
 {
     public class ScrapingModel
     {
-        public string Source { get; set; }
+        public string Source { get; set; } = string.Empty;
         public int Varenummer { get; set; }
         public string ItemTitle { get; set; } = null!;
         public string BuyNowPrice { get; set; } = null!;
