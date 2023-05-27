@@ -29,23 +29,25 @@ namespace ClassLibrary.Models.DTO
 
         public static OrderDTO mapOrderToOrderDTO(Order order)
         {
+            List<int> productItemIds = new();
+            foreach (var productItem in order.ProductItems)
+            {
+                productItemIds.Add(productItem.Id);
+            }
 
             var ord = new OrderDTO
             {
                 Id = order.Id,
                 CustomerId = order.CustomerId,
                 PaymentId = order.PaymentId,
+                DiscountCodeId = order.DiscountCode?.Id != null ? order.DiscountCode.Id : 0,
                 DeliveryStatus = order.DeliveryStatus,
-                DiscountCode = order.DiscountCode,
+                OrderStatus = order.OrderStatus,
+                TotalPrice = order.TotalPrice,
                 Active = order.Active,
                 CreatedDate = order.CreatedDate,
+                ProductItemIds = productItemIds.ToList()
             };
-            List<int> elemntIds = new();
-            foreach (var element in order.OrderElements)
-            {
-                elemntIds.Add(element.Id);
-            }
-            ord.OrderElementIDs = elemntIds.ToList();
 
             return ord;
         }
@@ -58,10 +60,8 @@ namespace ClassLibrary.Models.DTO
             {
                 Id = pi.Id,
                 CurrentPrice = pi.CurrentPrice,
-                //PriceHistories = pi.PriceHistories,
-                //Images = pi.Images,
                 PurchasePrice = pi.PurchasePrice,
-                //Sold = pi.Sold,
+                Sold = pi.Sold == 1 ? true : false,
                 SoldDate = pi.SoldDate,
                 CreatedDate = pi.CreatedDate,
                 Condition = pi.Condition,

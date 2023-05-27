@@ -12,7 +12,6 @@ namespace ClassLibrary.Models
         public string City { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public string CountryCode { get; set; } = string.Empty;
-
         public virtual ICollection<Order> Orders { get; } = new List<Order>();
     }
 }

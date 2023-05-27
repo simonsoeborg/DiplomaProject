@@ -23,5 +23,7 @@ namespace ClassLibrary.Models
         public ICollection<PriceHistory>? PriceHistories { get; set; } = new List<PriceHistory>();
         public ICollection<Image> Images { get; set; } = new List<Image>();
 
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+
     }
 }

@@ -7,11 +7,13 @@
         public Customer Customer { get; set; } = null!;
         public int PaymentId { get; set; }
         public Payment? Payment { get; set; }
+        public int? DiscountCodeId { get; set; }
+        public DiscountCode? DiscountCode { get; set; } = null!;
         public string DeliveryStatus { get; set; } = null!;
-        public string? DiscountCode { get; set; }
+        public string OrderStatus { get; set; } = null!;
+        public double TotalPrice { get; set; }
         public bool Active { get; set; }
         public DateTime CreatedDate { get; set; }
-
-        public ICollection<OrderElements> OrderElements { get; set; } = new List<OrderElements>(); // Collection navigation containing dependents
+        public ICollection<ProductItem> ProductItems { get; set; } = new List<ProductItem>();
     }
 }

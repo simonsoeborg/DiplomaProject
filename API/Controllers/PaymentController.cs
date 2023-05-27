@@ -63,6 +63,13 @@ namespace API.Controllers
             return await _context.Payments.ToListAsync();
         }
 
+        [HttpGet("DiscountCodes")]
+        public async Task<ActionResult<IEnumerable<DiscountCode>>> GetDiscountCodes()
+        {
+            var discountCodes = await _context.DiscountCodes.ToListAsync();
+            return Ok(discountCodes);
+        }
+
         // GET: api/Payment/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Payment>> GetPayment(int id)

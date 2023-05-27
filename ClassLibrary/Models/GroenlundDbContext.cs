@@ -24,9 +24,6 @@ namespace ClassLibrary.Models
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
 
-        public DbSet<OrderElements> OrderElements { get; set; } = null!;
-
-
         // Views
         public DbSet<SalesSummary> SalesSummary { get; set; } = null!;
         public DbSet<Inventory> CategoryProductCount { get; set; } = null!;

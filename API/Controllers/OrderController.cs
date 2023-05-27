@@ -1,5 +1,4 @@
-﻿using ClassLibrary.DTOModels;
-using ClassLibrary.Models;
+﻿using ClassLibrary.Models;
 using ClassLibrary.Models.DTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,13 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrders()
         {
-            var orders = await _context.Orders.Include(oe => oe.OrderElements).ToListAsync();
+            var orders = await _context.Orders
+                .Include(o => o.ProductItems).ThenInclude(po => po.Images)
+                .Include(o => o.Payment)
+                .Include(o => o.DiscountCode)
+                .Include(o => o.Customer)
+                .ToListAsync();
+
             List<OrderDTO> orderDTOs = new();
 
             foreach (var order in orders)
@@ -79,71 +84,95 @@ namespace API.Controllers
 
         // POST: api/Order
         [HttpPost]
-        public async Task<ActionResult<OrderDTO>> PostOrder(CreateOrderDTO orderDTO)
+        public async Task<ActionResult<Order>> PostOrder(CreateOrderDTO orderDTO)
         {
-            Console.WriteLine("OrderDTOValues:", OrderDTOContainsValues(orderDTO));
-            //if (!OrderDTOContainsValues(orderDTO))
-            //{
-            //    return BadRequest();
-            //}
+            if (!OrderDTOContainsValues(orderDTO))
+            {
+                return BadRequest();
+            }
             var customer = _context.Customers.Add(orderDTO.Customer);
             await _context.SaveChangesAsync();
 
             // Retrieve all the product items in the order from the database
-            var productItemsFromDb = _context.ProductItems.Where(po => orderDTO!.ProductItemIds.Contains(po.Id)).ToList();
+            List<ProductItem> productItems = new();
+            List<ProductItem> productItemsFromDb = _context.ProductItems.Where(po => orderDTO!.ProductItemIds.Contains(po.Id)).ToList();
+            foreach (var item in productItemsFromDb)
+            {
+                item.Sold = 1;
+                item.SoldDate = DateTime.Now;
+                productItems.Add(item);
+                _context.Update(item);
+                await _context.SaveChangesAsync();
+            }
+            var totalPriceAmount = (double)productItems.Sum(productItem => productItem.CurrentPrice);
 
             // Check if discountcode && discountcode is valid
-            // TODO
-
-            var totalPriceAmount = (double)productItemsFromDb.Sum(productItem => productItem.CurrentPrice);
+            DiscountCode discountCode = new();
+            if (orderDTO.DiscountCode != null)
+            {
+                var discountCodeFromDb = await _context.DiscountCodes.FindAsync(orderDTO.DiscountCode.Id);
+                if (discountCodeFromDb != null && discountCodeFromDb.Code != null && discountCodeFromDb.DiscountPercentage != 0)
+                {
+                    // Calculate the discount in the final price
+                    totalPriceAmount *= (100 - discountCodeFromDb.DiscountPercentage);
+                    discountCode = discountCodeFromDb;
+                }
+            }
 
             // Create Payment
             Payment newPayment = new()
             {
                 DatePaid = DateTime.Now,
                 Amount = totalPriceAmount,
-                Approved = 1,
-                Method = orderDTO.Payment.Method
+                Status = "Approved",
+                Method = orderDTO.Payment.Method,
+                TransactionId = ""
+
             };
 
             var payment = _context.Payments.Add(newPayment);
             await _context.SaveChangesAsync();
 
             // Create Order
-            var orderStatus = payment.Entity.Approved != null ? "Approved" : "Awaiting payment";
             Order newOrder = new()
             {
-                CreatedDate = DateTime.Now,
-                Customer = customer.Entity,
                 CustomerId = customer.Entity.Id,
+                Customer = customer.Entity,
                 PaymentId = payment.Entity.Id,
                 Payment = payment.Entity,
-                Active = true,
-                DiscountCode = "",
+                //DiscountCodeId = discountCode?.Id ?? null,
+                //DiscountCode = (discountCode?.Id != 0 && string.IsNullOrEmpty(discountCode?.Code) != true && discountCode?.DiscountPercentage != null) ? discountCode : null,
                 DeliveryStatus = "Pending",
-                OrderElements = new List<OrderElements>()
+                OrderStatus = "Awaiting Shipment",
+                TotalPrice = totalPriceAmount,
+                Active = true,
+                CreatedDate = DateTime.Now,
+                ProductItems = productItems
             };
 
             var order = _context.Orders.Add(newOrder);
             await _context.SaveChangesAsync();
 
-            List<OrderElements> orderElements = new();
-            foreach (var productItemInOrder in productItemsFromDb)
+            var orderModel = order.Entity;
+            foreach (var item in orderModel.ProductItems)
             {
-                var orderElement = new OrderElements()
-                {
-                    OrderId = order.Entity.Id,
-                    Order = order.Entity,
-                    ProductItemId = productItemInOrder.ProductId,
-                    ProductItem = productItemInOrder
-                };
-                _context.OrderElements.Add(orderElement);
-                await _context.SaveChangesAsync();
+                item.Orders = new List<Order>();
             }
+            orderModel.Customer = new Customer
+            {
+                Id = orderModel.Customer.Id,
+                FirstName = orderModel.Customer.FirstName,
+                LastName = orderModel.Customer.LastName,
+                Phone = orderModel.Customer.Phone,
+                Email = orderModel.Customer.Email,
+                Address = orderModel.Customer.Address,
+                ZipCode = orderModel.Customer.ZipCode,
+                City = orderModel.Customer.City,
+                Country = orderModel.Customer.Country,
+                CountryCode = orderModel.Customer.CountryCode
+            };
 
-
-            //return CreatedAtAction("GetOrder", order);
-            return DTOMapper.mapOrderToOrderDTO(order.Entity);
+            return orderModel;
         }
 
         // DELETE: api/Order/5

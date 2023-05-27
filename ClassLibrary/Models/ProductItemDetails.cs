@@ -7,7 +7,7 @@ namespace ClassLibrary.Models
     [Keyless]
     public class ProductItemDetails
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public int Material { get; set; }
         [Column(TypeName = "decimal(12,2)")]
         public decimal Weight { get; set; }

@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace DataMigration
 {
@@ -15,10 +16,10 @@ namespace DataMigration
         public void PopulateDatabase(bool? msSQL)
         {
             Console.Clear();
-            //InsertRolesCategoriesSubcategories(msSQL);
-            //InsertProductsProductItemsImages(msSQL);
-            //InsertCustomersDiscountCodesUsers(msSQL);
-            InsertOrdersPaymentsOrderElements(msSQL);
+            InsertRolesCategoriesSubcategories(msSQL);
+            InsertProductsProductItemsImages(msSQL);
+            InsertCustomersDiscountCodesUsers(msSQL);
+            InsertOrdersPayments(msSQL);
         }
 
         private void InsertRolesCategoriesSubcategories(bool? msSQL)
@@ -65,19 +66,19 @@ namespace DataMigration
             ClearTableAndResetSeed(_context.Users, "Users", _context, msSQL);
             InsertEntityInDatabase(_context.Users, "Users", DemoDataRepository.Users(), msSQL);
         }
-        private void InsertOrdersPaymentsOrderElements(bool? msSQL)
+        private void InsertOrdersPayments(bool? msSQL)
         {
-            var (Orders, Payments, OrderElements) = GenerateOrders(_context);
+            var (Orders, Payments) = GenerateOrders(_context);
 
             /* Payments table */
             ClearTableAndResetSeed(_context.Payments, "Payments", _context, msSQL);
             InsertEntityInDatabase(_context.Payments, "Payments", Payments, msSQL);
 
             /* OrderElements & Orders table */
-            ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context, msSQL);
+            //ClearTableAndResetSeed(_context.OrderElements, "OrderElements", _context, msSQL);
             ClearTableAndResetSeed(_context.Orders, "Orders", _context, msSQL);
             InsertEntityInDatabase(_context.Orders, "Orders", Orders, msSQL);
-            InsertEntityInDatabase(_context.OrderElements, "OrderElements", OrderElements, msSQL);
+            //InsertEntityInDatabase(_context.OrderElements, "OrderElements", OrderElements, msSQL);
 
         }
         private void InsertEntityInDatabase<T>(DbSet<T> tableEntity, string tableName, List<T> entities, bool? msSQL) where T : class
@@ -201,11 +202,10 @@ namespace DataMigration
             }
         }
 
-        public static (List<Order> Orders, List<Payment> Payments, List<OrderElements>) GenerateOrders(GroenlundDbContext context)
+        public static (List<Order> Orders, List<Payment> Payments) GenerateOrders(GroenlundDbContext context)
         {
             var orders = new List<Order>();
             var payments = new List<Payment>();
-            var orderElements = new List<OrderElements>();
             var customers = context.Customers.ToList();
             var discountCodes = context.DiscountCodes.ToList();
             var productItems = context.ProductItems.Where(p => p.Sold == 1).ToList();
@@ -213,7 +213,7 @@ namespace DataMigration
             List<string> deliveryStatuses = new() { "Delivered", "Pending", "Shipped" };
             List<string> paymentMethods = new() { "Credit Card", "PayPal", "Bank Transfer", "MobilePay", "Stripe" };
             int orderIdCounter = 1;
-            int orderElementsCounter = 1;
+            //int orderElementsCounter = 1;
             int customerProductItems = productItems.Count / customers.Count;
             int remainingProductItems = productItems.Count;
 
@@ -240,42 +240,33 @@ namespace DataMigration
                     }
 
                     var createdDate = RandomDay();
+                    var discountCode = discountCodes[new Random().Next(1, discountCodes.Count)];
 
                     var order = new Order
                     {
                         Id = orderIdCounter,
                         CustomerId = customer.Id,
+                        Customer = customer,
                         Active = false,
                         DeliveryStatus = deliveryStatuses[new Random().Next(1, 3)],
-                        DiscountCode = discountCodes[new Random().Next(1, discountCodes.Count)].Code,
+                        DiscountCodeId = discountCode.Id,
+                        DiscountCode = discountCode,
                         CreatedDate = createdDate,
+                        ProductItems = productItems1,
+                        OrderStatus = "Completed"
+
                     };
 
-                    List<OrderElements> specificOrderOrderElements = new();
-                    foreach (var po in productItems1)
-                    {
-                        var oe = new OrderElements()
-                        {
-                            Id = orderElementsCounter,
-                            OrderId = order.Id,
-                            ProductItem = po,
-                            ProductItemId = po.Id,
-                        };
-                        specificOrderOrderElements.Add(oe);
-                        orderElements.Add(oe);
-                        orderElementsCounter++;
-                    }
 
-                    //order.OrderElements = specificOrderOrderElements;
 
                     decimal paymentAmount = 0;
-                    foreach (var orderElement in specificOrderOrderElements)
+                    foreach (var productItem in order.ProductItems)
                     {
-                        paymentAmount += orderElement.ProductItem.CurrentPrice;
+                        paymentAmount += productItem.CurrentPrice;
                     }
 
-                    var discountCode = discountCodes.Find(d => d.Code == order.DiscountCode)!;
-                    paymentAmount *= (100 - discountCode.DiscountPercentage);
+                    paymentAmount *= (100 - order.DiscountCode.DiscountPercentage);
+                    order.TotalPrice = (double)paymentAmount;
 
                     var payment = new Payment
                     {
@@ -283,11 +274,11 @@ namespace DataMigration
                         Amount = (double)paymentAmount,
                         DatePaid = createdDate,
                         Method = paymentMethods[new Random().Next(1, paymentMethods.Count)],
-                        Approved = 1/*Convert.ToSByte(orderIdCounter % 2)*/
+                        Status = "Approved",
+                        TransactionId = GenerateTransactionID(8)
                     };
 
                     order.PaymentId = payment.Id;
-                    //order.PaymentStatus = payment.Approved == 1 ? "Approved" : "Pending";
 
                     orders.Add(order);
                     payments.Add(payment);
@@ -298,13 +289,28 @@ namespace DataMigration
                 }
             }
 
-            return (orders, payments, orderElements);
+            return (orders, payments);
         }
         private static DateTime RandomDay()
         {
             DateTime start = new(2019, 1, 1);
             int range = (DateTime.Today - start).Days;
             return start.AddDays(new Random().Next(range));
+        }
+
+        private static string GenerateTransactionID(int length)
+        {
+            const string Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            StringBuilder sb = new StringBuilder(length);
+
+            for (int i = 0; i < length; i++)
+            {
+                int randomIndex = random.Next(Characters.Length);
+                sb.Append(Characters[randomIndex]);
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -575,19 +575,19 @@ namespace DataMigration.Tests
         {
             GroenlundDbContext context = new();
             List<DiscountCode> discountCodes = context.DiscountCodes.ToList();
-            var (Orders, Payments, OrderElements) = DemoDataGenerator.GenerateOrders(context);
+            var (Orders, Payments) = DemoDataGenerator.GenerateOrders(context);
 
             double orderAmount = 0;
 
             foreach (var order in Orders)
             {
-                List<OrderElements> orderElements = OrderElements.FindAll(oe => oe.OrderId == order.Id);
+                //List<OrderElements> orderElements = OrderElements.FindAll(oe => oe.OrderId == order.Id);
                 double paymentAmount = 0.0;
-                foreach (var orderElement in orderElements)
+                foreach (var po in order.ProductItems)
                 {
-                    paymentAmount += (double)orderElement.ProductItem.CurrentPrice;
+                    paymentAmount += (double)po.CurrentPrice;
                 }
-                var discountCode = discountCodes.Find(d => d.Code == order.DiscountCode)!;
+                var discountCode = discountCodes.Find(d => d.Code == order.DiscountCode.Code)!;
                 paymentAmount *= (100 - discountCode.DiscountPercentage);
 
                 Payment? orderPayment = Payments.FirstOrDefault(p => p.Id == order.PaymentId);
