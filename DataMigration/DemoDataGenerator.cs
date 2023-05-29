@@ -253,7 +253,8 @@ namespace DataMigration
                         DiscountCode = discountCode,
                         CreatedDate = createdDate,
                         ProductItems = productItems1,
-                        OrderStatus = "Completed"
+                        OrderStatus = "Completed",
+                        DeliveryMethod = "Afhentning"
 
                     };
 

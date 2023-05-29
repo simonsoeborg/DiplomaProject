@@ -8,6 +8,7 @@ namespace ClassLibrary.Models.DTO
         public int PaymentId { get; set; }
         public int DiscountCodeId { get; set; }
         public string DeliveryStatus { get; set; } = null!;
+        public string DeliveryMethod { get; set; } = null!;
         public string OrderStatus { get; set; } = null!;
         public double TotalPrice { get; set; }
         public bool Active { get; set; }

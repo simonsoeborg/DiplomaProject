@@ -9,6 +9,7 @@
         public Payment? Payment { get; set; }
         public int? DiscountCodeId { get; set; }
         public DiscountCode? DiscountCode { get; set; } = null!;
+        public string DeliveryMethod { get; set; } = null!;
         public string DeliveryStatus { get; set; } = null!;
         public string OrderStatus { get; set; } = null!;
         public double TotalPrice { get; set; }
