@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> RunSniper(string? arg)
+        public async Task<IActionResult> RunSniper(string? arg)
         {
             var lauritz = _sniperHandler.GetLauritz(arg);
             var dba = _sniperHandler.getDBA(arg);
@@ -35,7 +35,7 @@ namespace API.Controllers
                 data.Add(item);
             }
 
-            return Task.FromResult<IActionResult>(new OkObjectResult(data));
+            return new OkObjectResult(data);
         }
     }
 }
