@@ -1,4 +1,5 @@
 using ClassLibrary.Models;
+using Microsoft.Extensions.Options;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using WebScraper.Controllers;
@@ -23,6 +24,8 @@ builder.Services.AddSingleton<IWebDriver>(provider =>
     chromeOptions.AddArgument("--headless");
     chromeOptions.AddArgument("--no-sandbox");
     chromeOptions.AddArgument("--disable-dev-shm-usage");
+    chromeOptions.AddArgument("--allow-running-insecure-content");
+    chromeOptions.AddArgument("--ignore-certificate-errors");
     var driver = new ChromeDriver(chromeOptions);
     return driver;
 });
