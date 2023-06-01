@@ -1,0 +1,347 @@
+@startuml ClassDiagram
+class Category {
+    -- getters --
+    + getId(): int
+    + getName(): string
+    + getOrder(): int
+    + getImageUrl(): string
+    + getDescription(): string
+
+    -- setters --
+    + setId(id: int)
+    + setName(name: string)
+    + setOrder(order: int)
+    + setImageUrl(imageUrl: string)
+    + setDescription(description: string)
+
+    -- attributes --
+    - Id: int
+    - Name: string
+    - Order: int
+    - ImageUrl: string
+    - Description: string
+}
+
+class Customer {
+    -- getters --
+    + getId(): int
+    + getFirstName(): string
+    + getLastName(): string
+    + getPhone(): int
+    + getEmail(): string
+    + getAddress(): string
+    + getZipCode(): string
+    + getCity(): string
+    + getCountry(): string
+    + getCountryCode(): string
+    + getOrders(): ICollection<Order>
+
+    -- setters --
+    + setId(id: int)
+    + setFirstName(firstName: string)
+    + setLastName(lastName: string)
+    + setPhone(phone: int)
+    + setEmail(email: string)
+    + setAddress(address: string)
+    + setZipCode(zipCode: string)
+    + setCity(city: string)
+    + setCountry(country: string)
+    + setCountryCode(countryCode: string)
+    
+    -- attributes --
+    - Id: int
+    - FirstName: string
+    - LastName: string
+    - Phone: int
+    - Email: string
+    - Address: string
+    - ZipCode: string
+    - City: string
+    - Country: string
+    - CountryCode: string
+    - Orders: ICollection<Order>
+}
+
+class Image {
+    -- getters --
+    + getId(): int
+    + getProductItemId(): int
+    + getUrl(): string
+
+    -- setters --
+    + setId(id: int)
+    + setProductItemId(productItemId: int)
+    + setUrl(url: string)
+
+    -- attributes --
+    - Id: int
+    - ProductItemId: int
+    - Url: string
+}
+
+class Order {
+    -- getters --
+    + getId(): int
+    + getCustomerId(): int
+    + getPaymentId(): int
+    + getPaymentStatus(): string
+    + getDeliveryStatus(): string
+    + getDiscountCode(): string
+    + isActive(): bool
+    + getCreatedDate(): DateTime
+    + getOrderElements(): ICollection<OrderElements>
+
+    -- setters --
+    + setId(id: int)
+    + setCustomerId(customerId: int)
+    + setPaymentId(paymentId: int)
+    + setPaymentStatus(paymentStatus: string)
+    + setDeliveryStatus(deliveryStatus: string)
+    + setDiscountCode(discountCode: string)
+    + setActive(active: bool)
+    + setCreatedDate(createdDate: DateTime)
+    + setOrderElements(orderElements: ICollection<OrderElements>)
+
+    -- attributes --
+    - Id: int
+    - CustomerId: int
+    - PaymentId: int
+    - PaymentStatus: string
+    - DeliveryStatus: string
+    - DiscountCode: string
+    - Active: bool
+    - CreatedDate: DateTime
+    - OrderElements: ICollection<OrderElements>
+}
+
+class Payment {
+    -- getters --
+    + getId(): int
+    + getDatePaid(): DateTime
+    + getAmount(): double
+    + getApproved(): sbyte
+    + getMethod(): string
+
+    -- setters --
+    + setId(id: int)
+    + setDatePaid(datePaid: DateTime)
+    + setAmount(amount: double)
+    + setApproved(approved: sbyte)
+    + setMethod(method: string)
+
+    -- attributes --
+    - Id: int
+    - DatePaid: DateTime
+    - Amount: double
+    - Approved: sbyte
+    - Method: string
+}
+
+class PriceHistory {
+    -- getters --
+    + getId(): int
+    + getChangeDate(): DateTime
+    + getPrice(): decimal
+    + getProductItemId(): int
+    + getProductItem(): ProductItem
+
+    -- setters --
+    + setId(id: int)
+    + setChangeDate(changeDate: DateTime)
+    + setPrice(price: decimal)
+    + setProductItemId(productItemId: int)
+    + setProductItem(productItem: ProductItem)
+
+    -- attributes --
+    - Id: int
+    - ChangeDate: DateTime
+    - Price: decimal
+    - ProductItemId: int
+    - ProductItem: ProductItem
+}
+
+class Product {
+    -- getters --
+    + getId(): int
+    + getName(): string
+    + getModelNumber(): string
+    + getManufacturer(): string
+    + getMaterial(): MaterialType
+    + getDesign(): string
+    + getDimension(): string
+    + getSubcategories(): ICollection<Subcategory>
+
+    -- setters --
+    + setId(id: int)
+    + setName(name: string)
+    + setModelNumber(modelNumber: string)
+    + setManufacturer(manufacturer: string)
+    + setMaterial(material: MaterialType)
+    + setDesign(design: string)
+    + setDimension(dimension: string)
+    + setSubcategories(subcategories: ICollection<Subcategory>)
+
+    -- attributes --
+    - Id: int
+    - Name: string
+    - ModelNumber: string
+    - Manufacturer: string
+    - Material: MaterialType
+    - Design: string
+    - Dimension: string
+    - Subcategories: ICollection<Subcategory>
+
+    -- methods --
+    + ToString(): string
+}
+
+class ProductItem {
+    -- getters --
+    + getId(): int
+    + getProductId(): int
+    + getProduct(): Product
+    + getCondition(): ConditionType
+    + getQuality(): QualityType
+    + isSold(): sbyte
+    + getWeight(): decimal
+    + getPurchasePrice(): decimal
+    + getCurrentPrice(): decimal
+    + getCreatedDate(): DateTime
+    + getSoldDate(): DateTime
+    + getCustomText(): string
+    + getPriceHistories(): ICollection<PriceHistory>
+    + getImages(): ICollection<Image>
+
+    -- setters --
+    + setId(id: int)
+    + setProductId(productId: int)
+    + setProduct(product: Product)
+    + setCondition(condition: ConditionType)
+    + setQuality(quality: QualityType)
+    + setSold(sold: sbyte)
+    + setWeight(weight: decimal)
+    + setPurchasePrice(purchasePrice: decimal)
+    + setCurrentPrice(currentPrice: decimal)
+    + setCreatedDate(createdDate: DateTime)
+    + setSoldDate(soldDate: DateTime)
+    + setCustomText(customText: string)
+    + setPriceHistories(priceHistories: ICollection<PriceHistory>)
+    + setImages(images: ICollection<Image>)
+
+    -- attributes --
+    - Id: int
+    - ProductId: int
+    - Product: Product
+    - Condition: ConditionType
+    - Quality: QualityType
+    - Sold: sbyte
+    - Weight: decimal
+    - PurchasePrice: decimal
+    - CurrentPrice: decimal
+    - CreatedDate: DateTime
+    - SoldDate: DateTime
+    - CustomText: string
+    - PriceHistories: ICollection<PriceHistory>
+    - Images: ICollection<Image>
+}
+
+class Role {
+    -- getters --
+    + getId(): int
+    + getTitle(): string
+    + getDescription(): string
+
+    -- setters --
+    + setId(id: int)
+    + setTitle(title: string)
+    + setDescription(description: string)
+
+    -- attributes --
+    - Id: int
+    - Title: string
+    - Description: string
+}
+
+class Subcategory {
+    -- getters --
+    + getId(): int
+    + getName(): string
+    + getOrder(): int
+    + getImageUrl(): string
+    + getDescription(): string
+    + getCategoryId(): int
+    + getCategory(): Category
+    + getProducts(): ICollection<Product>
+
+    -- setters --
+    + setId(id: int)
+    + setName(name: string)
+    + setOrder(order: int)
+    + setImageUrl(imageUrl: string)
+    + setDescription(description: string)
+    + setCategoryId(categoryId: int)
+    + setCategory(category: Category)
+    + setProducts(products: ICollection<Product>)
+
+    -- attributes --
+    - Id: int
+    - Name: string
+    - Order: int
+    - ImageUrl: string
+    - Description: string
+    - CategoryId: int
+    - Category: Category
+    - Products: ICollection<Product>
+}
+
+class User {
+    -- getters --
+    + getId(): int
+    + getRoleId(): int
+    + getRole(): Role
+    + getFirstName(): string
+    + getLastName(): string
+    + getEmail(): string
+    + getPasswordHash(): byte[]
+    + getPasswordSalt(): byte[]
+    + getCreatedAt(): string
+    + getAge(): int
+
+    -- setters --
+    + setId(id: int)
+    + setRoleId(roleId: int)
+    + setRole(role: Role)
+    + setFirstName(firstName: string)
+    + setLastName(lastName: string)
+    + setEmail(email: string)
+    + setPasswordHash(passwordHash: byte[])
+    + setPasswordSalt(passwordSalt: byte[])
+    + setCreatedAt(createdAt: string)
+    + setAge(age: int)
+
+    -- attributes --
+    - Id: int
+    - RoleId: int
+    - Role: Role
+    - FirstName: string
+    - LastName: string
+    - Email: string
+    - PasswordHash: byte[]
+    - PasswordSalt: byte[]
+    - CreatedAt: string
+    - Age: int
+
+    -- methods --
+    + ToString(): string
+}
+
+User -- Role : "*"  "1"
+Payment -- Order : "1"  "1"
+Order -- ProductItem : "*"  "*"
+Customer -- Order : "1"  "*"
+ProductItem -- PriceHistory : "1"  "1"
+ProductItem -- Image : "1"  "*"
+Product -- ProductItem : "1"  "*"
+Subcategory -- Product : "*"  "*"
+Subcategory -- Category : "*"  "1"
+@enduml
