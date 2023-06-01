@@ -63,7 +63,7 @@ namespace WebScraper.Controllers
                                 wait.Until(d => d.FindElements(By.XPath("//script[@type='application/ld+json']")).Count > 0);
                                 script = tableEntry.FindElement(By.XPath(".//script[@type='application/ld+json']"));
                                 scriptData = script.GetAttribute("innerHTML"); 
-                                descriptionElement = tableEntry.FindElement(By.XPath(".//div[@class='expandable-box expandable-box-collapsed']/a[@class='listingLink']"));
+                                descriptionElement = tableEntry.FindElement(By.XPath(".//span[@class='text']"));
 
                                 description = descriptionElement.Text;
 
