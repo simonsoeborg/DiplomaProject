@@ -34,7 +34,6 @@ namespace DataMigration
             }
             Console.WriteLine("Counted {0} Products", counter);
         }
-
         public void CreateJsonFiles()
         {
             var (Products, ProductItems, Images) = ExtractProducts();
@@ -55,8 +54,6 @@ namespace DataMigration
             Console.WriteLine("JSON file saved to " + fileName);
 
         }
-
-
         public (List<Product> Products, List<ProductItem> ProductItems, List<Image> Images) ExtractProducts()
         {
             List<string[]> data = GetCsvEntries();
@@ -105,7 +102,7 @@ namespace DataMigration
                 };
 
                 // How many productItems for this product
-                var productItemCount = ExtractProductItemCount(dataItem[13]);
+                var productItemCount = 1;//ExtractProductItemCount(dataItem[13]);
 
                 for (int x = 0; x < productItemCount; x++)
                 {
@@ -186,7 +183,6 @@ namespace DataMigration
 
             RegexHelper.TestRegexFilter(names.ToArray(), RegexHelper.RegexMap());
         }
-
         public decimal? ExtractWeight(string input)
         {
             bool success = double.TryParse(input, out double sum);
@@ -196,7 +192,6 @@ namespace DataMigration
             }
             return null;
         }
-
         public int ExtractProductItemCount(string input)
         {
             var parseSuccessful = int.TryParse(input, out int parseResult);
@@ -209,8 +204,6 @@ namespace DataMigration
             }
             return 1;
         }
-
-
         public DateTime RandomDay()
         {
             DateTime start = new(2019, 1, 1);
@@ -241,7 +234,6 @@ namespace DataMigration
 
             return result;
         }
-
         public List<string> ExtractImages(string input)
         {
             List<string> images = new();
@@ -261,7 +253,6 @@ namespace DataMigration
             public string name;
             public string[] keywords;
         }
-
         public string ExtractManufacturer(string input)
         {
             Manufacturer[] manufacturers = new Manufacturer[]
@@ -322,19 +313,29 @@ namespace DataMigration
             if (startIndex != -1)
             {
                 startIndex += "Design".Length;
-                string subString = input.Substring(startIndex, 40)
-                    .Trim('&', ' ', ';', ':', '"')
+                string subString = input.Substring(startIndex)
+                    .Trim('&', ' ', ';', ':')
                     .Split('<')[0]
-                    .Trim()
-                    .Replace("&nbsp", "")
-                    .Replace("&#160;", "")
-                    .Replace("&amp;nbsp;", "");
+                    .Trim();
 
-                result = subString;
+                // Using regular expressions to replace various forms of nbsp;
+                subString = System.Text.RegularExpressions.Regex.Replace(subString, "nbsp;|&nbsp;|&#160;|&amp;nbsp;|nbsp\";", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // Remove quotes around the string
+                if (subString.StartsWith("\"") && subString.EndsWith("\"") && subString.Length > 1)
+                {
+                    subString = subString.Substring(1, subString.Length - 2);
+                }
+
+                result = subString.Trim('"');
             }
 
             return result;
         }
+
+
+
+
 
         public bool? ExtractSold(string input)
         {
@@ -349,7 +350,6 @@ namespace DataMigration
             }
             return null;
         }
-
         public QualityType ExtractQuality(string input)
         {
             string pattern = @"(1|2|3)\.\s*(?i)(quality|sortering)";
@@ -370,7 +370,6 @@ namespace DataMigration
             }
             return QualityType.Undefined;
         }
-
         public ConditionType ExtractCondition(string input)
         {
             input = input.ToLowerInvariant();
@@ -392,7 +391,6 @@ namespace DataMigration
             }
             return ConditionType.Undefined;
         }
-
         public decimal ExtractPrice(string input)
         {
             double.TryParse(input, out double result);
@@ -402,7 +400,6 @@ namespace DataMigration
             }
             return (decimal)result;
         }
-
         public MaterialType ExtractMaterialType(string input)
         {
             string substring = "";
@@ -428,7 +425,6 @@ namespace DataMigration
 
             return MaterialType.undefined;
         }
-
         public List<string[]> GetCsvEntries()
         {
             return ReadCsv("./products.csv");

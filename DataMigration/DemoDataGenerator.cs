@@ -21,7 +21,6 @@ namespace DataMigration
             InsertCustomersDiscountCodesUsers(msSQL);
             InsertOrdersPayments(msSQL);
         }
-
         private void InsertRolesCategoriesSubcategories(bool? msSQL)
         {
             /* Roles table */
@@ -118,7 +117,6 @@ namespace DataMigration
 
             Console.WriteLine("Successfully created " + numberOfEntities + " " + tableName + "\n");
         }
-
         private void InsertProductsInDatabase(string tableName, List<Product> products, bool? msSQL)
         {
             List<Subcategory> subcategories = _context.Subcategories.Include(s => s.Category).ToList();
@@ -161,7 +159,6 @@ namespace DataMigration
 
             Console.WriteLine("Successfully created " + numberOfProducts + " " + tableName + "\n");
         }
-
         private static void MapSubcategoryEntityToProduct(List<Subcategory> subcategoryEntities, Product product)
         {
             List<Subcategory> productSubcategories = product.Subcategories.ToList();
@@ -174,7 +171,6 @@ namespace DataMigration
 
             product.Subcategories = newProductSubcategories;
         }
-
         private static void ClearTableAndResetSeed<T>(DbSet<T> dbTable, string tableName, GroenlundDbContext context, bool? msSQL) where T : class
         {
             if (dbTable.Any())
@@ -201,7 +197,6 @@ namespace DataMigration
                 Console.WriteLine("Resetted seed for " + tableName);
             }
         }
-
         public static (List<Order> Orders, List<Payment> Payments) GenerateOrders(GroenlundDbContext context)
         {
             var orders = new List<Order>();
@@ -298,7 +293,6 @@ namespace DataMigration
             int range = (DateTime.Today - start).Days;
             return start.AddDays(new Random().Next(range));
         }
-
         private static string GenerateTransactionID(int length)
         {
             const string Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
